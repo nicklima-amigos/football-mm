@@ -25,4 +25,4 @@ services:
       - database
     volumes:
       - ./src:/app/src
-      - ./tests:/app/tests
+      - ./test:/app/test
