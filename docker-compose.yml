@@ -8,3 +8,21 @@ services:
       POSTGRES_DB: postgres
     ports:
       - 5432:5432
+
+  app:
+    build: .
+    command: npm run start:dev
+    restart: always
+    environment:
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: postgres
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
