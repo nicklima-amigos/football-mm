@@ -10,8 +10,18 @@ export class GameService {
     @Inject('GAMES_REPOSITORY') private repository: Repository<Game>,
   ) {}
 
-  create(createGameDto: CreateGameDto) {
-    return this.repository.create(createGameDto);
+  async create(createGameDto: CreateGameDto) {
+    const homeTeam = await Promise.all(
+      createGameDto.awayTeamPlayerIds.map((id) => {
+        return this.findOne(id);
+      }),
+    );
+    const awayTeam = await Promise.all(
+      createGameDto.homeTeamPlayerIds.map((id) => {
+        return this.findOne(id);
+      }),
+    );
+    return this.repository.create({ homeTeam, awayTeam });
   }
 
   findAll() {

@@ -22,14 +22,14 @@ export class Player {
   @Column()
   position: string;
 
-  @Column()
+  @Column({ default: 1000 })
   elo: number;
 
   @ManyToMany(() => Game, (game) => game.homeTeam)
   games: Game[];
 
-  @ManyToOne(() => Team, (team) => team.players)
-  team: Team;
+  @ManyToOne(() => Team, (team) => team.players, { nullable: true })
+  team?: Team;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

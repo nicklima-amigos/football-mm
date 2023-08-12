@@ -1,4 +1,4 @@
-import { Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
 
 @Entity()
@@ -11,4 +11,10 @@ export class Game {
 
   @ManyToMany(() => Player, (player) => player.games)
   awayTeam: Player[];
+
+  @Column()
+  homeTeamScore: number;
+
+  @Column()
+  awayTeamScore: number;
 }
