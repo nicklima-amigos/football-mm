@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
-import { Repository } from 'typeorm';
 import { Game } from './entities/game.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class GameService {
