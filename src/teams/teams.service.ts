@@ -7,26 +7,27 @@ import { Team } from './entities/team.entity';
 @Injectable()
 export class TeamService {
   constructor(
-    @Inject('TEAMS_REPOSITORY') private teamsRepository: Repository<Team>,
+    @Inject('TEAMS_REPOSITORY') private repository: Repository<Team>,
   ) {}
 
   create(createTeamDto: CreateTeamDto) {
-    return 'This action adds a new team';
+    return this.repository.create(createTeamDto);
   }
 
   findAll() {
-    return `This action returns all team`;
+    return this.repository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} team`;
+    return this.repository.findOne({ where: { id } });
   }
 
   update(id: number, updateTeamDto: UpdateTeamDto) {
-    return `This action updates a #${id} team`;
+    return this.repository.update({ id }, updateTeamDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} team`;
+  async remove(id: number) {
+    const team = await this.repository.findOne({ where: { id } });
+    return this.repository.remove(team);
   }
 }
