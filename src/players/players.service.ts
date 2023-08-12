@@ -7,26 +7,27 @@ import { Player } from './entities/player.entity';
 @Injectable()
 export class PlayerService {
   constructor(
-    @Inject('PLAYERS_REPOSITORY') private playersRepository: Repository<Player>,
+    @Inject('PLAYERS_REPOSITORY') private repository: Repository<Player>,
   ) {}
 
   create(createPlayerDto: CreatePlayerDto) {
-    return 'This action adds a new player';
+    return this.repository.create(createPlayerDto);
   }
 
   findAll() {
-    return `This action returns all player`;
+    return this.repository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} player`;
+    return this.repository.findOne({ where: { id } });
   }
 
   update(id: number, updatePlayerDto: UpdatePlayerDto) {
-    return `This action updates a #${id} player`;
+    return this.repository.update({ id }, updatePlayerDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} player`;
+  async remove(id: number) {
+    const player = await this.findOne(id);
+    return this.repository.remove(player);
   }
 }
