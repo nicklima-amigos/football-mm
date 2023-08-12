@@ -1,9 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
-import {
-  RepositoryMock,
-  getRepositoryMock
-} from '../../test/mocks/repository';
+import { RepositoryMock, getRepositoryMock } from '../../test/mocks/repository';
 import { Game } from './entities/game.entity';
 import { GameService } from './games.service';
 
