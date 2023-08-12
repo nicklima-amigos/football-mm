@@ -9,6 +9,9 @@ export class Team {
   @Column()
   name: string;
 
+  @Column({ default: 1000 })
+  elo: number;
+
   @OneToMany(() => Player, (player) => player.team)
   players: Player[];
 

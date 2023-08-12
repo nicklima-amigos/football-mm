@@ -10,8 +10,16 @@ export class TeamService {
     @Inject('TEAMS_REPOSITORY') private repository: Repository<Team>,
   ) {}
 
-  create(createTeamDto: CreateTeamDto) {
-    return this.repository.create(createTeamDto);
+  async create(createTeamDto: CreateTeamDto) {
+    const players = await Promise.all(
+      createTeamDto.playerIds.map((id) => {
+        return this.findOne(id);
+      }),
+    );
+    return this.repository.create({
+      name: createTeamDto.name,
+      players,
+    });
   }
 
   findAll() {
