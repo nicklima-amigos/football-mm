@@ -7,6 +7,8 @@ export const repositoryMock: Repository<any> = {
   create: jest.fn(),
   save: jest.fn(),
   delete: jest.fn(),
+  remove: jest.fn(),
+  update: jest.fn(),
 } as any;
 
 export const getRepositoryMockProvider = (entity: any): Provider => ({
