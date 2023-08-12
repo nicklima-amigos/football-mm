@@ -1,14 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
-import { Repository } from 'typeorm';
 import { Game } from './entities/game.entity';
 
 @Injectable()
 export class GameService {
-  constructor(
-    @Inject('GAMES_REPOSITORY') private repository: Repository<Game>,
-  ) {}
+  constructor(@InjectRepository(Game) private repository: Repository<Game>) {}
 
   async create(createGameDto: CreateGameDto) {
     const homeTeam = await Promise.all(

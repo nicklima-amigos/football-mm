@@ -1,20 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Repository } from 'typeorm';
-import { getRepositoryMockProvider } from '../../test/mocks/repository';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { RepositoryMock, getRepositoryMock } from '../../test/mocks/repository';
 import { Game } from './entities/game.entity';
 import { GameService } from './games.service';
 
 describe('GameService', () => {
   let service: GameService;
-  let repository: Repository<Game>;
+  let repository: RepositoryMock<Game>;
 
   beforeEach(async () => {
+    repository = getRepositoryMock();
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GameService, getRepositoryMockProvider('GAMES_REPOSITORY')],
-    }).compile();
+      imports: [TypeOrmModule.forFeature([Game])],
+      providers: [GameService],
+    })
+      .overrideProvider(getRepositoryToken(Game))
+      .useValue(repository)
+      .compile();
 
     service = module.get<GameService>(GameService);
-    repository = module.get<Repository<Game>>('GAMES_REPOSITORY');
   });
 
   it('should be defined', () => {
