@@ -1,14 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Repository } from 'typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import {
   RepositoryMock,
-  getRepositoryMock,
-  getRepositoryMockProvider,
+  getRepositoryMock
 } from '../../test/mocks/repository';
 import { Game } from './entities/game.entity';
 import { GameService } from './games.service';
-import { GameController } from './games.controller';
-import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 
 describe('GameService', () => {
   let service: GameService;
