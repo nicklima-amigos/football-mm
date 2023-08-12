@@ -1,4 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
@@ -6,9 +7,7 @@ import { Team } from './entities/team.entity';
 
 @Injectable()
 export class TeamService {
-  constructor(
-    @Inject('TEAMS_REPOSITORY') private repository: Repository<Team>,
-  ) {}
+  constructor(@InjectRepository(Team) private repository: Repository<Team>) {}
 
   create(createTeamDto: CreateTeamDto) {
     return this.repository.create(createTeamDto);

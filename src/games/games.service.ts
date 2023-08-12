@@ -3,12 +3,11 @@ import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Repository } from 'typeorm';
 import { Game } from './entities/game.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class GameService {
-  constructor(
-    @Inject('GAMES_REPOSITORY') private repository: Repository<Game>,
-  ) {}
+  constructor(@InjectRepository(Game) private repository: Repository<Game>) {}
 
   create(createGameDto: CreateGameDto) {
     return this.repository.create(createGameDto);
