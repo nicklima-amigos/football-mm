@@ -27,7 +27,7 @@ export class TeamService {
   }
 
   async remove(id: number) {
-    const team = await this.repository.findOne({ where: { id } });
+    const team = await this.findOne(id);
     return this.repository.remove(team);
   }
 }
