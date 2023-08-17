@@ -20,7 +20,7 @@ describe('GameController', () => {
   let gameRepository: Repository<Game>;
   let app: NestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [GameController],
       providers: [

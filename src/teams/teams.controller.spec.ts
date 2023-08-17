@@ -1,23 +1,23 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestApplication } from '@nestjs/core';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import * as supertest from 'supertest';
 import { Repository } from 'typeorm';
+import { fakeTeam, fakeTeams } from '../../test/factories/teams.factory';
 import { getRepositoryMock } from '../../test/mocks/repository';
 import { Player } from '../players/entities/player.entity';
 import { Team } from './entities/team.entity';
 import { TeamController } from './teams.controller';
 import { TeamService } from './teams.service';
-import * as supertest from 'supertest';
-import { fakeTeam, fakeTeams } from '../../test/factories/teams.factory';
 
 describe('TeamController', () => {
   let app: NestApplication;
   let controller: TeamController;
   let repository: Repository<Team>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    const module = await Test.createTestingModule({
       controllers: [TeamController],
       providers: [
         TeamService,
@@ -31,7 +31,6 @@ describe('TeamController', () => {
         },
       ],
     }).compile();
-
     controller = module.get<TeamController>(TeamController);
     repository = module.get<Repository<Team>>(getRepositoryToken(Team));
     app = module.createNestApplication();
