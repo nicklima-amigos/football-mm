@@ -6,14 +6,15 @@ on:
       - feat/terraform-init
 
 jobs:
-  build:
+  sonarqube-npm:
+    name: sonarqube Scan
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18.12.1'
@@ -25,8 +26,7 @@ jobs:
         run: npm test
 
       - name: Run SonarQube Scanner
+        uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          npm install -g sonarqube-scanner
-          sonar-scanner -Dsonar.projectKey=football-mm
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
