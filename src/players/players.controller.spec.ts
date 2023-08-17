@@ -83,12 +83,12 @@ describe('PlayerController', () => {
     it('should create a player', async () => {
       const player = fakePlayer();
       jest.spyOn(repository, 'create').mockReturnValueOnce(player);
-      const { id, ...playerInfo } = player;
+      const { name, birthDate, position } = player;
       const expected = JSON.parse(JSON.stringify(player));
 
       const response = await supertest(app.getHttpServer())
         .post('/players')
-        .send(playerInfo);
+        .send({ name, birthDate, position });
       const actual = response.body;
 
       expect(response.status).toEqual(201);
