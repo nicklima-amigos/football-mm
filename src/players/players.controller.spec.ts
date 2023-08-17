@@ -15,7 +15,7 @@ describe('PlayerController', () => {
   let controller: PlayerController;
   let repository: Repository<Player>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PlayerController],
       providers: [

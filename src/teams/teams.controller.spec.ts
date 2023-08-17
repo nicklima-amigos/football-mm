@@ -16,8 +16,8 @@ describe('TeamController', () => {
   let controller: TeamController;
   let repository: Repository<Team>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    const module = await Test.createTestingModule({
       controllers: [TeamController],
       providers: [
         TeamService,
@@ -31,7 +31,6 @@ describe('TeamController', () => {
         },
       ],
     }).compile();
-
     controller = module.get<TeamController>(TeamController);
     repository = module.get<Repository<Team>>(getRepositoryToken(Team));
     app = module.createNestApplication();
