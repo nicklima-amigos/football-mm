@@ -29,4 +29,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
         run: |
           npm install -g sonarqube-scanner
-          sonar-scanner -Dsonar.projectKey=<football-mm>
+          sonar-scanner -Dsonar.projectKey=football-mm
