@@ -26,7 +26,7 @@ jobs:
 
       - name: Run SonarQube Scanner
         env:
-          SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           npm install -g sonarqube-scanner
           sonar-scanner -Dsonar.projectKey=football-mm
