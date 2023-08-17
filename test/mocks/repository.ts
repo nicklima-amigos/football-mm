@@ -11,7 +11,7 @@ export type RepositoryMock<T> = {
   update: jest.Mock<Promise<UpdateResult>>;
 };
 
-export const getRepositoryMock = (): RepositoryMock<any> => ({
+export const getRepositoryMock = <T>(): RepositoryMock<T> => ({
   find: jest.fn(),
   findOne: jest.fn(),
   create: jest.fn(),

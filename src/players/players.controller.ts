@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { PlayerService } from './players.service';
 import { CreatePlayerDto } from './dto/create-player.dto';
@@ -36,6 +38,7 @@ export class PlayerController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id') id: string) {
     return this.playerService.remove(+id);
   }
