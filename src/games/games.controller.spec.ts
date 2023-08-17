@@ -18,7 +18,6 @@ import { Player } from '../players/entities/player.entity';
 describe('GameController', () => {
   let controller: GameController;
   let gameRepository: Repository<Game>;
-  let playerRepository: Repository<Player>;
   let app: NestApplication;
 
   beforeEach(async () => {
@@ -39,9 +38,6 @@ describe('GameController', () => {
 
     controller = module.get<GameController>(GameController);
     gameRepository = module.get<Repository<Game>>(getRepositoryToken(Game));
-    playerRepository = module.get<Repository<Player>>(
-      getRepositoryToken(Player),
-    );
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();

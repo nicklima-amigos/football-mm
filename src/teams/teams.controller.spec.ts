@@ -15,7 +15,6 @@ describe('TeamController', () => {
   let app: NestApplication;
   let controller: TeamController;
   let repository: Repository<Team>;
-  let playerRepository: Repository<Player>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,9 +34,6 @@ describe('TeamController', () => {
 
     controller = module.get<TeamController>(TeamController);
     repository = module.get<Repository<Team>>(getRepositoryToken(Team));
-    playerRepository = module.get<Repository<Player>>(
-      getRepositoryToken(Player),
-    );
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
@@ -99,8 +95,6 @@ describe('TeamController', () => {
         .post('/teams')
         .send(playerInfo);
       const actual = response.body;
-
-      console.log(response.body);
 
       expect(response.status).toEqual(201);
       expect(actual).toEqual(expected);
