@@ -86,14 +86,14 @@ describe('TeamController', () => {
 
   describe('create', () => {
     it('should create a team', async () => {
-      const player = fakeTeam();
-      jest.spyOn(repository, 'create').mockReturnValueOnce(player);
-      const { id, ...playerInfo } = player;
-      const expected = JSON.parse(JSON.stringify(player));
+      const team = fakeTeam();
+      jest.spyOn(repository, 'create').mockReturnValueOnce(team);
+      const { id, ...teamInfo } = team;
+      const expected = JSON.parse(JSON.stringify(team));
 
       const response = await supertest(app.getHttpServer())
         .post('/teams')
-        .send(playerInfo);
+        .send(teamInfo);
       const actual = response.body;
 
       expect(response.status).toEqual(201);
@@ -113,15 +113,15 @@ describe('TeamController', () => {
 
   describe('update', () => {
     it('should update a team', async () => {
-      const player = fakeTeam();
-      player.id = 1;
-      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(player);
+      const team = fakeTeam();
+      team.id = 1;
+      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(team);
       jest.spyOn(repository, 'update').mockResolvedValueOnce(undefined);
-      const { id, ...playerInfo } = player;
+      const { id, ...teamInfo } = team;
 
       const response = await supertest(app.getHttpServer())
         .patch('/teams/1')
-        .send(playerInfo);
+        .send(teamInfo);
 
       expect(response.status).toEqual(200);
     });
@@ -149,9 +149,9 @@ describe('TeamController', () => {
 
   describe('delete', () => {
     it('should delete a team', async () => {
-      const player = fakeTeam();
-      player.id = 1;
-      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(player);
+      const team = fakeTeam();
+      team.id = 1;
+      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(team);
       jest.spyOn(repository, 'remove').mockResolvedValueOnce(undefined);
 
       const response = await supertest(app.getHttpServer()).delete('/teams/1');
