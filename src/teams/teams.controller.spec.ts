@@ -112,7 +112,7 @@ describe('TeamController', () => {
   });
 
   describe('update', () => {
-    it('should update a player', async () => {
+    it('should update a team', async () => {
       const player = fakeTeam();
       player.id = 1;
       jest.spyOn(repository, 'findOne').mockResolvedValueOnce(player);
@@ -148,7 +148,7 @@ describe('TeamController', () => {
   });
 
   describe('delete', () => {
-    it('should delete a player', async () => {
+    it('should delete a team', async () => {
       const player = fakeTeam();
       player.id = 1;
       jest.spyOn(repository, 'findOne').mockResolvedValueOnce(player);
