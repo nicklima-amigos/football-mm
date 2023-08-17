@@ -55,10 +55,10 @@ describe('GameController', () => {
     expect(controller).toBeDefined();
   });
   describe('findAll', () => {
-    it('should return a list of players', async () => {
-      const players = fakeGames(10);
-      jest.spyOn(gameRepository, 'find').mockResolvedValueOnce(players);
-      const expected = JSON.parse(JSON.stringify(players));
+    it('should return a list of games', async () => {
+      const games = fakeGames(10);
+      jest.spyOn(gameRepository, 'find').mockResolvedValueOnce(games);
+      const expected = JSON.parse(JSON.stringify(games));
 
       const response = await supertest(app.getHttpServer()).get('/games');
       const actual = response.body;
@@ -69,11 +69,11 @@ describe('GameController', () => {
   });
 
   describe('findOne', () => {
-    it('should return a single player when given a valid id', async () => {
-      const player = fakeGame();
-      player.id = 1;
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(player);
-      const expected = JSON.parse(JSON.stringify(player));
+    it('should return a single game when given a valid id', async () => {
+      const game = fakeGame();
+      game.id = 1;
+      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(game);
+      const expected = JSON.parse(JSON.stringify(game));
 
       const response = await supertest(app.getHttpServer()).get('/games/1');
       const actual = response.body;
@@ -122,15 +122,15 @@ describe('GameController', () => {
 
   describe('update', () => {
     it('should update a game', async () => {
-      const player = fakeGame();
-      player.id = 1;
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(player);
+      const game = fakeGame();
+      game.id = 1;
+      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(game);
       jest.spyOn(gameRepository, 'update').mockResolvedValueOnce(undefined);
-      const { id, ...playerInfo } = player;
+      const { id, ...gameInfo } = game;
 
       const response = await supertest(app.getHttpServer())
         .patch('/games/1')
-        .send(playerInfo);
+        .send(gameInfo);
 
       expect(response.status).toEqual(200);
     });
@@ -158,9 +158,9 @@ describe('GameController', () => {
 
   describe('delete', () => {
     it('should delete a game', async () => {
-      const player = fakeGame();
-      player.id = 1;
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(player);
+      const game = fakeGame();
+      game.id = 1;
+      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(game);
       jest.spyOn(gameRepository, 'remove').mockResolvedValueOnce(undefined);
 
       const response = await supertest(app.getHttpServer()).delete('/games/1');
