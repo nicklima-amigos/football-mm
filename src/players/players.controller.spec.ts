@@ -14,7 +14,6 @@ describe('PlayerController', () => {
   let app: NestApplication;
   let controller: PlayerController;
   let repository: Repository<Player>;
-  let service: PlayerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,7 +29,6 @@ describe('PlayerController', () => {
 
     controller = module.get<PlayerController>(PlayerController);
     repository = module.get<Repository<Player>>(getRepositoryToken(Player));
-    service = module.get<PlayerService>(PlayerService);
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
