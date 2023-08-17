@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-      - main
+      - feat/terraform-init
 
 jobs:
   build:
