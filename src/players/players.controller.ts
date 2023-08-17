@@ -1,15 +1,16 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { PlayerService } from './players.service';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
+import { PlayerService } from './players.service';
 
 @Controller('players')
 export class PlayerController {
@@ -36,6 +37,7 @@ export class PlayerController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id') id: string) {
     return this.playerService.remove(+id);
   }
