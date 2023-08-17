@@ -2,10 +2,10 @@ name: Terraform
 
 on:
   push:
-    branches: [ feat/terraform-init ]
+    branches: [ dev ]
 
   pull_request:
-    branches: [ feat/terraform-init ]
+    branches: [ dev ]
 
 jobs:
   build:
