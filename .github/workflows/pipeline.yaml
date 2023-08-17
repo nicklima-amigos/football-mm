@@ -23,3 +23,4 @@ jobs:
         terraform init
         terraform plan -out plan.tf
         terraform apply -auto-approve plan.tf
+        
