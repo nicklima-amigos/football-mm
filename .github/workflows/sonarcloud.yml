@@ -26,3 +26,4 @@ jobs:
         with:
           args:
             -Dsonar.projectKey=football-mm
+            -Dsonar.organization=nicklima-amigos
