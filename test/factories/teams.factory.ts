@@ -12,9 +12,9 @@ export const fakeTeam = (): Team => {
   };
 };
 
-export const fakeTeams = (): Team[] => {
+export const fakeTeams = (count: number): Team[] => {
   const teams: Team[] = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < count; i++) {
     teams.push(fakeTeam());
   }
   return teams;
