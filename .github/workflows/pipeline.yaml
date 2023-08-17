@@ -5,7 +5,7 @@ on:
     branches: [ feat/terraform-init ]
 
   pull_request:
-    branches: [ main ]
+    branches: [ feat/terraform-init ]
 
 jobs:
   build:
