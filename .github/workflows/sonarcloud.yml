@@ -25,5 +25,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
         with:
           args:
-            -Dsonar.projectKey=football-mm
+            -Dsonar.projectKey=nicklima-amigos_football-mm
             -Dsonar.organization=nicklima-amigos
