@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { GameService } from './games.service';
 import { CreateGameDto } from './dto/create-game.dto';
@@ -16,8 +17,8 @@ export class GameController {
   constructor(private readonly gameService: GameService) {}
 
   @Post()
-  create(@Body() createGameDto: CreateGameDto) {
-    return this.gameService.create(createGameDto);
+  async create(@Body() createGameDto: CreateGameDto) {
+    return await this.gameService.create(createGameDto);
   }
 
   @Get()
@@ -36,6 +37,7 @@ export class GameController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id') id: string) {
     return this.gameService.remove(+id);
   }

@@ -1,4 +1,11 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateGameDto } from './create-game.dto';
+import { IsNumber, IsOptional } from 'class-validator';
 
-export class UpdateGameDto extends PartialType(CreateGameDto) {}
+export class UpdateGameDto {
+  @IsNumber()
+  @IsOptional()
+  homeTeamScore?: number;
+
+  @IsNumber()
+  @IsOptional()
+  awayTeamScore?: number;
+}

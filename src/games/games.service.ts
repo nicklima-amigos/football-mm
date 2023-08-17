@@ -1,32 +1,47 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
-import { Repository } from 'typeorm';
 import { Game } from './entities/game.entity';
+import { Player } from '../players/entities/player.entity';
 
 @Injectable()
 export class GameService {
   constructor(
-    @Inject('GAMES_REPOSITORY') private gamesRepository: Repository<Game>,
+    @InjectRepository(Game) private repository: Repository<Game>,
+    @InjectRepository(Player) private playerRepository: Repository<Player>,
   ) {}
 
-  create(createGameDto: CreateGameDto) {
-    return 'This action adds a new game';
+  async create(createGameDto: CreateGameDto) {
+    const homeTeam = await this.playerRepository.find({
+      where: { id: In(createGameDto.homeTeamPlayerIds) },
+    });
+    const awayTeam = await this.playerRepository.find({
+      where: { id: In(createGameDto.awayTeamPlayerIds) },
+    });
+    return this.repository.create({ homeTeam, awayTeam });
   }
 
   findAll() {
-    return `This action returns all game`;
+    return this.repository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} game`;
+  async findOne(id: number) {
+    const game = await this.repository.findOne({ where: { id } });
+    if (!game) {
+      throw new HttpException('Game not found', 404);
+    }
+    return game;
   }
 
-  update(id: number, updateGameDto: UpdateGameDto) {
-    return `This action updates a #${id} game`;
+  async update(id: number, updateGameDto: UpdateGameDto) {
+    await this.findOne(id);
+    return this.repository.update({ id }, updateGameDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} game`;
+  async remove(id: number) {
+    const player = await this.findOne(id);
+    return this.repository.remove(player);
   }
 }

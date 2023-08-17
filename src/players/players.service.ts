@@ -1,32 +1,39 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
-import { Repository } from 'typeorm';
 import { Player } from './entities/player.entity';
 
 @Injectable()
 export class PlayerService {
   constructor(
-    @Inject('PLAYERS_REPOSITORY') private playersRepository: Repository<Player>,
+    @InjectRepository(Player) private repository: Repository<Player>,
   ) {}
 
   create(createPlayerDto: CreatePlayerDto) {
-    return 'This action adds a new player';
+    return this.repository.create(createPlayerDto);
   }
 
   findAll() {
-    return `This action returns all player`;
+    return this.repository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} player`;
+  async findOne(id: number) {
+    const player = await this.repository.findOne({ where: { id } });
+    if (!player) {
+      throw new HttpException('Player not found', 404);
+    }
+    return player;
   }
 
-  update(id: number, updatePlayerDto: UpdatePlayerDto) {
-    return `This action updates a #${id} player`;
+  async update(id: number, updatePlayerDto: UpdatePlayerDto) {
+    await this.findOne(id);
+    return this.repository.update({ id }, updatePlayerDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} player`;
+  async remove(id: number) {
+    const player = await this.findOne(id);
+    return this.repository.remove(player);
   }
 }

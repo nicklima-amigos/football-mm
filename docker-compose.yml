@@ -3,8 +3,26 @@ services:
     image: postgres:alpine
     restart: always
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_DB: ${DATABASE_NAME:-postgres}
     ports:
       - 5432:5432
+
+  app:
+    build: .
+    command: npm run start:dev
+    restart: always
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST:-database}
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_USER: ${DATABASE_USER:-postgres}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      DATABASE_NAME: ${DATABASE_NAME:-postgres}
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
