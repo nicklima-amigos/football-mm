@@ -86,7 +86,7 @@ describe('TeamController', () => {
   describe('create', () => {
     it('should create a team', async () => {
       const team = fakeTeam();
-      jest.spyOn(repository, 'create').mockReturnValueOnce(team);
+      jest.spyOn(repository, 'save').mockResolvedValueOnce(team);
       const { id, ...teamInfo } = team;
       const expected = JSON.parse(JSON.stringify(team));
 

@@ -1,16 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsString } from 'class-validator';
 
-export class CreatePlayerDto {
+export class PlayerDto {
   @ApiProperty()
-  @IsString()
+  id: number;
+
+  @ApiProperty()
   name: string;
 
   @ApiProperty()
-  @IsDateString()
   birthDate: Date;
 
   @ApiProperty()
-  @IsString()
   position: string;
+
+  @ApiProperty()
+  elo: number;
+
+  @ApiProperty()
+  teamId: number;
 }

@@ -20,7 +20,7 @@ export class GameService {
     const awayTeam = await this.playerRepository.find({
       where: { id: In(createGameDto.awayTeamPlayerIds) },
     });
-    return this.repository.create({ homeTeam, awayTeam });
+    return this.repository.save({ homeTeam, awayTeam });
   }
 
   findAll() {

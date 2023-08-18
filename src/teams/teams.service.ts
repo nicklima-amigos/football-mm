@@ -17,7 +17,7 @@ export class TeamService {
     const players = await this.playerRepository.find({
       where: { id: In(createTeamDto.playerIds) },
     });
-    return this.repository.create({
+    return this.repository.save({
       name: createTeamDto.name,
       players,
     });
