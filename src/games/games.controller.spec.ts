@@ -93,7 +93,7 @@ describe('GameController', () => {
       const gameDto = fakeGameDto();
       gameDto.homeTeamPlayerIds = game.homeTeam.map((player) => player.id);
       gameDto.awayTeamPlayerIds = game.awayTeam.map((player) => player.id);
-      jest.spyOn(gameRepository, 'create').mockReturnValueOnce(game);
+      jest.spyOn(gameRepository, 'save').mockResolvedValueOnce(game);
       const expected = JSON.parse(JSON.stringify(game));
 
       const response = await supertest(app.getHttpServer())
