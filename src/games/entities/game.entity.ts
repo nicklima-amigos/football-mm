@@ -12,9 +12,9 @@ export class Game {
   @ManyToMany(() => Player, (player) => player.games)
   awayTeam: Player[];
 
-  @Column()
+  @Column({ default: 0 })
   homeTeamScore: number;
 
-  @Column()
+  @Column({ default: 0 })
   awayTeamScore: number;
 }

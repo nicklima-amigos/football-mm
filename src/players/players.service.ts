@@ -11,8 +11,8 @@ export class PlayerService {
     @InjectRepository(Player) private repository: Repository<Player>,
   ) {}
 
-  create(createPlayerDto: CreatePlayerDto) {
-    return this.repository.create(createPlayerDto);
+  async create(createPlayerDto: CreatePlayerDto) {
+    return this.repository.save(createPlayerDto);
   }
 
   findAll() {
