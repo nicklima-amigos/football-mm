@@ -1,20 +1,19 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
   HttpCode,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { GameService } from './games.service';
-import { CreateGameDto } from './dto/create-game.dto';
-import { UpdateGameDto } from './dto/update-game.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Game } from './entities/game.entity';
 import { UpdateResult } from 'typeorm';
+import { CreateGameDto } from './dto/create-game.dto';
 import { GameDto } from './dto/game.dto';
+import { UpdateGameDto } from './dto/update-game.dto';
+import { GameService } from './games.service';
 
 @Controller('games')
 @ApiTags('games')
