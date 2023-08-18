@@ -23,7 +23,7 @@ export class GameController {
 
   @Post()
   @ApiResponse({ status: 201, type: GameDto })
-  async create(@Body() createGameDto: CreateGameDto) {
+  create(@Body() createGameDto: CreateGameDto) {
     return this.gameService.create(createGameDto);
   }
 
