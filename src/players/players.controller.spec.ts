@@ -82,7 +82,7 @@ describe('PlayerController', () => {
   describe('create', () => {
     it('should create a player', async () => {
       const player = fakePlayer();
-      jest.spyOn(repository, 'create').mockReturnValueOnce(player);
+      jest.spyOn(repository, 'save').mockResolvedValueOnce(player);
       const { name, birthDate, position } = player;
       const expected = JSON.parse(JSON.stringify(player));
 
