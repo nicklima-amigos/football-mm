@@ -9,6 +9,8 @@ jobs:
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
+    env:
+      working-directory: ${{ github.workspace }}//terraform
     steps:
       - name: "Checkout"
         uses: actions/checkout@master
@@ -23,21 +25,26 @@ jobs:
       - name: "Terraform Format"
         id: fmt
         run: terraform fmt
+        working-directory: ${{ env.working-directory }}
 
       - name: "Terraform Init"
         id: init
         run: terraform init
+        working-directory: ${{ env.working-directory }}
 
       - name: "Terraform Validate"
         id: validate
         run: terraform validate -no-color
+        working-directory: ${{ env.working-directory }}
 
       - name: "Terraform Plan"
         id: plan
         run: terraform plan
+        working-directory: ${{ env.working-directory }}
 
       - name: "Terraform Apply"
         id: apply
 
         run: terraform apply
+        working-directory: ${{ env.working-directory }}
 
