@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Game } from '../../games/entities/game.entity';
 import { Team } from '../../teams/entities/team.entity';
@@ -31,6 +33,9 @@ export class Player {
   @ManyToOne(() => Team, (team) => team.players, { nullable: true })
   team?: Team;
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

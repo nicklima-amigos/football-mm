@@ -16,4 +16,7 @@ export class TeamDto {
 
   @ApiProperty()
   createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
 }

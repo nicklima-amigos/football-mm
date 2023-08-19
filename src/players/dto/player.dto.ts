@@ -18,4 +18,10 @@ export class PlayerDto {
 
   @ApiProperty()
   teamId: number;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
 }

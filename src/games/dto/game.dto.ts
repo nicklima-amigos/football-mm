@@ -22,4 +22,7 @@ export class GameDto {
 
   @ApiProperty()
   createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
 }
