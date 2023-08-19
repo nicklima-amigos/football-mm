@@ -16,12 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Configure Azure credentials
+        run: echo ${{ secrets.AZURE_CREDENTIALS }} > azure_credentials.json
+
       - name: Az CLI login
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          allow-no-subscriptions: true
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       
       - name: Azure CLI script
         uses: azure/CLI@v1
