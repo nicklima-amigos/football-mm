@@ -39,12 +39,21 @@ jobs:
 
       - name: "Terraform Plan"
         id: plan
-        run: terraform plan
+        run: terraform plan -no-color
         working-directory: ${{ env.working-directory }}
+        env:
+          TF_VAR_agent_client_id: ${{ secrets.TF_VAR_agent_client_id }}
+          TF_VAR_agent_client_secret: ${{ secrets.TF_VAR_agent_client_secret }}
+          TF_VAR_subscription_id: ${{ secrets.TF_VAR_subscription_id }}
+          TF_VAR_tenant_id: ${{ secrets.TF_VAR_tenant_id }}
 
       - name: "Terraform Apply"
         id: apply
-
         run: terraform apply
         working-directory: ${{ env.working-directory }}
+        env:
+          TF_VAR_agent_client_id: ${{ secrets.TF_VAR_agent_client_id }}
+          TF_VAR_agent_client_secret: ${{ secrets.TF_VAR_agent_client_secret }}
+          TF_VAR_subscription_id: ${{ secrets.TF_VAR_subscription_id }}
+          TF_VAR_tenant_id: ${{ secrets.TF_VAR_tenant_id }}
 
