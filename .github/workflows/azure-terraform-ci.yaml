@@ -16,17 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Az CLI login
-        uses: azure/login@v1
-      
-      - name: Azure CLI script
-        uses: azure/CLI@v1
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
-            az group list
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
