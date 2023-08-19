@@ -48,6 +48,6 @@ jobs:
         id: apply
         run: |
           terraform import azurerm_resource_group.football-mm /subscriptions/${{ secrets.AZURE_SUBSCRIPTION }}/resourceGroups/football-mm
-          terraform apply -auto-approve
+          terraform apply -auto-approve plan.tf
         working-directory: ${{ env.working-directory }}
 
