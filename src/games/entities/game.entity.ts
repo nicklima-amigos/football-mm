@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
 
 @Entity()
@@ -17,4 +24,13 @@ export class Game {
 
   @Column({ default: 0 })
   awayTeamScore: number;
+
+  @Column()
+  scheduledTime: Date;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

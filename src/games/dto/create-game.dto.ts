@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsArray } from 'class-validator';
+import { IsNotEmpty, IsArray, IsDateString } from 'class-validator';
 
 export class CreateGameDto {
   @ApiProperty()
@@ -11,4 +11,8 @@ export class CreateGameDto {
   @IsArray()
   @IsNotEmpty()
   homeTeamPlayerIds: number[];
+
+  @ApiProperty()
+  @IsDateString()
+  scheduledTime: Date;
 }
