@@ -12,7 +12,7 @@ provider "azurerm" {
   skip_provider_registration=true
 }
 
-resource "azurerm_resource_group" "football-dev" {
-  name     = "football-dev"
+resource "azurerm_resource_group" "football-mm" {
+  name     = "football-mm"
   location = "West US"
 }
