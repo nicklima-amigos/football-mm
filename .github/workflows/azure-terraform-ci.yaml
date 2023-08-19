@@ -2,7 +2,7 @@ name: "Terraform Deploy"
 on:
   push:
     branches:
-      - master
+      - feat/azure-terraform-ci
 
 
 jobs:
