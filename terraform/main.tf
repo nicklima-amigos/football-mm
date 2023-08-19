@@ -13,6 +13,6 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "football-mm" {
-  name     = "football-mm"
+  name     = "football-mm2"
   location = "West US"
 }
