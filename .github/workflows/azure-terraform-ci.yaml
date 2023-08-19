@@ -16,9 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Configure Azure credentials
-        run: echo ${{ secrets.AZURE_CREDENTIALS }} > azure_credentials.json
-
       - name: Az CLI login
         uses: azure/login@v1
         with:
