@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
 import { Match } from '../../match/entities/match.entity';
 
@@ -19,6 +26,9 @@ export class Team {
   @OneToMany(() => Match, (match) => match.homeTeam)
   matches?: Match[];
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

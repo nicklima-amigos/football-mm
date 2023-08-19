@@ -12,6 +12,7 @@ export const fakePlayer = (): Player => {
     games: [],
     team: null,
     createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
   };
 };
 
