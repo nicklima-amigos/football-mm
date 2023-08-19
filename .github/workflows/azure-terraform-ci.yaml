@@ -38,8 +38,6 @@ jobs:
 
       - name: "Terraform Apply"
         id: apply
-<<<<<<< HEAD
+
         run: terraform apply
-=======
-        run: terraform apply
->>>>>>> bee81a45726f410d5feec77b9f5a75e9b85fd24d
+
