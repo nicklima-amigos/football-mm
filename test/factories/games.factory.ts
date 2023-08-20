@@ -10,6 +10,9 @@ export const fakeGame = (): Game => {
     awayTeam: fakePlayers(11),
     homeTeamScore: faker.number.int(),
     awayTeamScore: faker.number.int(),
+    scheduledTime: faker.date.future(),
+    createdAt: faker.date.past(),
+    updatedAt: faker.date.past(),
   };
 };
 
@@ -17,6 +20,7 @@ export const fakeGameDto = (): CreateGameDto => {
   return {
     homeTeamPlayerIds: fakePlayers(11).map((player) => player.id),
     awayTeamPlayerIds: fakePlayers(11).map((player) => player.id),
+    scheduledTime: faker.date.future(),
   };
 };
 

@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
@@ -21,6 +22,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.use(helmet());
   app.setGlobalPrefix('api');
   await app.listen(3000);
 }

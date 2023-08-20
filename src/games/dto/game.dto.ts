@@ -16,4 +16,13 @@ export class GameDto {
 
   @ApiProperty()
   awayTeamScore: number;
+
+  @ApiProperty()
+  scheduledTime: Date;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
 }

@@ -1,32 +1,27 @@
+import { Team } from '../../teams/entities/team.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Player } from '../../players/entities/player.entity';
-
 @Entity()
-export class Game {
+export class Match {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => Player, (player) => player.games)
-  homeTeam: Player[];
-
-  @ManyToMany(() => Player, (player) => player.games)
-  awayTeam: Player[];
+  @ManyToOne(() => Team, (team) => team.matches)
+  homeTeam: Team;
+  @ManyToOne(() => Team, (team) => team.matches)
+  awayTeam: Team;
 
   @Column({ default: 0 })
   homeTeamScore: number;
 
   @Column({ default: 0 })
   awayTeamScore: number;
-
-  @Column()
-  scheduledTime: Date;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -9,6 +9,7 @@ export const fakeTeam = (): Team => {
     elo: faker.number.int(),
     players: [...fakePlayers(11)],
     createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
   };
 };
 
