@@ -21,7 +21,8 @@ export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
   @Post()
-  @ApiResponse({ status: 201, type: PlayerDto })
+  @ApiResponse({ status: 201, description: 'Created', type: PlayerDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   create(@Body() createPlayerDto: CreatePlayerDto) {
     return this.playerService.create(createPlayerDto);
   }
@@ -34,12 +35,14 @@ export class PlayerController {
 
   @Get(':id')
   @ApiResponse({ status: 200, type: PlayerDto })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   findOne(@Param('id') id: string) {
     return this.playerService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiResponse({ status: 200, type: UpdateResponseDto })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
     return this.playerService.update(+id, updatePlayerDto);
   }
@@ -47,6 +50,7 @@ export class PlayerController {
   @Delete(':id')
   @HttpCode(204)
   @ApiResponse({ status: 204 })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   remove(@Param('id') id: string) {
     return this.playerService.remove(+id);
   }
