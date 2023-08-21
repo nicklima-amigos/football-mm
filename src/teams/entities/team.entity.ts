@@ -6,8 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Player } from '../../players/entities/player.entity';
 import { Match } from '../../match/entities/match.entity';
+import { Player } from '../../players/entities/player.entity';
 
 @Entity()
 export class Team {

@@ -14,9 +14,7 @@ export class TeamService {
   ) {}
 
   async create(createTeamDto: CreateTeamDto) {
-    const players = await this.playerRepository.find({
-      where: { id: In(createTeamDto.playerIds) },
-    });
+    const players = await this.findPlayers(createTeamDto.playerIds);
     return this.repository.save({
       name: createTeamDto.name,
       players,
@@ -36,12 +34,23 @@ export class TeamService {
   }
 
   async update(id: number, updateTeamDto: UpdateTeamDto) {
-    await this.findOne(id);
-    return this.repository.update({ id }, updateTeamDto);
+    const team = await this.findOne(id);
+    if (updateTeamDto.playerIds) {
+      const players = await this.findPlayers(updateTeamDto.playerIds);
+      team.players = players;
+    }
+    team.elo = updateTeamDto.elo ?? team.elo;
+    return this.repository.save(team);
   }
 
   async remove(id: number) {
     const team = await this.findOne(id);
     return this.repository.remove(team);
+  }
+
+  private async findPlayers(ids: number[]) {
+    return this.playerRepository.find({
+      where: { id: In(ids) },
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { League } from '../../league/entities/league.entity';
 import { Team } from '../../teams/entities/team.entity';
 import {
   Column,
@@ -16,6 +17,9 @@ export class Match {
   homeTeam: Team;
   @ManyToOne(() => Team, (team) => team.matches)
   awayTeam: Team;
+
+  @ManyToOne(() => League, (league) => league.matches)
+  league: League;
 
   @Column({ default: 0 })
   homeTeamScore: number;

@@ -13,10 +13,10 @@ export class Game {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => Player, (player) => player.games)
+  @ManyToMany(() => Player, (player) => player.homeGames)
   homeTeam: Player[];
 
-  @ManyToMany(() => Player, (player) => player.games)
+  @ManyToMany(() => Player, (player) => player.awayGames)
   awayTeam: Player[];
 
   @Column({ default: 0 })
