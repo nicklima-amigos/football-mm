@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { Match } from 'src/match/entities/match.entity';
 import { CreateMatchDto } from 'src/match/dto/create-match.dto';
 import { fakeTeam } from './teams.factory';
+import { fakeLeague } from './leagues.factory';
 
 export const fakeMatchDto = (): CreateMatchDto => {
   return {
@@ -15,6 +16,7 @@ export const fakeMatch = (): Match => {
     id: faker.number.int(),
     createdAt: faker.date.past({ years: 2 }),
     updatedAt: faker.date.recent(),
+    league: fakeLeague(),
     homeTeam: fakeTeam(),
     awayTeam: fakeTeam(),
     homeTeamScore: faker.number.int({ max: 5 }),

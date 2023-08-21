@@ -4,6 +4,6 @@ import { LeagueController } from './league.controller';
 
 @Module({
   controllers: [LeagueController],
-  providers: [LeagueService]
+  providers: [LeagueService],
 })
 export class LeagueModule {}
