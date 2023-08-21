@@ -1,6 +1,15 @@
 import { faker } from '@faker-js/faker';
 import { League } from '../../src/league/entities/league.entity';
 import { fakeTeams } from './teams.factory';
+import { CreateLeagueDto } from '../../src/league/dto/create-league.dto';
+import { fakeMatches } from './matches.factory';
+
+export const fakeLeagueDto = (): CreateLeagueDto => {
+  return {
+    name: faker.lorem.word(),
+    matchIds: fakeMatches(8).map((match) => match.id),
+  };
+};
 
 export const fakeLeague = (): League => {
   const teams = fakeTeams(8);
