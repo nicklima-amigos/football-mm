@@ -12,9 +12,13 @@ provider "azurerm" {
   skip_provider_registration=true
 }
 
-resource "azurerm_resource_group" "football-mm" {
-  name     = "football-mm-test"
+data "azurerm_resource_group" "football-mm" {
+  name = "football-mm"
   location = "East US"
+}
+
+output "id" {
+  value = data.azurerm_resource_group.football-mm.id
 }
 
 resource "azurerm_virtual_network" "main" {
