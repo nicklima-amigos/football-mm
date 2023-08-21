@@ -14,6 +14,7 @@ provider "azurerm" {
 
 data "azurerm_resource_group" "football-mm" {
   name = "football-mm"
+  location = "East US"
 }
 
 output "id" {
