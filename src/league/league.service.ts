@@ -25,7 +25,7 @@ export class LeagueService {
   }
 
   findAll() {
-    return this.matchRepository.find();
+    return this.repository.find();
   }
 
   async findOne(id: number) {
