@@ -28,7 +28,10 @@ export class Player {
   elo: number;
 
   @ManyToMany(() => Game, (game) => game.homeTeam)
-  games: Game[];
+  homeGames: Game[];
+
+  @ManyToMany(() => Game, (game) => game.awayTeam)
+  awayGames: Game[];
 
   @ManyToOne(() => Team, (team) => team.players, { nullable: true })
   team?: Team;
