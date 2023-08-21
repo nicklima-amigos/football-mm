@@ -134,7 +134,7 @@ describe('LeagueController', () => {
 
       const response = await supertest(app.getHttpServer())
         .patch('/leagues/1')
-        .send({ name: false, birthDate: 'invalid' });
+        .send({ name: false });
 
       expect(response.status).toEqual(400);
     });
