@@ -2,6 +2,7 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
+[![Terraform Deploy](https://github.com/nicklima-amigos/football-mm/actions/workflows/azure-terraform-ci.yaml/badge.svg)](https://github.com/nicklima-amigos/football-mm/actions/workflows/azure-terraform-ci.yaml)
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
