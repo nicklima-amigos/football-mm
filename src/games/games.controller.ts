@@ -21,7 +21,8 @@ export class GameController {
   constructor(private readonly gameService: GameService) {}
 
   @Post()
-  @ApiResponse({ status: 201, type: GameDto })
+  @ApiResponse({ status: 201, description: 'Created', type: GameDto })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
   create(@Body() createGameDto: CreateGameDto) {
     return this.gameService.create(createGameDto);
   }
@@ -34,12 +35,14 @@ export class GameController {
 
   @Get(':id')
   @ApiResponse({ status: 200, type: GameDto })
+  @ApiResponse({ status: 404, description: 'Not Found.' })
   findOne(@Param('id') id: string) {
     return this.gameService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiResponse({ status: 200, type: UpdateResult })
+  @ApiResponse({ status: 404, description: 'Not Found.' })
   update(@Param('id') id: string, @Body() updateGameDto: UpdateGameDto) {
     return this.gameService.update(+id, updateGameDto);
   }
@@ -47,6 +50,7 @@ export class GameController {
   @Delete(':id')
   @HttpCode(204)
   @ApiResponse({ status: 204 })
+  @ApiResponse({ status: 404, description: 'Not Found.' })
   remove(@Param('id') id: string) {
     return this.gameService.remove(+id);
   }
