@@ -1,7 +1,6 @@
-import { League } from '../../src/league/entities/league.entity';
 import { faker } from '@faker-js/faker';
+import { League } from '../../src/league/entities/league.entity';
 import { fakeTeams } from './teams.factory';
-import { LeagueTeam } from '../../src/league/entities/league-team.entity';
 
 export const fakeLeague = (): League => {
   const teams = fakeTeams(8);
