@@ -21,7 +21,8 @@ export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
   @Post()
-  @ApiResponse({ status: 201, type: TeamDto })
+  @ApiResponse({ status: 201, description: 'Created', type: TeamDto })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   create(@Body() createTeamDto: CreateTeamDto) {
     return this.teamService.create(createTeamDto);
   }
@@ -34,12 +35,14 @@ export class TeamController {
 
   @Get(':id')
   @ApiResponse({ status: 200, type: TeamDto })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   findOne(@Param('id') id: string) {
     return this.teamService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiResponse({ status: 200, type: UpdateResponseDto })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
     return this.teamService.update(+id, updateTeamDto);
   }
@@ -47,6 +50,7 @@ export class TeamController {
   @Delete(':id')
   @HttpCode(204)
   @ApiResponse({ status: 204 })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   remove(@Param('id') id: string) {
     return this.teamService.remove(+id);
   }
