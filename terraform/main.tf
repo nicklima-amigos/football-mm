@@ -31,6 +31,7 @@ variable "vm_admin_password" {
 
 resource "azurerm_resource_group" "football_mm" {
   name = var.resource_group_name
+  location = "East US"
 }
 
 data "azurerm_resource_group" "football_mm_data" {
