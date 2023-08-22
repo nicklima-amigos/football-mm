@@ -2,7 +2,7 @@ name: "Terraform Deploy"
 on:
   push:
     branches:
-      - dev
+      - main
 
 
 jobs:
