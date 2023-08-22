@@ -40,7 +40,9 @@ jobs:
         working-directory: ${{ env.working-directory }}
         
       - name: Import Azure Resource
-        run: terraform import azurerm_resource_group.football_mm /subscriptions/${{ AZURE_SUBSCRIPTION }}/resourceGroups/football-mm
+        env:
+          AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION }}
+        run: terraform import azurerm_resource_group.football_mm /subscriptions/${AZURE_SUBSCRIPTION}/resourceGroups/football-mm
 
       - name: "Terraform Plan"
         id: plan
