@@ -27,7 +27,7 @@ variable "vm_admin_username" {
 variable "vm_admin_password" {
   description = "Admin password for the virtual machine"
   type        = string
-  default     = "Admin"
+  default     = "Admin123"
 }
 
 resource "azurerm_resource_group" "football_mm" {
