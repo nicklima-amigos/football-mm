@@ -6,6 +6,8 @@ import { TeamModule } from './teams/teams.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MatchModule } from './match/match.module';
 import { LeagueModule } from './league/league.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { LeagueModule } from './league/league.module';
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_NAME'),
           autoLoadEntities: true,
+          synchronize: true,
         };
       },
     }),
@@ -30,6 +33,8 @@ import { LeagueModule } from './league/league.module';
     GameModule,
     MatchModule,
     LeagueModule,
+    AuthModule,
+    UserModule,
   ],
 })
 export class AppModule {}

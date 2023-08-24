@@ -120,11 +120,11 @@ describe('LeagueController', () => {
       league.id = 1;
       jest.spyOn(repository, 'findOne').mockResolvedValueOnce(league);
       jest.spyOn(repository, 'update').mockResolvedValueOnce(undefined);
-      const { id, ...leagueInfo } = league;
+      delete league.id;
 
       const response = await supertest(app.getHttpServer())
         .patch('/leagues/1')
-        .send(leagueInfo);
+        .send(league);
 
       expect(response.status).toEqual(200);
     });

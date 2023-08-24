@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateLeagueDto } from './dto/create-league.dto';
-import { UpdateLeagueDto } from './dto/update-league.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { League } from './entities/league.entity';
 import { In, Repository } from 'typeorm';
 import { Match } from '../match/entities/match.entity';
+import { CreateLeagueDto } from './dto/create-league.dto';
+import { UpdateLeagueDto } from './dto/update-league.dto';
+import { League } from './entities/league.entity';
 
 @Injectable()
 export class LeagueService {
@@ -31,7 +31,7 @@ export class LeagueService {
   async findOne(id: number) {
     const league = await this.repository.findOne({ where: { id } });
     if (!league) {
-      throw new HttpException('League not found', HttpStatus.NOT_FOUND);
+      throw new NotFoundException('League not found');
     }
     return league;
   }

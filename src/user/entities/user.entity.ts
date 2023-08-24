@@ -3,33 +3,32 @@ import {
   CreateDateColumn,
   Entity,
   JoinTable,
-  ManyToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
 
 @Entity()
-export class Game {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => Player, (player) => player.homeGames)
+  @OneToOne(() => Player, (player) => player.user, {
+    nullable: true,
+    cascade: true,
+  })
   @JoinTable()
-  homeTeam: Player[];
+  player: Player;
 
-  @ManyToMany(() => Player, (player) => player.awayGames)
-  @JoinTable()
-  awayTeam: Player[];
+  @Column({ unique: true })
+  username: string;
 
-  @Column({ default: 0 })
-  homeTeamScore: number;
-
-  @Column({ default: 0 })
-  awayTeamScore: number;
+  @Column({ unique: true })
+  email: string;
 
   @Column()
-  scheduledTime: Date;
+  password: string;
 
   @CreateDateColumn()
   createdAt: Date;

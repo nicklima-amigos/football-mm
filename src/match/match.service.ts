@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Team } from '../teams/entities/team.entity';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './entities/match.entity';
-import { Team } from '../teams/entities/team.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class MatchService {
@@ -29,7 +29,7 @@ export class MatchService {
   async findOne(id: number) {
     const match = await this.repository.findOne({ where: { id } });
     if (!match) {
-      throw new HttpException('Match not found', HttpStatus.NOT_FOUND);
+      throw new NotFoundException('Match not found');
     }
     return match;
   }

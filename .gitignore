@@ -35,7 +35,15 @@ lerna-debug.log*
 !.vscode/extensions.json
 .env
 
-# Terraform 
+### Terraform ###
+.terraform/
+*.tfstate
+.tfstate.
+/terraform/.terraform/**
 
-/.terraform
+# Crash log files
+*.log
+
+# Sensitive data
+*.tfvars
 

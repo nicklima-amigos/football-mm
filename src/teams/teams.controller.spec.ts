@@ -87,12 +87,12 @@ describe('TeamController', () => {
     it('should create a team', async () => {
       const team = fakeTeam();
       jest.spyOn(repository, 'save').mockResolvedValueOnce(team);
-      const { id, ...teamInfo } = team;
+      delete team.id;
       const expected = JSON.parse(JSON.stringify(team));
 
       const response = await supertest(app.getHttpServer())
         .post('/teams')
-        .send(teamInfo);
+        .send(team);
       const actual = response.body;
 
       expect(response.status).toEqual(201);
@@ -116,11 +116,11 @@ describe('TeamController', () => {
       team.id = 1;
       jest.spyOn(repository, 'findOne').mockResolvedValueOnce(team);
       jest.spyOn(repository, 'update').mockResolvedValueOnce(undefined);
-      const { id, ...teamInfo } = team;
+      delete team.id;
 
       const response = await supertest(app.getHttpServer())
         .patch('/teams/1')
-        .send(teamInfo);
+        .send(team);
 
       expect(response.status).toEqual(200);
     });
