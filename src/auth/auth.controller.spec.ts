@@ -6,12 +6,21 @@ import { getRepositoryMock } from '../../test/mocks/repository';
 import { Session } from './entities/session.entity';
 import { UserService } from '../user/user.service';
 import { User } from '../user/entities/user.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './constants';
 
 describe('AuthController', () => {
   let controller: AuthController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        JwtModule.register({
+          global: true,
+          secret: jwtConstants.secret,
+          signOptions: { expiresIn: '1d' },
+        }),
+      ],
       controllers: [AuthController],
       providers: [
         AuthService,

@@ -22,7 +22,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('authoriza')
+  @Get('authorize')
   async authorize(@Request() req: any) {
     return req.user;
   }
