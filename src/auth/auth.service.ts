@@ -1,21 +1,19 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 import { verify } from 'argon2';
 import { UserService } from '../user/user.service';
 import { SignInDto } from './dto/sign-in.dto';
-import { Session } from './entities/session.entity';
 
 @Injectable()
 export class AuthService {
   private logger = new Logger(AuthService.name);
   constructor(
-    @InjectRepository(Session) private repository,
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
 
   async signIn({ usernameOrEmail, password }: SignInDto) {
+    this.logger.log('Signing in user');
     const user = await this.userService.findOneByUsernameOrEmail(
       usernameOrEmail,
     );
