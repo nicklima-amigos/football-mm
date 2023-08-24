@@ -1,15 +1,16 @@
+import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { getRepositoryMock } from '../../test/mocks/repository';
-import { UserService } from '../user/user.service';
 import { User } from '../user/entities/user.entity';
-import { JwtModule } from '@nestjs/jwt';
+import { UserService } from '../user/user.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
 
 describe('AuthController', () => {
   let controller: AuthController;
+  let userService: UserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,6 +33,7 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
+    userService = module.get<UserService>(UserService);
   });
 
   it('should be defined', () => {
