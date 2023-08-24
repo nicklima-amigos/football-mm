@@ -17,6 +17,9 @@ export class AuthService {
     const user = await this.userService.findOneByUsernameOrEmail(
       usernameOrEmail,
     );
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
     const isPasswordValid = await verify(user?.password, password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');

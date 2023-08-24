@@ -55,7 +55,6 @@ export class UserService {
     if (userByEmail) {
       return userByEmail;
     }
-    return null;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
