@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
+import { CreateUserDto } from '../../src/user/dto/create-user.dto';
 import { User } from '../../src/user/entities/user.entity';
-import { fakePlayer } from './players.factory';
+import { fakeCreatePlayerDto, fakePlayer } from './players.factory';
 
 export const fakeUser = (): User => {
   return {
@@ -13,6 +14,18 @@ export const fakeUser = (): User => {
     player: fakePlayer(),
   };
 };
+
+export const fakeCreateUserDto = (): CreateUserDto => {
+  const password = faker.internet.password();
+  return {
+    username: faker.person.firstName(),
+    email: faker.internet.email(),
+    password,
+    confirmPassword: password,
+    player: fakeCreatePlayerDto(),
+  };
+};
+
 
 export const fakeUsers = (count: number): User[] => {
   const users: User[] = [];

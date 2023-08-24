@@ -22,7 +22,8 @@ export class UserService {
     this.logger.log('Creating user');
     await this.validateCreateUser(createUserDto);
     createUserDto.password = await hash(createUserDto.password);
-    return await this.repository.save(createUserDto);
+    const { confirmPassword, ...newUserInfo } = createUserDto;
+    return await this.repository.save(newUserInfo);
   }
 
   async findAll() {

@@ -9,6 +9,7 @@ export type RepositoryMock<T> = {
   delete: jest.Mock<Promise<DeleteResult>>;
   remove: jest.Mock<Promise<T>>;
   update: jest.Mock<Promise<UpdateResult>>;
+  createQueryBuilder: jest.Mock<any>;
 };
 
 export const getRepositoryMock = <T>(): RepositoryMock<T> => ({
@@ -19,6 +20,7 @@ export const getRepositoryMock = <T>(): RepositoryMock<T> => ({
   delete: jest.fn(),
   remove: jest.fn(),
   update: jest.fn(),
+  createQueryBuilder: jest.fn(),
 });
 
 export const getRepositoryMockProvider = (entity: any): Provider => ({
