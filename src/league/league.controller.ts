@@ -12,9 +12,10 @@ import {
 import { LeagueService } from './league.service';
 import { CreateLeagueDto } from './dto/create-league.dto';
 import { UpdateLeagueDto } from './dto/update-league.dto';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LeagueDto } from './dto/league.dto';
 
+@ApiTags('leagues')
 @Controller('leagues')
 export class LeagueController {
   constructor(private readonly leagueService: LeagueService) {}
