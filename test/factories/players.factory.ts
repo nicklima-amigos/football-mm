@@ -17,7 +17,7 @@ export const fakePlayer = (): Player => {
   };
 };
 
-export const fakePlayerDto = (): CreatePlayerDto => {
+export const fakeCreatePlayerDto = (): CreatePlayerDto => {
   return {
     name: faker.person.firstName(),
     birthDate: faker.date.past(),

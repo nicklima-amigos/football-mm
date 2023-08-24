@@ -112,11 +112,11 @@ describe('PlayerController', () => {
       player.id = 1;
       jest.spyOn(repository, 'findOne').mockResolvedValueOnce(player);
       jest.spyOn(repository, 'update').mockResolvedValueOnce(undefined);
-      const { id, ...playerInfo } = player;
+      delete player.id;
 
       const response = await supertest(app.getHttpServer())
         .patch('/players/1')
-        .send(playerInfo);
+        .send(player);
 
       expect(response.status).toEqual(200);
     });
