@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { getRepositoryMock } from '../../test/mocks/repository';
 import { Session } from './entities/session.entity';
+import { UserService } from '../user/user.service';
+import { User } from '../user/entities/user.entity';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -13,9 +15,14 @@ describe('AuthController', () => {
       controllers: [AuthController],
       providers: [
         AuthService,
+        UserService,
         {
           provide: getRepositoryToken(Session),
           useValue: getRepositoryMock<Session>(),
+        },
+        {
+          provide: getRepositoryToken(User),
+          useValue: getRepositoryMock<User>(),
         },
       ],
     }).compile();
