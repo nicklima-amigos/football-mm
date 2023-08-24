@@ -1,10 +1,10 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
+import { Player } from '../players/entities/player.entity';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { Team } from './entities/team.entity';
-import { Player } from '../players/entities/player.entity';
 
 @Injectable()
 export class TeamService {
@@ -28,7 +28,7 @@ export class TeamService {
   async findOne(id: number) {
     const team = await this.repository.findOne({ where: { id } });
     if (!team) {
-      throw new HttpException('Team not found', 404);
+      throw new NotFoundException('Team not found');
     }
     return team;
   }

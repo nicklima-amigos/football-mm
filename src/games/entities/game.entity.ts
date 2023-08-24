@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -14,9 +15,11 @@ export class Game {
   id: number;
 
   @ManyToMany(() => Player, (player) => player.homeGames)
+  @JoinTable()
   homeTeam: Player[];
 
   @ManyToMany(() => Player, (player) => player.awayGames)
+  @JoinTable()
   awayTeam: Player[];
 
   @Column({ default: 0 })
