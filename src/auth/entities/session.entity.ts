@@ -18,7 +18,4 @@ export class Session {
   @OneToOne(() => User)
   @JoinTable()
   user: User;
-
-  @Column()
-  expiryDate: Date;
 }

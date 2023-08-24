@@ -8,7 +8,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
-import { Session } from '../../auth/entities/session.entity';
 
 @Entity()
 export class User {

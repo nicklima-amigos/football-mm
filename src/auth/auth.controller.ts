@@ -1,8 +1,15 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
-import { Request } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from './auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -14,8 +21,9 @@ export class AuthController {
     return await this.service.signIn({ usernameOrEmail, password });
   }
 
-  @Get('authorize')
-  async authorize(@Req() req: Request) {
-    return await this.service.authorize(req.headers.authorization);
+  @UseGuards(AuthGuard)
+  @Get('authoriza')
+  async authorize(@Request() req: any) {
+    return req.user;
   }
 }

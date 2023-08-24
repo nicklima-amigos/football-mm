@@ -1,11 +1,10 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
 import { verify } from 'argon2';
+import { UserService } from '../user/user.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { Session } from './entities/session.entity';
-import { randomUUID } from 'crypto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +12,7 @@ export class AuthService {
   constructor(
     @InjectRepository(Session) private repository,
     private userService: UserService,
+    private jwtService: JwtService,
   ) {}
 
   async signIn({ usernameOrEmail, password }: SignInDto) {
@@ -23,21 +23,13 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const session: Session = await this.repository.save({
-      user,
-      token: randomUUID(),
-      expiryDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+    const token = await this.jwtService.signAsync({
+      username: user.username,
+      sub: user.id,
+      email: user.email,
     });
-    this.logger.log({ session });
     return {
-      token: session.token,
+      token,
     };
-  }
-
-  async authorize(token: string) {
-    const tokenObj = await this.repository.findOne({ where: { token } });
-    if (!tokenObj) {
-      throw new UnauthorizedException('Invalid token');
-    }
   }
 }

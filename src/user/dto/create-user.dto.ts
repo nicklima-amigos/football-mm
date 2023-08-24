@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import { IsEmail, IsString, ValidateNested } from 'class-validator';
 import { CreatePlayerDto } from '../../players/dto/create-player.dto';
 
