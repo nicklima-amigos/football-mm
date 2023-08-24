@@ -16,7 +16,6 @@ import { UserService } from './user.service';
 
 describe('UserController', () => {
   let controller: UserController;
-  let service: UserService;
   let app: NestApplication;
   let repository: Repository<User>;
 
@@ -33,7 +32,6 @@ describe('UserController', () => {
     }).compile();
 
     controller = module.get<UserController>(UserController);
-    service = module.get<UserService>(UserService);
     repository = module.get<Repository<User>>(getRepositoryToken(User));
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());

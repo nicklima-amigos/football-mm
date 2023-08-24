@@ -1,22 +1,20 @@
+import { NestApplication } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { hash } from 'argon2';
+import * as supertest from 'supertest';
+import { fakeUser } from '../../test/factories/user.factory';
 import { getRepositoryMock } from '../../test/mocks/repository';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
-import * as supertest from 'supertest';
-import { Repository } from 'typeorm';
-import { fakeUser } from '../../test/factories/user.factory';
-import { hash } from 'argon2';
-import { NestApplication } from '@nestjs/core';
 
 describe('AuthController', () => {
   let controller: AuthController;
   let userService: UserService;
-  let userRepository: Repository<User>;
   let app: NestApplication;
 
   beforeAll(async () => {
@@ -41,7 +39,6 @@ describe('AuthController', () => {
 
     controller = module.get<AuthController>(AuthController);
     userService = module.get<UserService>(UserService);
-    userRepository = module.get<Repository<User>>(getRepositoryToken(User));
     app = module.createNestApplication();
 
     await app.init();
