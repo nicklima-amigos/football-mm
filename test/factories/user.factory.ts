@@ -26,7 +26,6 @@ export const fakeCreateUserDto = (): CreateUserDto => {
   };
 };
 
-
 export const fakeUsers = (count: number): User[] => {
   const users: User[] = [];
   for (let i = 0; i < count; i++) {

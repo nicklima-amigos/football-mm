@@ -6,8 +6,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { hash } from 'argon2';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -22,8 +22,8 @@ export class UserService {
     this.logger.log('Creating user');
     await this.validateCreateUser(createUserDto);
     createUserDto.password = await hash(createUserDto.password);
-    const { confirmPassword, ...newUserInfo } = createUserDto;
-    return await this.repository.save(newUserInfo);
+    delete createUserDto.confirmPassword;
+    return await this.repository.save(createUserDto);
   }
 
   async findAll() {
@@ -60,7 +60,7 @@ export class UserService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
-    this.validateUpdateUser(user.id, updateUserDto);
+    await this.validateUpdateUser(user.id, updateUserDto);
     return this.repository.save({ ...updateUserDto, id });
   }
 

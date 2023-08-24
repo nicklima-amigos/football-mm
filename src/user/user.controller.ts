@@ -23,6 +23,7 @@ export class UserController {
   @Post()
   @ApiResponse({ status: 201, description: 'Created', type: UserDto })
   @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 409, description: 'Conflict' })
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
   }
@@ -43,6 +44,7 @@ export class UserController {
   @Patch(':id')
   @ApiResponse({ status: 200, type: UpdateResponseDto })
   @ApiResponse({ status: 404, description: 'Not Found' })
+  @ApiResponse({ status: 409, description: 'Conflict' })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
