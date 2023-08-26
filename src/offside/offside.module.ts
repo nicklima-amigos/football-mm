@@ -4,6 +4,6 @@ import { OffsideController } from './offside.controller';
 
 @Module({
   controllers: [OffsideController],
-  providers: [OffsideService]
+  providers: [OffsideService],
 })
 export class OffsideModule {}

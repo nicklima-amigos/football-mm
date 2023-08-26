@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { OffsideService } from './offside.service';
 import { CreateOffsideDto } from './dto/create-offside.dto';
 import { UpdateOffsideDto } from './dto/update-offside.dto';
