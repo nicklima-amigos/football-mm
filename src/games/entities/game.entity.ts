@@ -4,10 +4,14 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
+import { Goal } from '../../goal/entities/goal.entity';
+import { Foul } from '../../foul/entities/foul.entity';
+import { Offside } from '../../offside/entities/offside.entity';
 
 @Entity()
 export class Game {
@@ -22,11 +26,14 @@ export class Game {
   @JoinTable()
   awayTeam: Player[];
 
-  @Column({ default: 0 })
-  homeTeamScore: number;
+  @OneToMany(() => Goal, (goal) => goal.game)
+  goals: Goal[];
 
-  @Column({ default: 0 })
-  awayTeamScore: number;
+  @OneToMany(() => Foul, (foul) => foul.game)
+  fouls: Foul[];
+
+  @OneToMany(() => Offside, (offside) => offside.game)
+  offsides: Offside[];
 
   @Column()
   scheduledTime: Date;

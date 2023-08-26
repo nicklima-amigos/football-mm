@@ -15,6 +15,7 @@ export class Match {
 
   @ManyToOne(() => Team, (team) => team.matches)
   homeTeam: Team;
+
   @ManyToOne(() => Team, (team) => team.matches)
   awayTeam: Team;
 

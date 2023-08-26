@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Match } from '../../match/entities/match.entity';
 import { Player } from '../../players/entities/player.entity';
+import { Goal } from '../../goal/entities/goal.entity';
 
 @Entity()
 export class Team {
@@ -24,7 +25,7 @@ export class Team {
   players: Player[];
 
   @OneToMany(() => Match, (match) => match.homeTeam)
-  matches?: Match[];
+  matches: Match[];
 
   @CreateDateColumn()
   createdAt: Date;

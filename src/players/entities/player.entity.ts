@@ -4,6 +4,7 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -11,6 +12,9 @@ import {
 import { Game } from '../../games/entities/game.entity';
 import { Team } from '../../teams/entities/team.entity';
 import { User } from '../../user/entities/user.entity';
+import { Goal } from '../../goal/entities/goal.entity';
+import { Foul } from '../../foul/entities/foul.entity';
+import { Offside } from '../../offside/entities/offside.entity';
 
 @Entity()
 export class Player {
@@ -40,6 +44,21 @@ export class Player {
 
   @ManyToOne(() => Team, (team) => team.players, { nullable: true })
   team?: Team;
+
+  @OneToMany(() => Goal, (goal) => goal.player)
+  goals: Goal[];
+
+  @OneToMany(() => Goal, (goal) => goal.assist)
+  assists: Goal[];
+
+  @OneToMany(() => Foul, (foul) => foul.offendingPlayer)
+  foulsGiven: Foul[];
+
+  @OneToMany(() => Foul, (foul) => foul.victimPlayer)
+  foulsTaken: Foul[];
+
+  @OneToMany(() => Offside, (offside) => offside.player)
+  offsides: Offside[];
 
   @CreateDateColumn()
   createdAt: Date;

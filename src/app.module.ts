@@ -8,6 +8,10 @@ import { MatchModule } from './match/match.module';
 import { LeagueModule } from './league/league.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { GoalModule } from './foul/goal/goal.module';
+import { GoalModule } from './goal/goal.module';
+import { FoulModule } from './foul/foul.module';
+import { OffsideModule } from './offside/offside.module';
 
 @Module({
   imports: [
@@ -35,6 +39,9 @@ import { UserModule } from './user/user.module';
     LeagueModule,
     AuthModule,
     UserModule,
+    GoalModule,
+    FoulModule,
+    OffsideModule,
   ],
 })
 export class AppModule {}
