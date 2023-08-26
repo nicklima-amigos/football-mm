@@ -7,6 +7,7 @@ export const fakeTeam = (): Team => {
     id: faker.number.int(),
     name: faker.person.firstName(),
     elo: faker.number.int(),
+    matches: [],
     players: [...fakePlayers(11)],
     createdAt: faker.date.recent(),
     updatedAt: faker.date.recent(),
