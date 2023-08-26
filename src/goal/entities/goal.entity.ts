@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
 import { Game } from '../../games/entities/game.entity';
 
-enum Team {
+export enum TeamEnum {
   Home = 'home',
   Away = 'away',
 }
@@ -23,9 +23,9 @@ export class Goal {
 
   @Column({
     type: 'enum',
-    enum: Team,
+    enum: TeamEnum,
   })
-  team: Team;
+  team: TeamEnum;
 
   @ManyToOne(() => Game, (game) => game.goals)
   game: Game;
