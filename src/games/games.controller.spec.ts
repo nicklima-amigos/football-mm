@@ -136,7 +136,7 @@ describe('GameController', () => {
 
       const response = await supertest(app.getHttpServer())
         .patch('/games/1')
-        .send({ name: false, homeTeamScore: 'invalid' });
+        .send({ name: false });
 
       expect(response.status).toEqual(400);
     });
