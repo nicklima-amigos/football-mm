@@ -26,5 +26,5 @@ export class CreateGoalDto {
   @ApiProperty()
   @IsBoolean()
   @IsOptional()
-  valid: boolean = true;
+  valid = true;
 }
