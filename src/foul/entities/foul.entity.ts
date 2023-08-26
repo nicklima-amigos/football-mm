@@ -23,8 +23,8 @@ export class Foul {
   @ManyToOne(() => Player, (player) => player.foulsGiven)
   offendingPlayer: Player;
 
-  @ManyToOne(() => Player, (player) => player.foulsTaken)
-  victimPlayer: Player;
+  @ManyToOne(() => Player, (player) => player.foulsTaken, { nullable: true })
+  victimPlayer?: Player;
 
   @Column()
   minute: number;

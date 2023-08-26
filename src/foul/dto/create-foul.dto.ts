@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNumber, IsOptional, Max, Min } from 'class-validator';
 import { Card } from '../entities/foul.entity';
-import { IsEnum, IsNumber } from 'class-validator';
 
 export class CreateFoulDto {
   @ApiProperty({ type: 'enum', enum: Card })
-  @IsEnum({ entity: Card })
+  @IsEnum(Card)
   card: Card;
 
   @IsNumber()
@@ -13,6 +13,7 @@ export class CreateFoulDto {
 
   @IsNumber()
   @ApiProperty()
+  @IsOptional()
   victimId: number;
 
   @IsNumber()
@@ -20,6 +21,8 @@ export class CreateFoulDto {
   gameId: number;
 
   @IsNumber()
+  @Min(0)
+  @Max(200)
   @ApiProperty()
   minute: number;
 }
