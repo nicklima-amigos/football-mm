@@ -7,38 +7,14 @@ terraform {
   }
 }
 
-cloud {
-    organization = "nicklimaorg"
-    workspaces {
-      name = "football-mm"
-    }
-}
-
 provider "azurerm" {
   features {}
   skip_provider_registration = true
 }
 
-variable "resource_group_name" {
-  description = "Name of the Azure resource group"
-  type        = string
-  default     = "football-mm"
-}
-
-variable "vm_admin_username" {
-  description = "Admin username for the virtual machine"
-  type        = string
-  default     = "Devops"
-}
-
-variable "vm_admin_password" {
-  description = "Admin password for the virtual machine"
-  type        = string
-  default     = "Admin123"
-}
 
 resource "azurerm_resource_group" "football_mm" {
-  name = var.resource_group_name
+  name     = var.resource_group_name
   location = "East US"
 }
 
