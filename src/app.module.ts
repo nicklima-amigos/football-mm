@@ -1,17 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { FoulModule } from './foul/foul.module';
 import { GameModule } from './games/games.module';
+import { LeagueModule } from './league/league.module';
+import { MatchModule } from './match/match.module';
+import { OffsideModule } from './offside/offside.module';
 import { PlayerModule } from './players/players.module';
 import { TeamModule } from './teams/teams.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { MatchModule } from './match/match.module';
-import { LeagueModule } from './league/league.module';
-import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { GoalModule } from './foul/goal/goal.module';
 import { GoalModule } from './goal/goal.module';
-import { FoulModule } from './foul/foul.module';
-import { OffsideModule } from './offside/offside.module';
 
 @Module({
   imports: [
@@ -39,9 +38,9 @@ import { OffsideModule } from './offside/offside.module';
     LeagueModule,
     AuthModule,
     UserModule,
-    GoalModule,
     FoulModule,
     OffsideModule,
+    GoalModule,
   ],
 })
 export class AppModule {}
