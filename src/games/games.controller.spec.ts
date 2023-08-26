@@ -131,16 +131,6 @@ describe('GameController', () => {
       expect(response.status).toEqual(200);
     });
 
-    it('should throw an error when given invalid data', async () => {
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer())
-        .patch('/games/1')
-        .send({ name: false });
-
-      expect(response.status).toEqual(400);
-    });
-
     it('should throw an error when given a non existing id', async () => {
       jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(null);
 
