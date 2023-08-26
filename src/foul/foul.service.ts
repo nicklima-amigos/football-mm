@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Game } from '../games/entities/game.entity';
+import { Player } from '../players/entities/player.entity';
 import { CreateFoulDto } from './dto/create-foul.dto';
 import { UpdateFoulDto } from './dto/update-foul.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Foul } from './entities/foul.entity';
-import { Repository } from 'typeorm';
-import { Player } from '../players/entities/player.entity';
-import { Game } from '../games/entities/game.entity';
 
 @Injectable()
 export class FoulService {
@@ -58,8 +58,8 @@ export class FoulService {
   }
 
   async update(id: number, updateFoulDto: UpdateFoulDto) {
-    const foul = await this.findOne(id);
-    return this.repository.save({ ...foul, ...updateFoulDto });
+    await this.findOne(id);
+    return this.repository.update(id, updateFoulDto);
   }
 
   async remove(id: number) {

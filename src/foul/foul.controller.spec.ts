@@ -95,14 +95,7 @@ describe('FoulController', () => {
 
   describe('create', () => {
     it('should create a foul', async () => {
-      const foulDto = fakeCreateFoulDto();
       const foul = fakeFoul();
-      foul.offendingPlayer.id = foulDto.offenderId;
-      foul.game.id = foulDto.gameId;
-      if (foul.victimPlayer) {
-        foul.victimPlayer.id = foulDto.victimId;
-      }
-
       jest.spyOn(foulRepository, 'save').mockResolvedValueOnce(foul);
       jest
         .spyOn(playerRepository, 'findOne')
@@ -115,7 +108,7 @@ describe('FoulController', () => {
 
       const response = await supertest(app.getHttpServer())
         .post('/fouls')
-        .send(foulDto);
+        .send(fakeCreateFoulDto());
       const actual = response.body;
 
       expect(response.status).toEqual(201);
@@ -123,7 +116,6 @@ describe('FoulController', () => {
     });
 
     it('should throw an error when given invalid data', async () => {
-      const foulDto = fakeCreateFoulDto();
       jest.spyOn(foulRepository, 'save').mockRejectedValueOnce(null);
 
       const response = await supertest(app.getHttpServer())
@@ -131,6 +123,27 @@ describe('FoulController', () => {
         .send('foo');
 
       expect(response.status).toEqual(400);
+    });
+
+    it('should throw an error when given an invalid player id', async () => {
+      jest.spyOn(playerRepository, 'findOne').mockResolvedValueOnce(null);
+
+      const response = await supertest(app.getHttpServer())
+        .post('/fouls')
+        .send(fakeCreateFoulDto());
+
+      expect(response.status).toEqual(404);
+    });
+
+    it('should throw an error when given an invalid game id', async () => {
+      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(null);
+
+      const response = await supertest(app.getHttpServer())
+        .post('/fouls')
+        .send(fakeCreateFoulDto());
+      console.log(response.body);
+
+      expect(response.status).toEqual(404);
     });
   });
 

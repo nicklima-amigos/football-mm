@@ -9,7 +9,8 @@ export class CreateGoalDto {
 
   @ApiProperty()
   @IsNumber()
-  assistPlayerId: number;
+  @IsOptional()
+  assistPlayerId?: number;
 
   @ApiProperty()
   @IsNumber()
@@ -20,11 +21,11 @@ export class CreateGoalDto {
   gameId: number;
 
   @ApiProperty()
-  @IsEnum({ enum: TeamEnum })
+  @IsEnum(TeamEnum)
   team: TeamEnum;
 
   @ApiProperty()
   @IsBoolean()
   @IsOptional()
-  valid = true;
+  valid? = true;
 }

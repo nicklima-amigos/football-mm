@@ -15,8 +15,8 @@ export class Goal {
   @ManyToOne(() => Player, (player) => player.goals)
   player: Player;
 
-  @ManyToOne(() => Player, (player) => player.assists)
-  assist: Player;
+  @ManyToOne(() => Player, (player) => player.assists, { nullable: true })
+  assist?: Player;
 
   @Column()
   minute: number;
