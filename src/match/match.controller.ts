@@ -54,19 +54,19 @@ export class MatchController {
     return this.matchService.findOne(+id);
   }
 
-  @Patch(':id')
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Match updated',
-    type: MatchDto,
-  })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Match not found',
-  })
-  update(@Param('id') id: string, @Body() updateMatchDto: UpdateMatchDto) {
-    return this.matchService.update(+id, updateMatchDto);
-  }
+  // @Patch(':id')
+  // @ApiResponse({
+  //   status: HttpStatus.OK,
+  //   description: 'Match updated',
+  //   type: MatchDto,
+  // })
+  // @ApiResponse({
+  //   status: HttpStatus.NOT_FOUND,
+  //   description: 'Match not found',
+  // })
+  // update(@Param('id') id: string, @Body() updateMatchDto: UpdateMatchDto) {
+  //   return this.matchService.update(+id, updateMatchDto);
+  // }
 
   @Delete(':id')
   @ApiResponse({

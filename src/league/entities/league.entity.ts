@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Match } from '../../match/entities/match.entity';
+import { Match } from '../../base-game/entities/base-game.entity';
 
 @Entity()
 export class League {

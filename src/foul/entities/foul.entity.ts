@@ -1,6 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
-import { Game } from '../../games/entities/game.entity';
+import { BaseGame } from '../../base-game/entities/base-game.entity';
 
 export enum Card {
   None = '',
@@ -29,6 +36,12 @@ export class Foul {
   @Column()
   minute: number;
 
-  @ManyToOne(() => Game, (game) => game.fouls)
-  game: Game;
+  @ManyToOne(() => BaseGame, (game) => game.fouls)
+  game: BaseGame;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

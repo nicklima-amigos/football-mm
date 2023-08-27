@@ -11,6 +11,7 @@ import { PlayerModule } from './players/players.module';
 import { TeamModule } from './teams/teams.module';
 import { UserModule } from './user/user.module';
 import { GoalModule } from './goal/goal.module';
+import { BaseGameModule } from './base-game/base-game.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { GoalModule } from './goal/goal.module';
     FoulModule,
     OffsideModule,
     GoalModule,
+    BaseGameModule,
   ],
 })
 export class AppModule {}

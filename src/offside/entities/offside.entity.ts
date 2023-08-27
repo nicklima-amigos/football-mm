@@ -1,6 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
-import { Game } from '../../games/entities/game.entity';
+import { BaseGame } from '../../base-game/entities/base-game.entity';
 
 @Entity()
 export class Offside {
@@ -10,9 +17,15 @@ export class Offside {
   @ManyToOne(() => Player, (player) => player.offsides)
   player: Player;
 
-  @ManyToOne(() => Game, (game) => game.offsides)
-  game: Game;
+  @ManyToOne(() => BaseGame, (game) => game.offsides)
+  game: BaseGame;
 
   @Column()
   minute: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

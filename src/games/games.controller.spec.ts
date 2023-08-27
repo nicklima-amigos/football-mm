@@ -4,16 +4,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as supertest from 'supertest';
 import { Repository } from 'typeorm';
-import { getRepositoryMock } from '../../test/mocks/repository';
-import { Game } from './entities/game.entity';
-import { GameController } from './games.controller';
-import { GameService } from './games.service';
 import {
   fakeGame,
   fakeGameDto,
   fakeGames,
 } from '../../test/factories/games.factory';
+import { getRepositoryMock } from '../../test/mocks/repository';
 import { Player } from '../players/entities/player.entity';
+import { Game } from '../base-game/entities/base-game.entity';
+import { GameController } from './games.controller';
+import { GameService } from './games.service';
 
 describe('GameController', () => {
   let controller: GameController;

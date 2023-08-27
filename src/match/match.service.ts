@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Team } from '../teams/entities/team.entity';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
-import { Match } from './entities/match.entity';
+import { Match } from '../base-game/entities/base-game.entity';
 
 @Injectable()
 export class MatchService {
@@ -34,10 +34,10 @@ export class MatchService {
     return match;
   }
 
-  async update(id: number, updateMatchDto: UpdateMatchDto) {
-    await this.findOne(id);
-    return await this.repository.update({ id }, updateMatchDto);
-  }
+  // async update(id: number, updateMatchDto: UpdateMatchDto) {
+  //   await this.findOne(id);
+  //   return await this.repository.update({ id }, updateMatchDto);
+  // }
 
   async remove(id: number) {
     const match = await this.findOne(id);

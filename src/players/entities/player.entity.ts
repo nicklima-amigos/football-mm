@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Game } from '../../games/entities/game.entity';
+import { Game } from '../../base-game/entities/base-game.entity';
 import { Team } from '../../teams/entities/team.entity';
 import { User } from '../../user/entities/user.entity';
 import { Goal } from '../../goal/entities/goal.entity';

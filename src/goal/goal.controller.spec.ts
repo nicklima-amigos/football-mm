@@ -1,25 +1,25 @@
+import { ValidationPipe } from '@nestjs/common';
+import { NestApplication } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { getRepositoryMock } from '../../test/mocks/repository';
-import { Game } from '../games/entities/game.entity';
-import { Player } from '../players/entities/player.entity';
-import { Goal } from './entities/goal.entity';
-import { GoalController } from './goal.controller';
-import { GoalService } from './goal.service';
+import * as supertest from 'supertest';
 import { Repository } from 'typeorm';
-import { NestApplication } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import {
   fakeCreateGoalDto,
   fakeGoal,
   fakeGoals,
 } from '../../test/factories/goals.factory';
-import * as supertest from 'supertest';
+import { getRepositoryMock } from '../../test/mocks/repository';
+import { BaseGame } from '../base-game/entities/base-game.entity';
+import { Player } from '../players/entities/player.entity';
+import { Goal } from './entities/goal.entity';
+import { GoalController } from './goal.controller';
+import { GoalService } from './goal.service';
 
 describe('GoalController', () => {
   let controller: GoalController;
   let goalRepository: Repository<Goal>;
-  let gameRepository: Repository<Game>;
+  let gameRepository: Repository<BaseGame>;
   let playerRepository: Repository<Player>;
   let app: NestApplication;
 
@@ -33,8 +33,8 @@ describe('GoalController', () => {
           useValue: getRepositoryMock<Goal>(),
         },
         {
-          provide: getRepositoryToken(Game),
-          useValue: getRepositoryMock<Game>(),
+          provide: getRepositoryToken(BaseGame),
+          useValue: getRepositoryMock<BaseGame>(),
         },
         {
           provide: getRepositoryToken(Player),
@@ -45,7 +45,9 @@ describe('GoalController', () => {
 
     controller = module.get<GoalController>(GoalController);
     goalRepository = module.get<Repository<Goal>>(getRepositoryToken(Goal));
-    gameRepository = module.get<Repository<Game>>(getRepositoryToken(Game));
+    gameRepository = module.get<Repository<BaseGame>>(
+      getRepositoryToken(BaseGame),
+    );
     playerRepository = module.get<Repository<Player>>(
       getRepositoryToken(Player),
     );
@@ -121,7 +123,6 @@ describe('GoalController', () => {
       const response = await supertest(app.getHttpServer())
         .post('/goals')
         .send(fakeCreateGoalDto());
-      console.log(response.body);
 
       expect(response.status).toEqual(404);
     });
@@ -135,7 +136,6 @@ describe('GoalController', () => {
       const response = await supertest(app.getHttpServer())
         .post('/goals')
         .send(fakeCreateGoalDto());
-      console.log(response.body);
 
       expect(response.status).toEqual(404);
     });

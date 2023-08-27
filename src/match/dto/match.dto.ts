@@ -12,12 +12,6 @@ export class MatchDto {
   awayTeam: TeamDto;
 
   @ApiProperty()
-  homeTeamScore: number;
-
-  @ApiProperty()
-  awayTeamScore: number;
-
-  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()

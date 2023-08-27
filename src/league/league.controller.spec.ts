@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { getRepositoryMock } from '../../test/mocks/repository';
-import { Match } from '../match/entities/match.entity';
 import { League } from './entities/league.entity';
 import { LeagueController } from './league.controller';
 import { LeagueService } from './league.service';
@@ -10,6 +9,7 @@ import { fakeLeagues, fakeLeague } from '../../test/factories/leagues.factory';
 import { Repository } from 'typeorm';
 import { NestApplication } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { Match } from '../base-game/entities/base-game.entity';
 
 describe('LeagueController', () => {
   let controller: LeagueController;

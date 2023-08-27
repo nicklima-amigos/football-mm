@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
-import { Game } from '../../src/games/entities/game.entity';
 import { fakePlayers } from './players.factory';
 import { CreateGameDto } from '../../src/games/dto/create-game.dto';
+import { Game } from '../../src/base-game/entities/base-game.entity';
 
 export const fakeGame = (): Game => {
   return {

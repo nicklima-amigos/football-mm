@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Match } from '../../match/entities/match.entity';
+import { Match } from '../../base-game/entities/base-game.entity';
 import { Player } from '../../players/entities/player.entity';
 import { Goal } from '../../goal/entities/goal.entity';
 

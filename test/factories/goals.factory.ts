@@ -12,6 +12,8 @@ export const fakeGoal = (): Goal => ({
   assist: fakePlayer(),
   team: faker.helpers.enumValue(TeamEnum),
   valid: faker.datatype.boolean(),
+  createdAt: faker.date.past(),
+  updatedAt: faker.date.past(),
 });
 
 export const fakeCreateGoalDto = (): CreateGoalDto => ({

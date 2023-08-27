@@ -1,26 +1,26 @@
+import { ValidationPipe } from '@nestjs/common';
+import { NestApplication } from '@nestjs/core';
+import { Game } from '../base-game/entities/base-game.entity';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { getRepositoryMock } from '../../test/mocks/repository';
-import { Game } from '../games/entities/game.entity';
-import { Player } from '../players/entities/player.entity';
-import { Foul } from './entities/foul.entity';
-import { FoulController } from './foul.controller';
-import { FoulService } from './foul.service';
+import * as supertest from 'supertest';
 import { Repository } from 'typeorm';
-import { NestApplication } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import {
   fakeCreateFoulDto,
   fakeFoul,
   fakeFouls,
 } from '../../test/factories/fouls.factory';
-import * as supertest from 'supertest';
-import { fakePlayer } from '../../test/factories/players.factory';
+import { getRepositoryMock } from '../../test/mocks/repository';
+import { BaseGame } from '../base-game/entities/base-game.entity';
+import { Player } from '../players/entities/player.entity';
+import { Foul } from './entities/foul.entity';
+import { FoulController } from './foul.controller';
+import { FoulService } from './foul.service';
 
 describe('FoulController', () => {
   let controller: FoulController;
   let foulRepository: Repository<Foul>;
-  let gameRepository: Repository<Game>;
+  let gameRepository: Repository<BaseGame>;
   let playerRepository: Repository<Player>;
   let app: NestApplication;
 
@@ -34,8 +34,8 @@ describe('FoulController', () => {
           useValue: getRepositoryMock<Foul>(),
         },
         {
-          provide: getRepositoryToken(Game),
-          useValue: getRepositoryMock<Game>(),
+          provide: getRepositoryToken(BaseGame),
+          useValue: getRepositoryMock<BaseGame>(),
         },
         {
           provide: getRepositoryToken(Player),
@@ -46,7 +46,9 @@ describe('FoulController', () => {
 
     controller = module.get<FoulController>(FoulController);
     foulRepository = module.get<Repository<Foul>>(getRepositoryToken(Foul));
-    gameRepository = module.get<Repository<Game>>(getRepositoryToken(Game));
+    gameRepository = module.get<Repository<BaseGame>>(
+      getRepositoryToken(BaseGame),
+    );
     playerRepository = module.get<Repository<Player>>(
       getRepositoryToken(Player),
     );
@@ -141,7 +143,6 @@ describe('FoulController', () => {
       const response = await supertest(app.getHttpServer())
         .post('/fouls')
         .send(fakeCreateFoulDto());
-      console.log(response.body);
 
       expect(response.status).toEqual(404);
     });

@@ -11,6 +11,8 @@ export const fakeFoul = (): Foul => ({
   game: fakeGame(),
   card: faker.helpers.enumValue(Card),
   minute: faker.number.int({ min: 0, max: 90 }),
+  createdAt: faker.date.past(),
+  updatedAt: faker.date.past(),
 });
 
 export const fakeCreateFoulDto = (): CreateFoulDto => ({
