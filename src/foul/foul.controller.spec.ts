@@ -1,6 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestApplication } from '@nestjs/core';
-import { Game } from '../base-game/entities/base-game.entity';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as supertest from 'supertest';

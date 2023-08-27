@@ -2,12 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Match } from '../base-game/entities/base-game.entity';
-import { LeagueService } from '../league/league.service';
-import { TeamService } from '../teams/teams.service';
+import { League } from '../league/entities/league.entity';
+import { Team } from '../teams/entities/team.entity';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
-import { Team } from '../teams/entities/team.entity';
-import { League } from '../league/entities/league.entity';
 
 @Injectable()
 export class MatchService {

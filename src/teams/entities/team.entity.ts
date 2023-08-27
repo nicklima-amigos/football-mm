@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 import { Match } from '../../base-game/entities/base-game.entity';
 import { Player } from '../../players/entities/player.entity';
-import { Goal } from '../../goal/entities/goal.entity';
 
 @Entity()
 export class Team {
