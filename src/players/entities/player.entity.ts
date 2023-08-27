@@ -9,12 +9,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Game } from '../../base-game/entities/base-game.entity';
 import { Team } from '../../teams/entities/team.entity';
 import { User } from '../../user/entities/user.entity';
 import { Goal } from '../../goal/entities/goal.entity';
 import { Foul } from '../../foul/entities/foul.entity';
-import { Offside } from '../../offside/entities/offside.entity';
+import { Game } from '../../games/entities/game.entity';
 
 @Entity()
 export class Player {
@@ -56,9 +55,6 @@ export class Player {
 
   @OneToMany(() => Foul, (foul) => foul.victimPlayer)
   foulsTaken: Foul[];
-
-  @OneToMany(() => Offside, (offside) => offside.player)
-  offsides: Offside[];
 
   @CreateDateColumn()
   createdAt: Date;

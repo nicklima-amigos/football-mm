@@ -10,16 +10,16 @@ import {
   fakeFouls,
 } from '../../test/factories/fouls.factory';
 import { getRepositoryMock } from '../../test/mocks/repository';
-import { BaseGame } from '../base-game/entities/base-game.entity';
 import { Player } from '../players/entities/player.entity';
 import { Foul } from './entities/foul.entity';
 import { FoulController } from './foul.controller';
 import { FoulService } from './foul.service';
+import { Game } from '../games/entities/game.entity';
 
 describe('FoulController', () => {
   let controller: FoulController;
   let foulRepository: Repository<Foul>;
-  let gameRepository: Repository<BaseGame>;
+  let gameRepository: Repository<Game>;
   let playerRepository: Repository<Player>;
   let app: NestApplication;
 
@@ -33,8 +33,8 @@ describe('FoulController', () => {
           useValue: getRepositoryMock<Foul>(),
         },
         {
-          provide: getRepositoryToken(BaseGame),
-          useValue: getRepositoryMock<BaseGame>(),
+          provide: getRepositoryToken(Game),
+          useValue: getRepositoryMock<Game>(),
         },
         {
           provide: getRepositoryToken(Player),
@@ -45,9 +45,7 @@ describe('FoulController', () => {
 
     controller = module.get<FoulController>(FoulController);
     foulRepository = module.get<Repository<Foul>>(getRepositoryToken(Foul));
-    gameRepository = module.get<Repository<BaseGame>>(
-      getRepositoryToken(BaseGame),
-    );
+    gameRepository = module.get<Repository<Game>>(getRepositoryToken(Game));
     playerRepository = module.get<Repository<Player>>(
       getRepositoryToken(Player),
     );

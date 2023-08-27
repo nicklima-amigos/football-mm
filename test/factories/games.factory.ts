@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { fakePlayers } from './players.factory';
 import { CreateGameDto } from '../../src/games/dto/create-game.dto';
-import { Game } from '../../src/base-game/entities/base-game.entity';
+import { Game } from '../../src/games/entities/game.entity';
 
 export const fakeGame = (): Game => {
   return {
@@ -10,7 +10,6 @@ export const fakeGame = (): Game => {
     awayTeam: fakePlayers(11),
     goals: [],
     fouls: [],
-    offsides: [],
     scheduledTime: faker.date.future(),
     createdAt: faker.date.past(),
     updatedAt: faker.date.past(),

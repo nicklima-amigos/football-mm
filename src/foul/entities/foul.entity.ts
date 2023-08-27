@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
-import { BaseGame } from '../../base-game/entities/base-game.entity';
+import { Game } from '../../games/entities/game.entity';
 
 export enum Card {
   None = '',
@@ -36,8 +36,8 @@ export class Foul {
   @Column()
   minute: number;
 
-  @ManyToOne(() => BaseGame, (game) => game.fouls)
-  game: BaseGame;
+  @ManyToOne(() => Game, (game) => game.fouls)
+  game: Game;
 
   @CreateDateColumn()
   createdAt: Date;

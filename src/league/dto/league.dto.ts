@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MatchDto } from '../../match/dto/match.dto';
+import { Game } from '../../games/entities/game.entity';
+import { GameDto } from '../../games/dto/game.dto';
 
 export class LeagueDto {
   @ApiProperty()
@@ -8,6 +9,6 @@ export class LeagueDto {
   @ApiProperty()
   name: string;
 
-  @ApiProperty({ type: MatchDto, isArray: true })
-  matches: MatchDto[];
+  @ApiProperty({ type: GameDto, isArray: true })
+  matches: Game[];
 }

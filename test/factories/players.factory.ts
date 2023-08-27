@@ -13,7 +13,6 @@ export const fakePlayer = (): Player => {
     goals: [],
     foulsGiven: [],
     foulsTaken: [],
-    offsides: [],
     homeGames: [],
     awayGames: [],
     team: null,

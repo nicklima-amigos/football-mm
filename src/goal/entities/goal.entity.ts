@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Player } from '../../players/entities/player.entity';
-import { BaseGame } from '../../base-game/entities/base-game.entity';
+import { Game } from '../../games/entities/game.entity';
 
 export enum TeamEnum {
   Home = 'home',
@@ -34,8 +34,8 @@ export class Goal {
   })
   team: TeamEnum;
 
-  @ManyToOne(() => BaseGame, (game) => game.goals)
-  game: BaseGame;
+  @ManyToOne(() => Game, (game) => game.goals)
+  game: Game;
 
   @Column({ default: true })
   valid: boolean;

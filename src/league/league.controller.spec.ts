@@ -9,7 +9,7 @@ import { fakeLeagues, fakeLeague } from '../../test/factories/leagues.factory';
 import { Repository } from 'typeorm';
 import { NestApplication } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-import { Match } from '../base-game/entities/base-game.entity';
+import { Game } from '../games/entities/game.entity';
 
 describe('LeagueController', () => {
   let controller: LeagueController;
@@ -22,8 +22,8 @@ describe('LeagueController', () => {
       providers: [
         LeagueService,
         {
-          provide: getRepositoryToken(Match),
-          useValue: getRepositoryMock<Match>(),
+          provide: getRepositoryToken(Game),
+          useValue: getRepositoryMock<Game>(),
         },
         {
           provide: getRepositoryToken(League),
@@ -95,7 +95,7 @@ describe('LeagueController', () => {
         .post('/leagues')
         .send({
           name: league.name,
-          matchIds: league.matches.map((match) => match.id),
+          gameIds: league.matches.map((match) => match.id),
         });
       const actual = response.body;
 

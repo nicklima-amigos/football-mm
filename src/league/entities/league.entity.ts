@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Match } from '../../base-game/entities/base-game.entity';
+import { Game } from '../../games/entities/game.entity';
 
 @Entity()
 export class League {
@@ -9,6 +9,6 @@ export class League {
   @Column()
   name: string;
 
-  @OneToMany(() => Match, (match) => match.league)
-  matches: Match[];
+  @OneToMany(() => Game, (match) => match.league)
+  matches: Game[];
 }

@@ -1,18 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseGame } from '../base-game/entities/base-game.entity';
 import { Player } from '../players/entities/player.entity';
 import { CreateFoulDto } from './dto/create-foul.dto';
 import { UpdateFoulDto } from './dto/update-foul.dto';
 import { Foul } from './entities/foul.entity';
+import { Game } from '../games/entities/game.entity';
 
 @Injectable()
 export class FoulService {
   constructor(
     @InjectRepository(Foul) private repository: Repository<Foul>,
     @InjectRepository(Player) private playerRepository: Repository<Player>,
-    @InjectRepository(BaseGame) private gameRepository: Repository<BaseGame>,
+    @InjectRepository(Game) private gameRepository: Repository<Game>,
   ) {}
 
   async create(createFoulDto: CreateFoulDto) {

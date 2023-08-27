@@ -4,7 +4,7 @@ import { In, Repository } from 'typeorm';
 import { Player } from '../players/entities/player.entity';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
-import { Game } from '../base-game/entities/base-game.entity';
+import { Game } from './entities/game.entity';
 
 @Injectable()
 export class GameService {

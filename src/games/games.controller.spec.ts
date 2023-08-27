@@ -11,9 +11,9 @@ import {
 } from '../../test/factories/games.factory';
 import { getRepositoryMock } from '../../test/mocks/repository';
 import { Player } from '../players/entities/player.entity';
-import { Game } from '../base-game/entities/base-game.entity';
 import { GameController } from './games.controller';
 import { GameService } from './games.service';
+import { Game } from './entities/game.entity';
 
 describe('GameController', () => {
   let controller: GameController;
