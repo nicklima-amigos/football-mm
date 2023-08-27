@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
+import { IsDateString, IsNumber } from 'class-validator';
 
 export class CreateMatchDto {
   @ApiProperty()
@@ -9,4 +9,12 @@ export class CreateMatchDto {
   @ApiProperty()
   @IsNumber()
   awayTeamId: number;
+
+  @ApiProperty()
+  @IsDateString()
+  scheduledTime: Date;
+
+  @ApiProperty()
+  @IsNumber()
+  leagueId: number;
 }

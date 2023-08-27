@@ -1,17 +1,17 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { OffsideService } from './offside.service';
 import { CreateOffsideDto } from './dto/create-offside.dto';
+import { OffsideService } from './offside.service';
 import { UpdateOffsideDto } from './dto/update-offside.dto';
 
-@Controller('offside')
+@Controller('offsides')
 export class OffsideController {
   constructor(private readonly offsideService: OffsideService) {}
 

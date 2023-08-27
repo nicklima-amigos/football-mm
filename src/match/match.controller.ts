@@ -1,19 +1,19 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  HttpStatus,
+  Get,
   HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { MatchService } from './match.service';
-import { CreateMatchDto } from './dto/create-match.dto';
-import { UpdateMatchDto } from './dto/update-match.dto';
-import { MatchDto } from './dto/match.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateMatchDto } from './dto/create-match.dto';
+import { MatchDto } from './dto/match.dto';
+import { MatchService } from './match.service';
+import { UpdateMatchDto } from './dto/update-match.dto';
 
 @Controller('matches')
 @ApiTags('matches')
@@ -54,19 +54,19 @@ export class MatchController {
     return this.matchService.findOne(+id);
   }
 
-  // @Patch(':id')
-  // @ApiResponse({
-  //   status: HttpStatus.OK,
-  //   description: 'Match updated',
-  //   type: MatchDto,
-  // })
-  // @ApiResponse({
-  //   status: HttpStatus.NOT_FOUND,
-  //   description: 'Match not found',
-  // })
-  // update(@Param('id') id: string, @Body() updateMatchDto: UpdateMatchDto) {
-  //   return this.matchService.update(+id, updateMatchDto);
-  // }
+  @Patch(':id')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Match updated',
+    type: MatchDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Match not found',
+  })
+  update(@Param('id') id: string, @Body() updateMatchDto: UpdateMatchDto) {
+    return this.matchService.update(+id, updateMatchDto);
+  }
 
   @Delete(':id')
   @ApiResponse({

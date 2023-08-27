@@ -8,6 +8,8 @@ export const fakeMatchDto = (): CreateMatchDto => {
   return {
     awayTeamId: fakeTeam().id,
     homeTeamId: fakeTeam().id,
+    leagueId: fakeLeague().id,
+    scheduledTime: faker.date.future(),
   };
 };
 
