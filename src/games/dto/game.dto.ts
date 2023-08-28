@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PlayerDto } from '../../players/dto/player.dto';
-import { IsOptional } from 'class-validator';
 import { LeagueDto } from '../../league/dto/league.dto';
+import { PlayerDto } from '../../players/dto/player.dto';
 
 export class GameDto {
   @ApiProperty()
