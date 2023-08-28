@@ -11,11 +11,12 @@ import {
 import { FoulService } from './foul.service';
 import { CreateFoulDto } from './dto/create-foul.dto';
 import { UpdateFoulDto } from './dto/update-foul.dto';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FoulDto } from './dto/foul.dto';
 import { UpdateResult } from 'typeorm';
 
 @Controller('fouls')
+@ApiTags('fouls')
 export class FoulController {
   constructor(private readonly foulService: FoulService) {}
 
