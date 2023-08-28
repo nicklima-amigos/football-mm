@@ -17,9 +17,24 @@ export class GameService {
     const homeTeam = await this.playerRepository.find({
       where: { id: In(createGameDto.homeTeamPlayerIds) },
     });
+    if (!homeTeam) {
+      throw new NotFoundException('Home team not found');
+    }
     const awayTeam = await this.playerRepository.find({
       where: { id: In(createGameDto.awayTeamPlayerIds) },
     });
+    if (!homeTeam) {
+      throw new NotFoundException('Away team not found');
+    }
+    if (createGameDto.leagueId) {
+      const league = await this.playerRepository.findOne({
+        where: { id: createGameDto.leagueId },
+      });
+      if (!league) {
+        throw new NotFoundException('League not found');
+      }
+      return this.repository.save({ homeTeam, awayTeam, league });
+    }
     return this.repository.save({ homeTeam, awayTeam });
   }
 

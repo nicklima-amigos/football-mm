@@ -18,6 +18,7 @@ import { Game } from './entities/game.entity';
 describe('GameController', () => {
   let controller: GameController;
   let gameRepository: Repository<Game>;
+  let playerRepository: Repository<Player>;
   let app: NestApplication;
 
   beforeAll(async () => {
@@ -38,6 +39,9 @@ describe('GameController', () => {
 
     controller = module.get<GameController>(GameController);
     gameRepository = module.get<Repository<Game>>(getRepositoryToken(Game));
+    playerRepository = module.get<Repository<Player>>(
+      getRepositoryToken(Player),
+    );
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
@@ -93,6 +97,8 @@ describe('GameController', () => {
       const gameDto = fakeGameDto();
       gameDto.homeTeamPlayerIds = game.homeTeam.map((player) => player.id);
       gameDto.awayTeamPlayerIds = game.awayTeam.map((player) => player.id);
+      jest.spyOn(playerRepository, 'find').mockResolvedValueOnce(game.homeTeam);
+      jest.spyOn(playerRepository, 'find').mockResolvedValueOnce(game.awayTeam);
       jest.spyOn(gameRepository, 'save').mockResolvedValueOnce(game);
       const expected = JSON.parse(JSON.stringify(game));
 
@@ -103,6 +109,18 @@ describe('GameController', () => {
 
       expect(response.status).toEqual(201);
       expect(actual).toEqual(expected);
+    });
+
+    it('should throw an error when given a non existing league', async () => {
+      const gameDto = fakeGameDto();
+      gameDto.leagueId = 1;
+      jest.spyOn(gameRepository, 'save').mockResolvedValueOnce(null);
+
+      const response = await supertest(app.getHttpServer())
+        .post('/games')
+        .send(gameDto);
+
+      expect(response.status).toEqual(404);
     });
 
     it('should throw an error when given invalid data', async () => {

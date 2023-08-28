@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PlayerDto } from '../../players/dto/player.dto';
+import { IsOptional } from 'class-validator';
+import { LeagueDto } from '../../league/dto/league.dto';
 
 export class GameDto {
   @ApiProperty()
@@ -25,4 +27,7 @@ export class GameDto {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty({ type: LeagueDto })
+  league: LeagueDto;
 }
