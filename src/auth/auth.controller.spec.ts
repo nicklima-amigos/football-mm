@@ -2,8 +2,8 @@ import { NestApplication } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { hash } from 'argon2';
 import * as supertest from 'supertest';
+import { hash } from 'bcrypt';
 import { fakeUser } from '../../test/factories/user.factory';
 import { getRepositoryMock } from '../../test/mocks/repository';
 import { User } from '../user/entities/user.entity';
@@ -55,7 +55,7 @@ describe('AuthController', () => {
         .spyOn(userService, 'findOneByUsernameOrEmail')
         .mockResolvedValueOnce({
           ...user,
-          password: await hash(user.password),
+          password: await hash(user.password, 10),
         });
 
       const response = await supertest(app.getHttpServer())
@@ -75,7 +75,7 @@ describe('AuthController', () => {
         .spyOn(userService, 'findOneByUsernameOrEmail')
         .mockResolvedValueOnce({
           ...user,
-          password: await hash(user.password),
+          password: await hash(user.password, 10),
         });
 
       const response = await supertest(app.getHttpServer())
