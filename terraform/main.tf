@@ -13,13 +13,18 @@ provider "azurerm" {
 }
 
 
-resource "azurerm_resource_group" "football_mm" {
+resource "azurerm_resource_group" "football_resource_group" {
   name     = var.resource_group_name
   location = "East US"
 }
 
-data "azurerm_resource_group" "football_mm_data" {
-  name = azurerm_resource_group.football_mm.name
+resource "azurerm_storage_account" "first_storage_account" {
+  name                     = "nicklimastorageaccount"
+  resource_group_name      = azurerm_resource_group.football_resource_group.name
+  location                 = var.location
+  account_tier             = var.account_tier
+  account_replication_type = var.account_replication_type
+
 }
 
 resource "azurerm_virtual_network" "main" {
@@ -89,6 +94,4 @@ resource "azurerm_virtual_machine" "main" {
   }
 }
 
-output "resource_group_id" {
-  value = azurerm_resource_group.football_mm.id
-}
+
