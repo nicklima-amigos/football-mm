@@ -1,3 +1,21 @@
+variable "location" {
+  description = "Variável que indica a região onde os recursos vão ser criados"
+  type        = string
+  default     = "West Europe"
+}
+
+variable "account_tier" {
+  description = "Tier da Storage Account na Azure"
+  type        = string
+  default     = "Standard"
+}
+
+variable "account_replication_type" {
+  description = "Tipo de replicação de dados da Storage Account"
+  type        = string
+  default     = "LRS"
+}
+
 variable "resource_group_name" {
   description = "Name of the Azure resource group"
   type        = string
