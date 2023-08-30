@@ -41,12 +41,11 @@ resource "azurerm_subnet" "internal" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_public_ip" "pubip" {
+resource "azurerm_public_ip" "public_ip" {
   name                = "mypublicip"
   location            = azurerm_resource_group.football_mm.location
   resource_group_name = azurerm_resource_group.football_mm.name
-  allocation_method  = "Static"
-  sku = "Standard"
+  allocation_method  = "Dynamic"
 }
 
 resource "azurerm_network_interface" "main" {
@@ -58,7 +57,7 @@ resource "azurerm_network_interface" "main" {
     name                          = "testconfiguration1"
     subnet_id                     = azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.pubip.id
+    public_ip_address_id          = azurerm_public_ip.public_ip.id
   }
 }
 
@@ -68,6 +67,11 @@ resource "azurerm_virtual_machine" "main" {
   resource_group_name   = azurerm_resource_group.football_mm.name
   network_interface_ids = [azurerm_network_interface.main.id]
   vm_size               = "Standard_DS1_v2"
+
+  admin_ssh_key {
+    username   = "terraform"
+    public_key = file("./azure-key.pub")
+  }
 
   storage_image_reference {
     publisher = "Canonical"
