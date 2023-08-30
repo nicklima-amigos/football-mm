@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Match } from '../../match/entities/match.entity';
 import { Player } from '../../players/entities/player.entity';
 
 @Entity()
@@ -22,9 +21,6 @@ export class Team {
 
   @OneToMany(() => Player, (player) => player.team)
   players: Player[];
-
-  @OneToMany(() => Match, (match) => match.homeTeam)
-  matches?: Match[];
 
   @CreateDateColumn()
   createdAt: Date;

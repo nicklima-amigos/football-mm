@@ -9,5 +9,5 @@ export class CreateLeagueDto {
   @ApiProperty()
   @IsArray()
   @IsNotEmpty()
-  matchIds: number[];
+  gameIds: number[];
 }
