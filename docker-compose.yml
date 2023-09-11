@@ -11,7 +11,7 @@ services:
 
   app:
     build: .
-    command: bun run start:dev
+    command: bun run ./dist/main.js
     restart: always
     environment:
       DATABASE_HOST: ${DATABASE_HOST:-database}

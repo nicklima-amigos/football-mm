@@ -11,4 +11,4 @@ COPY . .
 
 RUN bun run build
 
-CMD ["bun", "run", "start:prod"]
+CMD ["bun", "run", "./dist/main.js"]
