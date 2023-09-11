@@ -1,14 +1,14 @@
-FROM node:18.17.1-alpine
+FROM node:18.17.1
+RUN npm install -g bun
 
 WORKDIR /app
 
 COPY package.json .
 COPY package-lock.json .
-
 RUN npm ci
 
 COPY . .
 
-RUN npm run build
+RUN bun run build
 
-CMD ["npm", "run", "start:prod"]
+CMD ["bun", "run", "start:prod"]
