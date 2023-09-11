@@ -55,6 +55,7 @@ export class UserService {
     if (userByEmail) {
       return userByEmail;
     }
+    throw new NotFoundException('User not found');
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
