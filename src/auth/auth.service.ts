@@ -31,6 +31,10 @@ export class AuthService {
     });
     return {
       token,
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      player: user.player,
     };
   }
 }
