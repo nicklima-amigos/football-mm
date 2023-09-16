@@ -1,5 +1,4 @@
 FROM node:18.17.1
-RUN npm install -g bun
 
 WORKDIR /app
 
@@ -9,6 +8,6 @@ RUN npm ci
 
 COPY . .
 
-RUN bun run build
+RUN npm run build
 
-CMD ["bun", "run", "./dist/main.js"]
+CMD ["npm", "run", "start:prod"]
