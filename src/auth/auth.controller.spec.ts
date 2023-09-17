@@ -69,7 +69,7 @@ describe('AuthController', () => {
       expect(response.body).toHaveProperty('token');
     });
 
-    it('should return a 403 when given invalid credentials', async () => {
+    it('should return a 401 when given invalid credentials', async () => {
       const user = fakeUser();
       jest
         .spyOn(userService, 'findOneByUsernameOrEmail')
@@ -85,7 +85,7 @@ describe('AuthController', () => {
           password: 'invalid',
         });
 
-      expect(response.status).toEqual(403);
+      expect(response.status).toEqual(401);
     });
 
     it('should return a 401 when given a non existing username or email', async () => {
