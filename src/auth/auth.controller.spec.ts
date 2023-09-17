@@ -88,7 +88,7 @@ describe('AuthController', () => {
       expect(response.status).toEqual(403);
     });
 
-    it('should return a 403 when given a non existing username or email', async () => {
+    it('should return a 401 when given a non existing username or email', async () => {
       jest
         .spyOn(userService, 'findOneByUsernameOrEmail')
         .mockResolvedValueOnce(null);
@@ -100,7 +100,7 @@ describe('AuthController', () => {
           password: 'invalid',
         });
 
-      expect(response.status).toEqual(403);
+      expect(response.status).toEqual(401);
     });
   });
 });
