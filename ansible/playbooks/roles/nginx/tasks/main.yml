@@ -1,9 +1,23 @@
-- name: update so
-  apt:
-    update_cache: yes
-    upgrade: dist
+---
+- name: Instalar Nginx
+  hosts: control
+  become: yes
 
-- name: install nginx
-  apt:
-    name: nginx
-    state: latest
+tasks:
+    - name: update S.O
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+
+    - name: Instalar Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Iniciar e habilitar o serviço Nginx
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+

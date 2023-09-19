@@ -5,7 +5,7 @@
 
 
 tasks:
-  - name: update so
+  - name: update S.O
     apt:
       update_cache: yes
       upgrade: dist
@@ -18,7 +18,7 @@ tasks:
         - curl
         - gnupg-agent
         - software-properties-common
-      become: yes
+      
 
   - name: add Docker GPG key
     apt_key:
@@ -34,18 +34,18 @@ tasks:
     apt: 
       name: docker-ce
       state: latest
-      become: yes
+      
 
   - name: Iniciar e habilitar o serviço Docker
     systemd:
       name: docker
       state: started
       enabled: yes
-    become: yes
+    
 
   - name: Adicionar o usuário atual ao grupo docker
     user:
       name: "{{ ansible_user }}"
       groups: docker
       append: yes
-    become: yes
+    
