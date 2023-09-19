@@ -1,0 +1,9 @@
+- name: update so
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: install nginx
+  apt:
+    name: nginx
+    state: latest

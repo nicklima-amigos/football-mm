@@ -1,0 +1,7 @@
+- name: Configurar Docker e Nginx
+  hosts: control
+  become: true
+  roles:
+    - docker
+    - nginx
+```
