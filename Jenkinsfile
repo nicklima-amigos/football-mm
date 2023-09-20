@@ -42,7 +42,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
                         // Clonar o repositório do GitHub (pode variar dependendo da configuração do seu repositório)
                         sh "git config --global credential.helper store"
-                        sh "git clone https://x-access-token:${GITHUB_TOKEN}@github.com/nicklima-amigos/football-mm.git"
+                        sh "git clone https://github.com/nicklima-amigos/football-mm.git"
                     }
 
                     // Executar o playbook Ansible
