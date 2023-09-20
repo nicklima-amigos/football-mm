@@ -38,13 +38,6 @@ pipeline {
         stage('Run Ansible Playbook') {
             steps {
                 script {
-                    // Configurar as credenciais do GitHub
-                    withCredentials([usernamePassword(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
-                        // Clonar o repositório do GitHub (pode variar dependendo da configuração do seu repositório)
-                        sh "git config --global credential.helper store"
-                        sh "git clone https://github.com/nicklima-amigos/football-mm.git"
-                    }
-
                     // Executar o playbook Ansible
                     sh "ansible-playbook /ansible/playbook.yml"
                 }
