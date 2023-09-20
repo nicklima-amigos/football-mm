@@ -45,7 +45,7 @@ resource "azurerm_public_ip" "public_ip" {
   name                = "mypublicip"
   location            = azurerm_resource_group.football_mm.location
   resource_group_name = azurerm_resource_group.football_mm.name
-  allocation_method  = "Dynamic"
+  allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "main" {
@@ -56,7 +56,7 @@ resource "azurerm_network_interface" "main" {
   ip_configuration {
     name                          = "testconfiguration1"
     subnet_id                     = azurerm_subnet.internal.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
     public_ip_address_id          = azurerm_public_ip.public_ip.id
   }
 }
@@ -97,5 +97,3 @@ resource "azurerm_virtual_machine" "main" {
     environment = "staging"
   }
 }
-
-

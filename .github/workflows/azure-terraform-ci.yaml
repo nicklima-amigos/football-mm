@@ -1,4 +1,4 @@
-name: "Terraform Deploy"
+name: "Azure Deploy"
 on:
   push:
     branches:
@@ -6,8 +6,8 @@ on:
 
 
 jobs:
-  terraform:
-    name: "Terraform"
+  terraform-azure:
+    name: "Terraform-Azure"
     runs-on: ubuntu-latest
     env:
       working-directory: ${{ github.workspace }}//terraform
