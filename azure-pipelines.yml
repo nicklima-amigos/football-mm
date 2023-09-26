@@ -21,7 +21,7 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Azure subscription 1(e9fa120a-50d5-41c7-905d-4fce76423744)'
     appType: 'webAppContainer'
-    WebAppName: 'football-mm'
+    WebAppName: 'api-footballmm'
     DockerNamespace: 'nicklimadev'
     DockerRepository: 'football-mm'
     DockerImageTag: '$(Build.BuildId)'
