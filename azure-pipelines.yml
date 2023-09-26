@@ -15,7 +15,6 @@ steps:
     buildContext: .
     tags:
       $(Build.BuildId)
-      latest
 
 - task: AzureRmWebAppDeployment@4
   inputs:
