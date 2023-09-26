@@ -1,7 +1,4 @@
 # Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
 trigger:
 - main
@@ -11,9 +8,28 @@ pool:
 
 steps:
 - script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'DockerHub'
+    repository: 'football-mm'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags:
+      $(Build.BuildId)
+      latest
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(e9fa120a-50d5-41c7-905d-4fce76423744)'
+    appType: 'webAppContainer'
+    WebAppName: 'football-mm'
+    DockerNamespace: 'nicklimadev'
+    DockerRepository: 'football-mm'
+    DockerImageTag: '$(Build.BuildId)'
