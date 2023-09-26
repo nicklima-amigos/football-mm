@@ -9,9 +9,10 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'DockerHub'
-    repository: 'football-mm'
+    repository: 'nicklimadev/football-mm'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+    buildContext: .
     tags:
       $(Build.BuildId)
       latest
