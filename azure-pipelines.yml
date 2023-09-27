@@ -1,0 +1,27 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'DockerHub'
+    repository: 'nicklimadev/football-mm'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    buildContext: .
+    tags:
+      $(Build.BuildId)
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(e9fa120a-50d5-41c7-905d-4fce76423744)'
+    appType: 'webAppContainer'
+    WebAppName: 'api-footballmm'
+    DockerNamespace: 'nicklimadev'
+    DockerRepository: 'football-mm'
+    DockerImageTag: '$(Build.BuildId)'

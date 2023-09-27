@@ -3,7 +3,6 @@
 </p>
 
 
-[![Terraform Deploy](https://github.com/nicklima-amigos/football-mm/actions/workflows/azure-terraform-ci.yaml/badge.svg)](https://github.com/nicklima-amigos/football-mm/actions/workflows/azure-terraform-ci.yaml)
 
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
