@@ -45,7 +45,7 @@ resource "azurerm_public_ip" "public_ip" {
   name                = "mypublicip"
   location            = azurerm_resource_group.football_mm.location
   resource_group_name = azurerm_resource_group.football_mm.name
-  allocation_method  = "Dynamic"
+  allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "main" {
@@ -93,9 +93,23 @@ resource "azurerm_virtual_machine" "main" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
+  # This is to ensure SSH comes up before we run the local exec.
+  provisioner "remote-exec" { 
+    inline = ["echo 'Hello World'"]
+
+    connection {
+      type = "ssh"
+      host = "${azurerm_public_ip.public_ip.fqdn}"
+      user = "${var.admin_username}"
+      private_key = "${var.ssh_key}"
+    }
+  }
+
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ../ansible/playbook.yaml --private-key ${var.ssh_key_path}"
+  }
+
   tags = {
     environment = "staging"
   }
 }
-
-

@@ -1,0 +1,26 @@
+name: "Jenkins Build"
+on:
+    push:
+        branches:  main ]
+    pull_request:
+        branches: [ main ]
+
+jobs:
+   Jenkins-CI:
+     name: Jenkins-CI
+     runs-on: ubuntu-latest
+
+     steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Jenkins-CI
+          uses: appleboy/jenkins-action@master
+          env:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            jenkins-url: ${{ secrets.JENKINS_URL }}
+            jenkins-username: ${{ secrets.JENKINS_USER }}
+            jenkins-password: ${{ secrets.JENKINS_TOKEN }}
+            jenkins-token: ${{ secrets.JENKINS_TOKEN }}
+            job: ${{ secrets.JENKINS_JOB }}
+                  
