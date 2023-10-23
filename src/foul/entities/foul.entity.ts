@@ -10,9 +10,9 @@ import { Player } from '../../players/entities/player.entity';
 import { Game } from '../../games/entities/game.entity';
 
 export enum Card {
-  None = '',
-  Yellow = 'yellow',
-  Red = 'red',
+  NONE = '',
+  YELLOW = 'yellow',
+  RED = 'red',
 }
 
 @Entity()
@@ -23,7 +23,7 @@ export class Foul {
   @Column({
     type: 'enum',
     enum: Card,
-    default: Card.None,
+    default: Card.NONE,
   })
   card: Card;
 
