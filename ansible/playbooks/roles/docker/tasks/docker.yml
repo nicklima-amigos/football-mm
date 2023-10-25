@@ -1,6 +1,6 @@
 ---
 - name: Instalacao Docker
-  hosts: control
+  hosts: localhost
   become: true
 
 

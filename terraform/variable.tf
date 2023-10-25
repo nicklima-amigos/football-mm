@@ -25,7 +25,7 @@ variable "resource_group_name" {
 variable "vm_admin_username" {
   description = "Admin username for the virtual machine"
   type        = string
-  default     = "Devops"
+  default     = "terraform"
 }
 
 variable "vm_admin_password" {
