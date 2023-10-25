@@ -1,0 +1,51 @@
+{
+    "variables": {
+        "client_id": "{{env `ARM_CLIENT_ID`}}",
+        "client_secret": "{{env `ARM_CLIENT_SECRET`}}",
+        "subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}"
+      },
+
+    "builders": [{
+        "type": "azure-arm",
+        "client_id": "{{user `ARM_CLIENT_ID`}}",
+        "client_secret": "{{user `ARM_CLIENT_SECRET`}}",
+        "subscription_id": "{{user `ARM_SUBSCRIPTION_ID`}}",
+        "tenant_id": "{{user `ARM_TENANT_ID`}}",
+        "resource_group_name": "football-mm",
+        "storage_account": "footballmmstorage",
+      
+        "capture_container_name": "images",
+        "capture_name_prefix": "packer",
+      
+        "os_type": "Linux",
+        "image_publisher": "Canonical",
+        "image_offer": "0001-com-ubuntu-server-jammy",
+        "image_sku": "22_04-lts-gen2",
+      
+        "azure_tags": {
+          "dept": "engineering"
+        },
+        
+        "location": "East US",
+        "vm_size": "Standard_DS1_v2"
+    }],
+
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "./ansible",
+            "destination": "/tmp/ansible"
+        },
+        
+        {
+        "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+        "type": "shell",
+        "inline": [
+            "sudo apt-add-repository ppa:ansible/ansible",
+            "sudo apt update",
+            "sudo apt install -y ansible",
+            "ansible-playbook --connection=local /tmp/ansible/playbook.yml"
+        ]
+      }
+    ]
+  }

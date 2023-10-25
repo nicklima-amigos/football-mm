@@ -1,6 +1,6 @@
 ---
 - name: Instalar Nginx
-  hosts: control
+  hosts: localhost
   become: true
 
 tasks:
