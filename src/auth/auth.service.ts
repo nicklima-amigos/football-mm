@@ -1,6 +1,6 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { verify } from 'argon2';
+import { compare } from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { SignInDto } from './dto/sign-in.dto';
 
@@ -20,7 +20,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const isPasswordValid = await verify(user?.password, password);
+    const isPasswordValid = await compare(password, user.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -31,6 +31,10 @@ export class AuthService {
     });
     return {
       token,
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      player: user.player,
     };
   }
 }

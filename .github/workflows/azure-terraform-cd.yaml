@@ -1,20 +1,23 @@
-name: "Terraform Deploy"
+name: "Azure Deploy"
 on:
   push:
     branches:
       - main
-
+  workflow_run:
+      workflows: [Build Image Packer, Test Unit]
+      types:
+        - completed
 
 jobs:
-  terraform:
-    name: "Terraform"
+  terraform-azure:
+    name: "Terraform-Azure"
     runs-on: ubuntu-latest
     env:
       working-directory: ${{ github.workspace }}//terraform
       
     steps:
       - name: "Checkout"
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
 
       - name: Logar na Azure
         uses: azure/login@v1

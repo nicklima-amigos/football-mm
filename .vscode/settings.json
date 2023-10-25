@@ -10,5 +10,6 @@
       "username": "postgres",
       "password": "postgres"
     }
-  ]
+  ],
+  "ansible.python.interpreterPath": "/bin/python3"
 }

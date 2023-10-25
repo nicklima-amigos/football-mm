@@ -1,14 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateGameDto } from './create-game.dto';
 
-export class UpdateGameDto {
-  @ApiProperty()
-  @IsNumber()
-  @IsOptional()
-  homeTeamScore?: number;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsOptional()
-  awayTeamScore?: number;
-}
+export class UpdateGameDto extends PartialType(CreateGameDto) {}

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { LeagueDto } from '../../league/dto/league.dto';
 import { PlayerDto } from '../../players/dto/player.dto';
 
 export class GameDto {
@@ -25,4 +26,7 @@ export class GameDto {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty({ type: LeagueDto })
+  league: LeagueDto;
 }

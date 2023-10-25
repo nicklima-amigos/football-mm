@@ -4,29 +4,26 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Foul } from '../../foul/entities/foul.entity';
+import { Goal } from '../../goal/entities/goal.entity';
 import { Player } from '../../players/entities/player.entity';
+import { League } from '../../league/entities/league.entity';
 
 @Entity()
 export class Game {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => Player, (player) => player.homeGames)
-  @JoinTable()
-  homeTeam: Player[];
+  @OneToMany(() => Goal, (goal) => goal.game)
+  goals: Goal[];
 
-  @ManyToMany(() => Player, (player) => player.awayGames)
-  @JoinTable()
-  awayTeam: Player[];
-
-  @Column({ default: 0 })
-  homeTeamScore: number;
-
-  @Column({ default: 0 })
-  awayTeamScore: number;
+  @OneToMany(() => Foul, (foul) => foul.game)
+  fouls: Foul[];
 
   @Column()
   scheduledTime: Date;
@@ -36,4 +33,14 @@ export class Game {
 
   @UpdateDateColumn()
   updatedAt: Date;
+  @ManyToMany(() => Player, (player) => player.homeGames)
+  @JoinTable()
+  homeTeam: Player[];
+
+  @ManyToMany(() => Player, (player) => player.awayGames)
+  @JoinTable()
+  awayTeam: Player[];
+
+  @ManyToOne(() => League, (league) => league.matches, { nullable: true })
+  league?: League;
 }

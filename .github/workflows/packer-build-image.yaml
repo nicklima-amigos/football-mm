@@ -1,0 +1,29 @@
+name: "Build Image Packer"
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-image-packer:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v3
+
+    - name: Build Image Packer
+      uses: hashicorp/setup-packer@main
+      with:
+        version: 1.7.2
+
+    - name: Run Packer Validate
+      run: |
+        packer init ./packer/build-image.json
+        packer validate ./packer/build-image.json
+        packer fix ./packer/build-image.json
+        packer inspect ./packer/build-image.json
+
+    - name: Build Image
+      run: |
+        packer build ./packer/build-image.json

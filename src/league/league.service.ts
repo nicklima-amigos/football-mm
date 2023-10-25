@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { Match } from '../match/entities/match.entity';
+import { Game } from '../games/entities/game.entity';
 import { CreateLeagueDto } from './dto/create-league.dto';
 import { UpdateLeagueDto } from './dto/update-league.dto';
 import { League } from './entities/league.entity';
@@ -10,11 +10,11 @@ import { League } from './entities/league.entity';
 export class LeagueService {
   constructor(
     @InjectRepository(League) private repository: Repository<League>,
-    @InjectRepository(Match) private matchRepository: Repository<Match>,
+    @InjectRepository(Game) private matchRepository: Repository<Game>,
   ) {}
 
   async create(createLeagueDto: CreateLeagueDto) {
-    const { name, matchIds } = createLeagueDto;
+    const { name, gameIds: matchIds } = createLeagueDto;
     const matches = await this.matchRepository.find({
       where: { id: In(matchIds) },
     });

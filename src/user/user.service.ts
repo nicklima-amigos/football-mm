@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { hash } from 'argon2';
+import { hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -21,7 +21,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     this.logger.log('Creating user');
     await this.validateCreateUser(createUserDto);
-    createUserDto.password = await hash(createUserDto.password);
+    createUserDto.password = await hash(createUserDto.password, 10);
     delete createUserDto.confirmPassword;
     return await this.repository.save(createUserDto);
   }
@@ -55,6 +55,7 @@ export class UserService {
     if (userByEmail) {
       return userByEmail;
     }
+    throw new NotFoundException('User not found');
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
