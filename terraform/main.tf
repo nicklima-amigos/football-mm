@@ -68,11 +68,6 @@ resource "azurerm_virtual_machine" "main" {
   network_interface_ids = [azurerm_network_interface.main.id]
   vm_size               = "Standard_DS1_v2"
 
-  admin_ssh_key {
-    username   = "terraform"
-    public_key = file("./azure-key.pub")
-  }
-
   storage_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-focal"
@@ -89,24 +84,15 @@ resource "azurerm_virtual_machine" "main" {
     computer_name  = "hostname"
     admin_username = var.vm_admin_username
     admin_password = var.vm_admin_password
+    custom_data = <<-CUSTOMDATA
+    #!/bin/bash
+    echo "${file("~/.ssh/azure-key.pub")}" >> /home/${var.vm_admin_username}/.ssh/authorized_keys
+    chown ${var.vm_admin_username}:${var.vm_admin_username} /home/${var.vm_admin_username}/.ssh/authorized_keys
+    chmod 600 /home/${var.vm_admin_username}/.ssh/authorized_keys
+    CUSTOMDATA
   }
   os_profile_linux_config {
     disable_password_authentication = false
-  }
-  # This is to ensure SSH comes up before we run the local exec.
-  provisioner "remote-exec" { 
-    inline = ["echo 'Hello World'"]
-
-    connection {
-      type = "ssh"
-      host = "${azurerm_public_ip.public_ip.fqdn}"
-      user = "${var.admin_username}"
-      private_key = "${var.ssh_key}"
-    }
-  }
-
-  provisioner "local-exec" {
-    command = "ansible-playbook -i ../ansible/playbook.yaml --private-key ${var.ssh_key_path}"
   }
 
   tags = {

@@ -25,11 +25,17 @@ variable "resource_group_name" {
 variable "vm_admin_username" {
   description = "Admin username for the virtual machine"
   type        = string
-  default     = "Devops"
+  default     = "terraform"
 }
 
 variable "vm_admin_password" {
   description = "Admin password for the virtual machine"
   type        = string
   default     = "Admin123"
+}
+
+variable "ssh_private_key" {
+  description = "value of the ssh private key"
+  type = string
+  default = file("~/.ssh/azure-key")
 }
