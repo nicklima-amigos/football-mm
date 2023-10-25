@@ -13,14 +13,14 @@ provider "azurerm" {
 }
 
 
-resource "azurerm_resource_group" "football_resource_group" {
+resource "azurerm_resource_group" "football_mm" {
   name     = var.resource_group_name
-  location = "East US"
+  location = var.location
 }
 
-resource "azurerm_storage_account" "first_storage_account" {
-  name                     = "nicklimastorageaccount"
-  resource_group_name      = azurerm_resource_group.football_resource_group.name
+resource "azurerm_storage_account" "football_storage_account" {
+  name                     = "footballmmstorage"
+  resource_group_name      = var.resource_group_name
   location                 = var.location
   account_tier             = var.account_tier
   account_replication_type = var.account_replication_type
@@ -30,28 +30,28 @@ resource "azurerm_storage_account" "first_storage_account" {
 resource "azurerm_virtual_network" "main" {
   name                = "football-network"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.football_mm.location
-  resource_group_name = azurerm_resource_group.football_mm.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
 }
 
 resource "azurerm_subnet" "internal" {
   name                 = "internal"
-  resource_group_name  = azurerm_resource_group.football_mm.name
+  resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
 resource "azurerm_public_ip" "public_ip" {
   name                = "mypublicip"
-  location            = azurerm_resource_group.football_mm.location
-  resource_group_name = azurerm_resource_group.football_mm.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "main" {
   name                = "football-nic"
-  location            = azurerm_resource_group.football_mm.location
-  resource_group_name = azurerm_resource_group.football_mm.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
 
   ip_configuration {
     name                          = "testconfiguration1"
@@ -61,38 +61,50 @@ resource "azurerm_network_interface" "main" {
   }
 }
 
+data "azurerm_ssh_public_key" "ssh_pub_key" {
+  name                = "azure-key-vm"
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_image" "packer_image" {
+  name = "PackerImageFootball"
+  resource_group_name = var.resource_group_name
+  location = var.location
+
+  os_disk {
+    os_type = "Linux"
+    blob_uri = ""
+  }
+}
+
+
 resource "azurerm_virtual_machine" "main" {
   name                  = "football-vm"
-  location              = azurerm_resource_group.football_mm.location
-  resource_group_name   = azurerm_resource_group.football_mm.name
+  location              = var.location
+  resource_group_name   = var.resource_group_name
   network_interface_ids = [azurerm_network_interface.main.id]
   vm_size               = "Standard_DS1_v2"
 
-  storage_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-focal"
-    sku       = "20_04-lts"
-    version   = "latest"
-  }
   storage_os_disk {
     name              = "myosdisk1"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
+
+    # Referência à imagem criada pelo Packer
+    image_uri = azurerm_image.packer_image.id
   }
   os_profile {
     computer_name  = "hostname"
     admin_username = var.vm_admin_username
     admin_password = var.vm_admin_password
-    custom_data = <<-CUSTOMDATA
-    #!/bin/bash
-    echo "${file("~/.ssh/azure-key.pub")}" >> /home/${var.vm_admin_username}/.ssh/authorized_keys
-    chown ${var.vm_admin_username}:${var.vm_admin_username} /home/${var.vm_admin_username}/.ssh/authorized_keys
-    chmod 600 /home/${var.vm_admin_username}/.ssh/authorized_keys
-    CUSTOMDATA
   }
   os_profile_linux_config {
-    disable_password_authentication = false
+    disable_password_authentication = true
+    ssh_keys {
+      key_data = data.azurerm_ssh_public_key.ssh_pub_key.public_key
+      path     = "/home/${var.vm_admin_username}/.ssh/authorized_keys"
+    }
   }
 
   tags = {

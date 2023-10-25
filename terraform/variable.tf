@@ -33,9 +33,3 @@ variable "vm_admin_password" {
   type        = string
   default     = "Admin123"
 }
-
-variable "ssh_private_key" {
-  description = "value of the ssh private key"
-  type = string
-  default = file("~/.ssh/azure-key")
-}
