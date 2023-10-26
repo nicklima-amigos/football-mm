@@ -4,9 +4,19 @@ on:
     branches:
       - main
   workflow_run:
-      workflows: [Build Image Packer, Test Unit]
+      workflows: [Build Image Packer]
       types:
         - completed
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+  
+env:
+  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION }}"
+  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
 
 jobs:
   terraform-azure:
