@@ -1,0 +1,31 @@
+name: Build and Push Docker Hub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configurar ambiente Docker
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      
+    - name: Construir imagem Docker
+      run: |
+        docker build -t football-mm:${{ github.run_number }} .
+
+    - name: Marcar imagem com a versão do repositório
+      run: |
+        docker tag football-mm:${{ github.run_number }} football-mm:latest
+        docker tag football-mm:${{ github.run_number }} football-mm:${{ github.ref }}
+
+    - name: Enviar imagem para o Docker Hub
+      run: |
+        docker push football-mm:latest
+        docker push football-mm:${{ github.ref }}

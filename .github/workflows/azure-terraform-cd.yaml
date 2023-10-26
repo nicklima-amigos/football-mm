@@ -4,9 +4,14 @@ on:
     branches:
       - main
   workflow_run:
-      workflows: [Build Image Packer, Test Unit]
+      workflows: [Build Image Packer]
       types:
         - completed
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
 
 jobs:
   terraform-azure:
@@ -23,6 +28,9 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION }}
           
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
