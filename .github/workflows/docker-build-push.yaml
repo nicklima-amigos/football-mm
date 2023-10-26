@@ -19,7 +19,6 @@ jobs:
     - name: Construir imagem Docker
       run: |
         docker build -t football-mm:${{ github.run_number }} .
-        docker push football-mm:${{ github.run_number }}
 
     - name: Marcar imagem com a versão do repositório
       run: |
