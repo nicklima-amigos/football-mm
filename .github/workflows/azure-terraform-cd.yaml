@@ -14,6 +14,11 @@ permissions:
   contents: read
   pull-requests: write
 
+env:
+  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION }}"
+  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+
 jobs:
   terraform-azure:
     name: "Terraform-Azure"
@@ -35,15 +40,15 @@ jobs:
           
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-        
-      - name: "Terraform Format"
-        id: fmt
-        run: terraform fmt
-        working-directory: ${{ env.working-directory }}
 
       - name: "Terraform Init"
         id: init
         run: terraform init
+        working-directory: ${{ env.working-directory }}        
+
+      - name: "Terraform Format"
+        id: fmt
+        run: terraform fmt
         working-directory: ${{ env.working-directory }}
 
       - name: "Terraform Validate"
