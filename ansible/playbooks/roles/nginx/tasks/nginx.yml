@@ -1,0 +1,22 @@
+---
+- name: Instalar Nginx
+  hosts: localhost
+  become: true
+
+tasks:
+  - name: update S.O
+    apt:
+      update_cache: yes
+      upgrade: dist
+
+
+  - name: Instalar Nginx
+    apt:
+      name: nginx
+      state: present
+
+  - name: Iniciar e habilitar o serviço Nginx
+    systemd:
+      name: nginx
+      state: started
+      enabled: yes
