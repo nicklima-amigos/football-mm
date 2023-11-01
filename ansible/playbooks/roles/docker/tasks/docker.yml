@@ -67,7 +67,7 @@ tasks:
     git:
       repo: https://github.com/nicklima-amigos/football-mm.git
       dest: /opt/appfootball
-      update: yes
+      clone: yes
       force: yes
 
   - name: Executar Docker Compose
