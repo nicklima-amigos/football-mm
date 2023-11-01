@@ -4,5 +4,7 @@ terraform {
     storage_account_name = "footballmmstorage"
     container_name       = "football-container"
     key                  = "terraform.tfstate"
+    use_oidc             = true
+
   }
 }

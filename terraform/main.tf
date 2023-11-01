@@ -9,7 +9,7 @@ terraform {
 
 provider "azurerm" {
   features {}
-  skip_provider_registration = true
+  use_oidc = true
 }
 
 
@@ -67,12 +67,12 @@ data "azurerm_ssh_public_key" "ssh_pub_key" {
 }
 
 resource "azurerm_image" "packer_image" {
-  name = "PackerImageFootball"
+  name                = "PackerImageFootball"
   resource_group_name = var.resource_group_name
-  location = var.location
+  location            = var.location
 
   os_disk {
-    os_type = "Linux"
+    os_type  = "Linux"
     blob_uri = ""
   }
 }

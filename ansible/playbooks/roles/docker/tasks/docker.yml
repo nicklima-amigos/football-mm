@@ -34,7 +34,21 @@ tasks:
     apt: 
       name: docker-ce
       state: latest
-      
+
+  - name: Instalar Docker Compose
+    command: >
+      curl -L "https://github.com/docker/compose/releases/download/2.23.0/docker-compose-$(uname -s)-$(uname -m)"
+      -o /usr/local/bin/docker-compose
+      creates=/usr/local/bin/docker-compose
+    args:
+      creates: /usr/local/bin/docker-compose
+    become: yes
+
+  - name: Tornar Docker Compose executável
+    file:
+      path: /usr/local/bin/docker-compose
+      mode: '0755'
+    become: yes
 
   - name: Iniciar e habilitar o serviço Docker
     systemd:
@@ -48,4 +62,15 @@ tasks:
       name: "{{ ansible_user }}"
       groups: docker
       append: yes
-    
+
+  - name: Clone do repositório do GitHub
+    git:
+      repo: https://github.com/nicklima-amigos/football-mm.git
+      dest: /opt/appfootball
+      clone: yes
+      force: yes
+
+  - name: Executar Docker Compose
+    command: docker-compose up -d
+    args:
+      chdir: /opt/appfootball/football-mm
