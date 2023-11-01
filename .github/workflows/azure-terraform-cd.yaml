@@ -3,10 +3,21 @@ on:
   push:
     branches:
       - main
+      - azure-deploy-workflow
   workflow_run:
-      workflows: [Build Image Packer, Test Unit]
+      workflows: [Build Image Packer]
       types:
         - completed
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
 
 jobs:
   terraform-azure:
@@ -14,27 +25,23 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ${{ github.workspace }}//terraform
+      ARM_SKIP_PROVIDER_REGISTRATION: true
       
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3
 
-      - name: Logar na Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        
-      - name: "Terraform Format"
-        id: fmt
-        run: terraform fmt
-        working-directory: ${{ env.working-directory }}
+        uses: hashicorp/setup-terraform@v2
 
       - name: "Terraform Init"
         id: init
         run: terraform init
+        working-directory: ${{ env.working-directory }}        
+
+      - name: "Terraform Format"
+        id: fmt
+        run: terraform fmt
         working-directory: ${{ env.working-directory }}
 
       - name: "Terraform Validate"
@@ -44,10 +51,10 @@ jobs:
         
       - name: Import Azure Resource
         env:
-          AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION }}
+          AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
           cd terraform
-          terraform import azurerm_resource_group.football_mm /subscriptions/${AZURE_SUBSCRIPTION}/resourceGroups/football-mm
+          terraform import azurerm_resource_group.football_mm /subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/football-mm
 
       - name: "Terraform Plan"
         id: plan
