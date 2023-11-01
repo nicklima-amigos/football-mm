@@ -5,5 +5,6 @@ terraform {
     container_name       = "football-container"
     key                  = "terraform.tfstate"
     use_oidc             = true
+
   }
 }

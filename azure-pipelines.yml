@@ -19,7 +19,8 @@ steps:
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(${{ secrets.AZURE_SUBSCRIPTION }})'
+    azureSubscription: 'Azure subscription 1(${{ secrets.AZURE_SUBSCRIPTION_ID }})'
+
     appType: 'webAppContainer'
     WebAppName: 'api-footballmm'
     DockerNamespace: 'nicklimadev'
