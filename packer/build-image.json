@@ -32,15 +32,8 @@
 
     "provisioners": [
         {
-          "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
-            "type": "file",
-            "source": "./ansible",
-            "destination": "/tmp/ansible"
-        },
-        
-        {
         "type": "ansible",
-        "playbook_file": "/tmp/ansible/playbook.yml"
+        "playbook_file": "../ansible/playbooks/playbook.yml"
       }
     ]
   }
