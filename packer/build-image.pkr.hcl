@@ -39,11 +39,9 @@ source "azure-arm" "image-football" {
   client_secret                     = var.client_secret
   subscription_id                   = var.subscription_id
   tenant_id                         = var.tenant_id
-  resource_group_name               = "football-mm"
-  storage_account                   = "footballmmstorage"
 
-  capture_container_name            = "images"
-  capture_name_prefix               = "football-mm-packer"
+  managed_image_name                = "football-mm-image"
+  managed_image_resource_group_name = "football-mm"
 
   image_offer                       = "UbuntuServer"
   image_publisher                   = "Canonical"
