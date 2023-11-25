@@ -27,12 +27,6 @@ resource "azurerm_storage_account" "football_storage_account" {
 
 }
 
-data "azurerm_ssh_public_key" "ssh_pub_key" {
-  name                = "azure-key-vm"
-  resource_group_name = var.resource_group_name
-}
-
-
 resource "azurerm_virtual_machine" "main" {
   name                  = "football-vm"
   location              = var.location
@@ -54,7 +48,7 @@ resource "azurerm_virtual_machine" "main" {
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
-      key_data = data.azurerm_ssh_public_key.ssh_pub_key.public_key
+      key_data = "~/.ssh/id_rsa.pub"
       path     = "/home/${var.vm_admin_username}/.ssh/authorized_keys"
     }
   }

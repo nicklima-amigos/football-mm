@@ -1,14 +1,9 @@
-name: "Azure Deploy"
+name: "Azure Deploy with Terraform"
 on:
   push:
     branches:
       - main
       - chore/variables-azure-packer
-
-  workflow_run:
-      workflows: [Build Image Packer]
-      types:
-        - completed
 
 permissions:
   id-token: write
@@ -22,7 +17,7 @@ env:
 
 jobs:
   terraform-CD:
-    name: "Terraform-Azure"
+    name: "Terraform-CD"
     runs-on: ubuntu-latest
     env:
       working-directory: ${{ github.workspace }}//terraform

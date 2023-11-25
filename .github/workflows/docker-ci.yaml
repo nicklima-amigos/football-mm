@@ -1,4 +1,4 @@
-name: Build and Push Docker Hub
+name: Build and Push Docker CI
 on:
   push:
     branches:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   docker-CI:
+    name: "Docker-CI"
     runs-on: ubuntu-latest
 
     steps:

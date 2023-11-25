@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - chore/variables-azure-packer
 
 jobs:
   build-image-packer:
