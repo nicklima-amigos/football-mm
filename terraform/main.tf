@@ -59,6 +59,17 @@ resource "azurerm_virtual_machine" "main" {
     }
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y nginx",
+      "sudo systemctl start nginx",
+      "sudo systemctl enable nginx",
+      "sudo apt-get install docker.io -y"
+      
+    ]
+  }
+
   tags = {
     environment = "staging"
   }
