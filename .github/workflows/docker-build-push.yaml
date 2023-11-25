@@ -1,5 +1,4 @@
 name: Build and Push Docker Hub
-
 on:
   push:
     branches:
