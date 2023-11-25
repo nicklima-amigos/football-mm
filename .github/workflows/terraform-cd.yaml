@@ -20,7 +20,7 @@ env:
   ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
 
 jobs:
-  terraform-azure:
+  terraform-CD:
     name: "Terraform-Azure"
     runs-on: ubuntu-latest
     env:
