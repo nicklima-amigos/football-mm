@@ -3,7 +3,10 @@ on:
   push:
     branches:
       - main
+<<<<<<< HEAD
       
+=======
+>>>>>>> 874f03399633b1c7360ddf69af87f71903e7c688
   workflow_run:
       workflows: [Build Image Packer]
       types:
