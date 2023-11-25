@@ -22,8 +22,9 @@ jobs:
 
     - name: Marcar imagem com a versão do repositório
       run: |
+        REF_NAME=$(echo ${{ github.ref }} | sed 's/refs\/heads\///' | sed 's/\//-/g')
         docker tag football-mm:${{ github.run_number }} football-mm:latest
-        docker tag football-mm:${{ github.run_number }} football-mm:${{ github.ref }}
+        docker tag football-mm:${{ github.run_number }} football-mm:$REF_NAME
 
     - name: Enviar imagem para o Docker Hub
       run: |
