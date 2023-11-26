@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - dev
 
 permissions:
   id-token: write
@@ -48,6 +49,13 @@ jobs:
         id: plan
         run: terraform plan -out plan.tf
         working-directory: ${{ env.working-directory }}
+
+      - name: Import Azure Resource
+        env:
+           AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: |
+           cd terraform
+           terraform import azurerm_resource_group.football_mm /subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/football-mm
 
       - name: 'Terraform Apply'
         id: apply
