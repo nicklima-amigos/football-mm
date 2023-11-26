@@ -1,0 +1,34 @@
+name: Build and Push Docker CI
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  docker-CI:
+    name: "Docker-CI"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configurar ambiente Docker
+      run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      
+    - name: Construir imagem Docker
+      run: |
+        docker build -t football-mm:${{ github.run_number }} .
+
+    - name: Marcar imagem com a versão do repositório
+      run: |
+        REF_NAME=$(echo ${{ github.ref }} | sed 's/refs\/heads\///' | sed 's/\//-/g')
+        docker tag football-mm:${{ github.run_number }} ${{ secrets.DOCKER_USERNAME }}/football-mm:latest
+        docker tag football-mm:${{ github.run_number }} ${{ secrets.DOCKER_USERNAME }}/football-mm:$REF_NAME
+
+    - name: Enviar imagem para o Docker Hub
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/football-mm:latest
+        REF_NAME=$(echo ${{ github.ref }} | sed 's/refs\/heads\///' | sed 's/\//-/g')
+        docker push ${{ secrets.DOCKER_USERNAME }}/football-mm:$REF_NAME

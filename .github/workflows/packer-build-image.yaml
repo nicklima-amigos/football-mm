@@ -19,11 +19,12 @@ jobs:
 
     - name: Run Packer Validate
       run: |
-        packer init ./packer/build-image.json
-        packer validate ./packer/build-image.json
-        packer fix ./packer/build-image.json
-        packer inspect ./packer/build-image.json
+        packer plugin install hashicorp/azure-arm
+        packer init ./packer/build-image.pkr.hcl
+        packer validate ./packer/build-image.pkr.hcl
+        packer fix ./packer/build-image.pkr.hcl
+        packer inspect ./packer/build-image.pkr.hcl
 
     - name: Build Image
       run: |
-        packer build ./packer/build-image.json
+        packer build ./packer/build-image.pkr.hcl
