@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - chore/variables-azure-packer
+      - dev
 
 jobs:
   docker-CI:
