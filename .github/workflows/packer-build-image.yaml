@@ -19,7 +19,6 @@ jobs:
 
     - name: Run Packer Validate
       run: |
-        packer plugin install hashicorp/azure-arm
         packer init ./packer/build-image.pkr.hcl
         packer validate ./packer/build-image.pkr.hcl
         packer fix ./packer/build-image.pkr.hcl
