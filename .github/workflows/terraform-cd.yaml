@@ -43,13 +43,6 @@ jobs:
         id: validate
         run: terraform validate -no-color
         working-directory: ${{ env.working-directory }}
-        
-      # - name: Import Azure Resource
-      #   env:
-      #     AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      #   run: |
-      #     cd terraform
-      #     terraform import azurerm_resource_group.football_mm /subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/football-mm
 
       - name: "Terraform Plan"
         id: plan
