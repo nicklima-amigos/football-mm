@@ -1,4 +1,4 @@
-name: "Azure Deploy with Terraform"
+name: 'Azure Deploy with Terraform'
 on:
   push:
     branches:
@@ -10,47 +10,46 @@ permissions:
   pull-requests: write
 
 env:
-  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+  ARM_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
+  ARM_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+  ARM_TENANT_ID: '${{ secrets.AZURE_TENANT_ID }}'
 
 jobs:
   terraform-CD:
-    name: "Terraform-CD"
+    name: 'Terraform-CD'
     runs-on: ubuntu-latest
     env:
       working-directory: ${{ github.workspace }}//terraform
       ARM_SKIP_PROVIDER_REGISTRATION: true
-      
+
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v3
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: "Terraform Init"
+      - name: 'Terraform Init'
         id: init
         run: terraform init
-        working-directory: ${{ env.working-directory }}        
+        working-directory: ${{ env.working-directory }}
 
-      - name: "Terraform Format"
+      - name: 'Terraform Format'
         id: fmt
         run: terraform fmt
         working-directory: ${{ env.working-directory }}
 
-      - name: "Terraform Validate"
+      - name: 'Terraform Validate'
         id: validate
         run: terraform validate -no-color
         working-directory: ${{ env.working-directory }}
 
-      - name: "Terraform Plan"
+      - name: 'Terraform Plan'
         id: plan
         run: terraform plan -out plan.tf
         working-directory: ${{ env.working-directory }}
 
-      - name: "Terraform Apply"
+      - name: 'Terraform Apply'
         id: apply
         run: terraform apply -auto-approve plan.tf
         working-directory: ${{ env.working-directory }}
-
