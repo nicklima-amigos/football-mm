@@ -74,3 +74,5 @@ tasks:
     command: docker-compose up -d
     args:
       chdir: /opt/appfootball/football-mm
+
+    

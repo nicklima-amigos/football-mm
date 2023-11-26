@@ -26,3 +26,4 @@ steps:
     DockerNamespace: 'nicklimadev'
     DockerRepository: 'football-mm'
     DockerImageTag: '$(Build.BuildId)'
+
