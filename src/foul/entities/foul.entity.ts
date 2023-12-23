@@ -21,7 +21,7 @@ export class Foul {
   id: number;
 
   @Column({
-    type: 'enum',
+    type: String,
     enum: Card,
     default: Card.NONE,
   })

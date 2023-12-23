@@ -61,7 +61,7 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
     await this.validateUpdateUser(user.id, updateUserDto);
-    return this.repository.save({ ...updateUserDto, id });
+    return this.repository.save({ ...user, ...updateUserDto });
   }
 
   async remove(id: number) {

@@ -5,41 +5,35 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import * as supertest from 'supertest';
 import { Repository } from 'typeorm';
 import { fakeTeam, fakeTeams } from '../../test/factories/teams.factory';
-import { getRepositoryMock } from '../../test/mocks/repository';
-import { Player } from '../players/entities/player.entity';
 import { Team } from './entities/team.entity';
 import { TeamController } from './teams.controller';
-import { TeamService } from './teams.service';
+import { TeamModule } from './teams.module';
+import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 
 describe('TeamController', () => {
   let app: NestApplication;
   let controller: TeamController;
   let repository: Repository<Team>;
 
-  beforeAll(async () => {
+  let teams: Team[];
+
+  let request: supertest.SuperTest<supertest.Test>;
+
+  beforeEach(async () => {
     const module = await Test.createTestingModule({
-      controllers: [TeamController],
-      providers: [
-        TeamService,
-        {
-          provide: getRepositoryToken(Team),
-          useValue: getRepositoryMock<Team>(),
-        },
-        {
-          provide: getRepositoryToken(Player),
-          useValue: getRepositoryMock<Player>(),
-        },
-      ],
+      imports: [TypeOrmTestModule, TeamModule],
     }).compile();
+
     controller = module.get<TeamController>(TeamController);
     repository = module.get<Repository<Team>>(getRepositoryToken(Team));
+
+    teams = await repository.save(fakeTeams(10));
+
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
-  });
 
-  afterEach(async () => {
-    jest.resetAllMocks();
+    request = supertest(app.getHttpServer());
   });
 
   it('should be defined', () => {
@@ -48,36 +42,30 @@ describe('TeamController', () => {
 
   describe('findAll', () => {
     it('should return a list of teams', async () => {
-      const teams = fakeTeams(10);
-      jest.spyOn(repository, 'find').mockResolvedValueOnce(teams);
-      const expected = JSON.parse(JSON.stringify(teams));
-
-      const response = await supertest(app.getHttpServer()).get('/teams');
+      const response = await request.get('/teams');
       const actual = response.body;
 
       expect(response.status).toEqual(200);
-      expect(actual).toEqual(expected);
+      expect(actual.length).toEqual(teams.length);
+      for (const team of teams) {
+        expect(actual.map((t) => t.id)).toContain(team.id);
+      }
     });
   });
 
   describe('findOne', () => {
     it('should return a single team when given a valid id', async () => {
-      const team = fakeTeam();
-      team.id = 1;
-      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(team);
-      const expected = JSON.parse(JSON.stringify(team));
+      const expected = teams[0];
 
-      const response = await supertest(app.getHttpServer()).get('/teams/1');
+      const response = await request.get('/teams/' + teams[0].id);
       const actual = response.body;
 
       expect(response.status).toEqual(200);
-      expect(actual).toEqual(expected);
+      expect(actual.name).toEqual(expected.name);
     });
 
     it('should throw an error when given a non existing id', async () => {
-      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer()).get('/teams/1');
+      const response = await request.get('/teams/1337');
 
       expect(response.status).toEqual(404);
     });
@@ -86,25 +74,17 @@ describe('TeamController', () => {
   describe('create', () => {
     it('should create a team', async () => {
       const team = fakeTeam();
-      jest.spyOn(repository, 'save').mockResolvedValueOnce(team);
       delete team.id;
-      const expected = JSON.parse(JSON.stringify(team));
 
-      const response = await supertest(app.getHttpServer())
-        .post('/teams')
-        .send(team);
+      const response = await request.post('/teams').send(team);
       const actual = response.body;
 
       expect(response.status).toEqual(201);
-      expect(actual).toEqual(expected);
+      expect(actual.name).toEqual(team.name);
     });
 
     it('should throw an error when given invalid data', async () => {
-      jest.spyOn(repository, 'create').mockReturnValue(fakeTeam());
-
-      const response = await supertest(app.getHttpServer())
-        .post('/teams')
-        .send({ foo: 'invalid' });
+      const response = await request.post('/teams').send({ foo: 'invalid' });
 
       expect(response.status).toEqual(400);
     });
@@ -112,23 +92,17 @@ describe('TeamController', () => {
 
   describe('update', () => {
     it('should update a team', async () => {
-      const team = fakeTeam();
-      team.id = 1;
-      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(team);
-      jest.spyOn(repository, 'update').mockResolvedValueOnce(undefined);
-      delete team.id;
+      const { id, ...teamInfo } = teams[0];
+      teamInfo.name = 'updated';
 
-      const response = await supertest(app.getHttpServer())
-        .patch('/teams/1')
-        .send(team);
+      const response = await request.patch('/teams/' + id).send(teamInfo);
 
       expect(response.status).toEqual(200);
+      expect(response.body.name).toEqual(teamInfo.name);
     });
 
     it('should throw an error when given invalid data', async () => {
-      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer())
+      const response = await request
         .patch('/teams/1')
         .send({ name: false, birthDate: 'invalid' });
 
@@ -136,10 +110,8 @@ describe('TeamController', () => {
     });
 
     it('should throw an error when given a non existing id', async () => {
-      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer())
-        .patch('/teams/1')
+      const response = await request
+        .patch('/teams/1337')
         .send({ name: 'invalid' });
 
       expect(response.status).toEqual(404);
@@ -148,20 +120,13 @@ describe('TeamController', () => {
 
   describe('delete', () => {
     it('should delete a team', async () => {
-      const team = fakeTeam();
-      team.id = 1;
-      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(team);
-      jest.spyOn(repository, 'remove').mockResolvedValueOnce(undefined);
-
-      const response = await supertest(app.getHttpServer()).delete('/teams/1');
+      const response = await request.delete('/teams/' + teams[0].id);
 
       expect(response.status).toEqual(204);
     });
 
     it('should throw an error when given a non existing id', async () => {
-      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer()).delete('/teams/1');
+      const response = await request.delete('/teams/1337');
 
       expect(response.status).toEqual(404);
     });

@@ -16,33 +16,15 @@ export class FoulService {
   ) {}
 
   async create(createFoulDto: CreateFoulDto) {
-    const game = await this.gameRepository.findOne({
-      where: { id: createFoulDto.gameId },
-    });
-    if (!game) {
-      throw new NotFoundException('Game not found');
-    }
-    const offendingPlayer = await this.playerRepository.findOne({
-      where: { id: createFoulDto.offenderId },
-    });
-    if (!offendingPlayer) {
-      throw new NotFoundException('Offending player not found');
-    }
+    const newFoul = new Foul();
+    newFoul.card = createFoulDto.card;
+    newFoul.minute = createFoulDto.minute;
+    newFoul.game = await this.findGame(createFoulDto.gameId);
+    newFoul.offendingPlayer = await this.findPlayer(createFoulDto.offenderId);
     if (createFoulDto.victimId) {
-      const victimPlayer = await this.playerRepository.findOne({
-        where: { id: createFoulDto.victimId },
-      });
-      if (!victimPlayer) {
-        throw new NotFoundException('Victim player not found');
-      }
-      return this.repository.save({
-        ...createFoulDto,
-        game,
-        offendingPlayer,
-        victimPlayer,
-      });
+      newFoul.victimPlayer = await this.findPlayer(createFoulDto.victimId);
     }
-    return this.repository.save({ ...createFoulDto, game, offendingPlayer });
+    return this.repository.save(newFoul);
   }
 
   findAll() {
@@ -58,12 +40,28 @@ export class FoulService {
   }
 
   async update(id: number, updateFoulDto: UpdateFoulDto) {
-    await this.findOne(id);
-    return this.repository.update(id, updateFoulDto);
+    const foul = await this.findOne(id);
+    return this.repository.save({ ...foul, ...updateFoulDto });
   }
 
   async remove(id: number) {
     const foul = await this.findOne(id);
     return this.repository.remove(foul);
+  }
+
+  private async findGame(id: number) {
+    const game = await this.gameRepository.findOne({ where: { id } });
+    if (!game) {
+      throw new NotFoundException('Game not found');
+    }
+    return game;
+  }
+
+  private async findPlayer(id: number) {
+    const player = await this.playerRepository.findOne({ where: { id } });
+    if (!player) {
+      throw new NotFoundException('Player not found');
+    }
+    return player;
   }
 }
