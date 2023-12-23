@@ -6,9 +6,9 @@ import { FoulModule } from './foul/foul.module';
 import { GameModule } from './games/games.module';
 import { GoalModule } from './goal/goal.module';
 import { LeagueModule } from './league/league.module';
-import { PlayerModule } from './players/players.module';
 import { TeamModule } from './teams/teams.module';
 import { UserModule } from './user/user.module';
+import { PlayerModule } from './players/players.module';
 
 @Module({
   imports: [

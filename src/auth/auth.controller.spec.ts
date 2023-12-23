@@ -1,21 +1,21 @@
 import { NestApplication } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import * as supertest from 'supertest';
 import { hash } from 'bcrypt';
+import * as supertest from 'supertest';
 import { fakeUser } from '../../test/factories/user.factory';
-import { getRepositoryMock } from '../../test/mocks/repository';
-import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AuthModule } from './auth.module';
 import { jwtConstants } from './constants';
+import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 
 describe('AuthController', () => {
   let controller: AuthController;
   let userService: UserService;
   let app: NestApplication;
+
+  let request: supertest.SuperTest<supertest.Test>;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,21 +25,16 @@ describe('AuthController', () => {
           secret: jwtConstants.secret,
           signOptions: { expiresIn: '1d' },
         }),
-      ],
-      controllers: [AuthController],
-      providers: [
-        AuthService,
-        UserService,
-        {
-          provide: getRepositoryToken(User),
-          useValue: getRepositoryMock<User>(),
-        },
+        TypeOrmTestModule,
+        AuthModule,
       ],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
     userService = module.get<UserService>(UserService);
     app = module.createNestApplication();
+
+    request = supertest(app.getHttpServer());
 
     await app.init();
   });
@@ -58,12 +53,10 @@ describe('AuthController', () => {
           password: await hash(user.password, 10),
         });
 
-      const response = await supertest(app.getHttpServer())
-        .post('/auth/signin')
-        .send({
-          usernameOrEmail: user.username,
-          password: user.password,
-        });
+      const response = await request.post('/auth/signin').send({
+        usernameOrEmail: user.username,
+        password: user.password,
+      });
 
       expect(response.status).toEqual(201);
       expect(response.body).toHaveProperty('token');
@@ -78,12 +71,10 @@ describe('AuthController', () => {
           password: await hash(user.password, 10),
         });
 
-      const response = await supertest(app.getHttpServer())
-        .post('/auth/signin')
-        .send({
-          usernameOrEmail: user.username,
-          password: 'invalid',
-        });
+      const response = await request.post('/auth/signin').send({
+        usernameOrEmail: user.username,
+        password: 'invalid',
+      });
 
       expect(response.status).toEqual(401);
     });
@@ -93,12 +84,10 @@ describe('AuthController', () => {
         .spyOn(userService, 'findOneByUsernameOrEmail')
         .mockResolvedValueOnce(null);
 
-      const response = await supertest(app.getHttpServer())
-        .post('/auth/signin')
-        .send({
-          usernameOrEmail: 'invalid',
-          password: 'invalid',
-        });
+      const response = await request.post('/auth/signin').send({
+        usernameOrEmail: 'invalid',
+        password: 'invalid',
+      });
 
       expect(response.status).toEqual(401);
     });

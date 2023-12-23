@@ -10,12 +10,12 @@ import { League } from './entities/league.entity';
 export class LeagueService {
   constructor(
     @InjectRepository(League) private repository: Repository<League>,
-    @InjectRepository(Game) private matchRepository: Repository<Game>,
+    @InjectRepository(Game) private gameRepository: Repository<Game>,
   ) {}
 
   async create(createLeagueDto: CreateLeagueDto) {
     const { name, gameIds: matchIds } = createLeagueDto;
-    const matches = await this.matchRepository.find({
+    const matches = await this.gameRepository.find({
       where: { id: In(matchIds) },
     });
     return this.repository.save({
@@ -37,12 +37,22 @@ export class LeagueService {
   }
 
   async update(id: number, updateLeagueDto: UpdateLeagueDto) {
-    await this.findOne(id);
-    return this.repository.update({ id }, updateLeagueDto);
+    const league = await this.findOne(id);
+    league.matches = await this.findGames(updateLeagueDto.gameIds);
+    league.name = updateLeagueDto.name;
+    return this.repository.save(league);
   }
 
   async remove(id: number) {
     const league = await this.findOne(id);
     return this.repository.remove(league);
+  }
+
+  async findGames(ids: number[]) {
+    const games = this.gameRepository.find({ where: { id: In(ids) } });
+    if (!games) {
+      throw new NotFoundException('Games not found');
+    }
+    return games;
   }
 }

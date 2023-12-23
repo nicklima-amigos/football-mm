@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Player } from '../players/entities/player.entity';
 import { Team } from './entities/team.entity';
 import { TeamController } from './teams.controller';
 import { TeamService } from './teams.service';
-import { Player } from '../players/entities/player.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Team, Player])],

@@ -45,7 +45,10 @@ export class GoalService {
   }
 
   async findOne(id: number) {
-    const goal = await this.repository.findOne({ where: { id } });
+    const goal = await this.repository.findOne({
+      where: { id },
+      relations: ['player'],
+    });
     if (!goal) {
       throw new NotFoundException('Goal not found');
     }
