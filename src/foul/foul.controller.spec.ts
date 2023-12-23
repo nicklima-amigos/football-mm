@@ -71,8 +71,8 @@ describe('FoulController', () => {
       const actual = response.body;
 
       expect(actual.length).toEqual(fouls.length);
-      fouls.map((foul) => {
-        expect(actual.map((foul) => foul.id)).toContain(foul.id);
+      fouls.forEach((foul) => {
+        expect(actual.map((foul: Foul) => foul.id)).toContain(foul.id);
       });
     });
   });

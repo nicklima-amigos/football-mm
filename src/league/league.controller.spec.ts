@@ -62,7 +62,7 @@ describe('LeagueController', () => {
 
       expect(response.status).toEqual(200);
       expect(actual.length).toEqual(leagues.length);
-      leagues.map((league) => {
+      leagues.forEach((league) => {
         expect(actual.map((l: League) => l.id)).toContain(league.id);
       });
     });
