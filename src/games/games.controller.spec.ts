@@ -4,37 +4,31 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as supertest from 'supertest';
 import { Repository } from 'typeorm';
-import {
-  fakeGame,
-  fakeGameDto,
-  fakeGames,
-} from '../../test/factories/games.factory';
-import { getRepositoryMock } from '../../test/mocks/repository';
+import { fakeGameDto, fakeGames } from '../../test/factories/games.factory';
+import { fakePlayers } from '../../test/factories/players.factory';
+import { TypeOrmTestModule } from '../../test/typeorm-test-module';
+import { League } from '../league/entities/league.entity';
 import { Player } from '../players/entities/player.entity';
-import { GameController } from './games.controller';
-import { GameService } from './games.service';
+import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
+import { GameController } from './games.controller';
+import { GameModule } from './games.module';
+import { fakeLeague } from '../../test/factories/leagues.factory';
 
 describe('GameController', () => {
   let controller: GameController;
   let gameRepository: Repository<Game>;
   let playerRepository: Repository<Player>;
+  let leagueRepository: Repository<League>;
   let app: NestApplication;
 
-  beforeAll(async () => {
+  let games: Game[];
+
+  let request: supertest.SuperTest<supertest.Test>;
+
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [GameController],
-      providers: [
-        GameService,
-        {
-          provide: getRepositoryToken(Game),
-          useValue: getRepositoryMock<Game>(),
-        },
-        {
-          provide: getRepositoryToken(Player),
-          useValue: getRepositoryMock<Player>(),
-        },
-      ],
+      imports: [TypeOrmTestModule, GameModule],
     }).compile();
 
     controller = module.get<GameController>(GameController);
@@ -42,13 +36,26 @@ describe('GameController', () => {
     playerRepository = module.get<Repository<Player>>(
       getRepositoryToken(Player),
     );
+    leagueRepository = module.get<Repository<League>>(
+      getRepositoryToken(League),
+    );
+
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
-    await app.init();
-  });
 
-  afterEach(async () => {
-    jest.resetAllMocks();
+    const gamePromises = fakeGames(10).map(async (game) => {
+      return gameRepository.save({
+        ...game,
+        homeTeam: await playerRepository.save(fakePlayers(11)),
+        awayTeam: await playerRepository.save(fakePlayers(11)),
+      });
+    });
+
+    games = await Promise.all(gamePromises);
+
+    request = supertest(app.getHttpServer());
+
+    await app.init();
   });
 
   it('should be defined', () => {
@@ -56,36 +63,29 @@ describe('GameController', () => {
   });
   describe('findAll', () => {
     it('should return a list of games', async () => {
-      const games = fakeGames(10);
-      jest.spyOn(gameRepository, 'find').mockResolvedValueOnce(games);
-      const expected = JSON.parse(JSON.stringify(games));
-
-      const response = await supertest(app.getHttpServer()).get('/games');
+      const response = await request.get('/games');
       const actual = response.body;
 
       expect(response.status).toEqual(200);
-      expect(actual).toEqual(expected);
+      expect(actual.length).toEqual(games.length);
+      for (const game of games) {
+        expect(actual.map((g: Game) => g.id)).toContain(game.id);
+      }
     });
   });
 
   describe('findOne', () => {
     it('should return a single game when given a valid id', async () => {
-      const game = fakeGame();
-      game.id = 1;
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(game);
-      const expected = JSON.parse(JSON.stringify(game));
-
-      const response = await supertest(app.getHttpServer()).get('/games/1');
+      const { id, scheduledTime } = games[0];
+      const response = await request.get('/games/' + id);
       const actual = response.body;
 
       expect(response.status).toEqual(200);
-      expect(actual).toEqual(expected);
+      expect(actual.scheduledTime).toEqual(scheduledTime.toISOString());
     });
 
     it('should throw an error when given a non existing id', async () => {
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer()).get('/games/1');
+      const response = await request.get('/games/1');
 
       expect(response.status).toEqual(404);
     });
@@ -93,42 +93,29 @@ describe('GameController', () => {
 
   describe('create', () => {
     it('should create a game', async () => {
-      const game = fakeGame();
+      const game = games[0];
       const gameDto = fakeGameDto();
       gameDto.homeTeamPlayerIds = game.homeTeam.map((player) => player.id);
       gameDto.awayTeamPlayerIds = game.awayTeam.map((player) => player.id);
-      jest.spyOn(playerRepository, 'find').mockResolvedValueOnce(game.homeTeam);
-      jest.spyOn(playerRepository, 'find').mockResolvedValueOnce(game.awayTeam);
-      jest.spyOn(gameRepository, 'save').mockResolvedValueOnce(game);
-      const expected = JSON.parse(JSON.stringify(game));
 
-      const response = await supertest(app.getHttpServer())
-        .post('/games')
-        .send(gameDto);
+      const response = await request.post('/games').send(gameDto);
       const actual = response.body;
 
       expect(response.status).toEqual(201);
-      expect(actual).toEqual(expected);
+      expect(actual.scheduledTime).toEqual(gameDto.scheduledTime.toISOString());
     });
 
     it('should throw an error when given a non existing league', async () => {
       const gameDto = fakeGameDto();
       gameDto.leagueId = 1;
-      jest.spyOn(gameRepository, 'save').mockResolvedValueOnce(null);
 
-      const response = await supertest(app.getHttpServer())
-        .post('/games')
-        .send(gameDto);
+      const response = await request.post('/games').send(gameDto);
 
       expect(response.status).toEqual(404);
     });
 
     it('should throw an error when given invalid data', async () => {
-      jest.spyOn(gameRepository, 'create').mockReturnValue(fakeGame());
-
-      const response = await supertest(app.getHttpServer())
-        .post('/games')
-        .send({ foo: 'invalid' });
+      const response = await request.post('/games').send({ foo: 'invalid' });
 
       expect(response.status).toEqual(400);
     });
@@ -136,24 +123,21 @@ describe('GameController', () => {
 
   describe('update', () => {
     it('should update a game', async () => {
-      const game = fakeGame();
-      game.id = 1;
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(game);
-      jest.spyOn(gameRepository, 'update').mockResolvedValueOnce(undefined);
-      delete game.id;
+      const gameDto: UpdateGameDto = {
+        leagueId: (await leagueRepository.save(fakeLeague())).id,
+      };
 
-      const response = await supertest(app.getHttpServer())
-        .patch('/games/1')
-        .send(game);
+      const response = await request
+        .patch('/games/' + games[0].id)
+        .send(gameDto);
 
       expect(response.status).toEqual(200);
+      expect(response.body.league.id).toEqual(gameDto.leagueId);
     });
 
     it('should throw an error when given a non existing id', async () => {
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer())
-        .patch('/games/1')
+      const response = await request
+        .patch('/games/1337')
         .send({ name: 'invalid' });
 
       expect(response.status).toEqual(404);
@@ -162,20 +146,13 @@ describe('GameController', () => {
 
   describe('delete', () => {
     it('should delete a game', async () => {
-      const game = fakeGame();
-      game.id = 1;
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(game);
-      jest.spyOn(gameRepository, 'remove').mockResolvedValueOnce(undefined);
-
-      const response = await supertest(app.getHttpServer()).delete('/games/1');
+      const response = await request.delete('/games/' + games[0].id);
 
       expect(response.status).toEqual(204);
     });
 
     it('should throw an error when given a non existing id', async () => {
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer()).delete('/games/1');
+      const response = await request.delete('/games/1');
 
       expect(response.status).toEqual(404);
     });

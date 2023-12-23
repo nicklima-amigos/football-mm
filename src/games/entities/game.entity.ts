@@ -33,6 +33,7 @@ export class Game {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
   @ManyToMany(() => Player, (player) => player.homeGames)
   @JoinTable()
   homeTeam: Player[];

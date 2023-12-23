@@ -18,7 +18,7 @@ export const fakeUser = (): User => {
 export const fakeCreateUserDto = (): CreateUserDto => {
   const password = faker.internet.password();
   return {
-    username: faker.person.firstName(),
+    username: faker.internet.userName(),
     email: faker.internet.email(),
     password,
     confirmPassword: password,

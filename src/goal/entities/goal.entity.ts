@@ -29,7 +29,7 @@ export class Goal {
   minute: number;
 
   @Column({
-    type: 'enum',
+    type: String,
     enum: TeamEnum,
   })
   team: TeamEnum;

@@ -6,15 +6,14 @@ import * as supertest from 'supertest';
 import { Repository } from 'typeorm';
 import {
   fakeCreateFoulDto,
-  fakeFoul,
   fakeFouls,
 } from '../../test/factories/fouls.factory';
-import { getRepositoryMock } from '../../test/mocks/repository';
+import { TypeOrmTestModule } from '../../test/typeorm-test-module';
+import { Game } from '../games/entities/game.entity';
 import { Player } from '../players/entities/player.entity';
 import { Foul } from './entities/foul.entity';
 import { FoulController } from './foul.controller';
-import { FoulService } from './foul.service';
-import { Game } from '../games/entities/game.entity';
+import { FoulModule } from './foul.module';
 
 describe('FoulController', () => {
   let controller: FoulController;
@@ -23,24 +22,13 @@ describe('FoulController', () => {
   let playerRepository: Repository<Player>;
   let app: NestApplication;
 
+  let fouls: Foul[];
+
+  let request: supertest.SuperTest<supertest.Test>;
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [FoulController],
-      providers: [
-        FoulService,
-        {
-          provide: getRepositoryToken(Foul),
-          useValue: getRepositoryMock<Foul>(),
-        },
-        {
-          provide: getRepositoryToken(Game),
-          useValue: getRepositoryMock<Game>(),
-        },
-        {
-          provide: getRepositoryToken(Player),
-          useValue: getRepositoryMock<Player>(),
-        },
-      ],
+      imports: [TypeOrmTestModule, FoulModule],
     }).compile();
 
     controller = module.get<FoulController>(FoulController);
@@ -51,6 +39,25 @@ describe('FoulController', () => {
     );
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
+
+    const newFouls = fakeFouls(10);
+    fouls = await foulRepository.save(
+      await Promise.all(
+        newFouls.map(async (foul) => ({
+          ...foul,
+          offendingPlayer: await playerRepository.save(foul.offendingPlayer),
+          victimPlayer: await playerRepository.save(foul.victimPlayer),
+          game: await gameRepository.save({
+            ...foul.game,
+            homeTeam: await playerRepository.save(foul.game.homeTeam),
+            awayTeam: await playerRepository.save(foul.game.awayTeam),
+          }),
+        })),
+      ),
+    );
+
+    request = supertest(app.getHttpServer());
+
     await app.init();
   });
 
@@ -60,33 +67,28 @@ describe('FoulController', () => {
 
   describe('findAll', () => {
     it('should return a list of fouls', async () => {
-      const fouls = fakeFouls(10);
-      jest.spyOn(foulRepository, 'find').mockResolvedValueOnce(fouls);
-      const expected = JSON.parse(JSON.stringify(fouls));
-
-      const response = await supertest(app.getHttpServer()).get('/fouls');
+      const response = await request.get('/fouls');
       const actual = response.body;
 
-      expect(actual).toEqual(expected);
+      expect(actual.length).toEqual(fouls.length);
+      fouls.forEach((foul) => {
+        expect(actual.map((foul: Foul) => foul.id)).toContain(foul.id);
+      });
     });
   });
 
   describe('findOne', () => {
     it('should return a foul', async () => {
-      const foul = fakeFoul();
-      jest.spyOn(foulRepository, 'findOne').mockResolvedValueOnce(foul);
-      const expected = JSON.parse(JSON.stringify(foul));
+      const { id, minute } = fouls[0];
 
-      const response = await supertest(app.getHttpServer()).get('/fouls/1');
+      const response = await request.get('/fouls/' + id);
       const actual = response.body;
 
-      expect(actual).toEqual(expected);
+      expect(actual.minute).toEqual(minute);
     });
 
     it('should return a 404 when given an invalid id', async () => {
-      jest.spyOn(foulRepository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer()).get('/fouls/1');
+      const response = await request.get('/fouls/1');
 
       expect(response.status).toEqual(404);
     });
@@ -94,52 +96,32 @@ describe('FoulController', () => {
 
   describe('create', () => {
     it('should create a foul', async () => {
-      const foul = fakeFoul();
-      jest.spyOn(foulRepository, 'save').mockResolvedValueOnce(foul);
-      jest
-        .spyOn(playerRepository, 'findOne')
-        .mockResolvedValueOnce(foul.offendingPlayer);
-      jest
-        .spyOn(playerRepository, 'findOne')
-        .mockResolvedValueOnce(foul.victimPlayer);
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(foul.game);
-      const expected = JSON.parse(JSON.stringify(foul));
+      const createFoulDto = fakeCreateFoulDto();
+      createFoulDto.offenderId = fouls[0].offendingPlayer.id;
+      createFoulDto.victimId = fouls[0].victimPlayer.id;
+      createFoulDto.gameId = fouls[0].game.id;
 
-      const response = await supertest(app.getHttpServer())
-        .post('/fouls')
-        .send(fakeCreateFoulDto());
+      const response = await request.post('/fouls').send(createFoulDto);
       const actual = response.body;
 
       expect(response.status).toEqual(201);
-      expect(actual).toEqual(expected);
+      expect(actual.offendingPlayer.id).toEqual(createFoulDto.offenderId);
     });
 
     it('should throw an error when given invalid data', async () => {
-      jest.spyOn(foulRepository, 'save').mockRejectedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer())
-        .post('/fouls')
-        .send('foo');
+      const response = await request.post('/fouls').send('foo');
 
       expect(response.status).toEqual(400);
     });
 
     it('should throw an error when given an invalid player id', async () => {
-      jest.spyOn(playerRepository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer())
-        .post('/fouls')
-        .send(fakeCreateFoulDto());
+      const response = await request.post('/fouls').send(fakeCreateFoulDto());
 
       expect(response.status).toEqual(404);
     });
 
     it('should throw an error when given an invalid game id', async () => {
-      jest.spyOn(gameRepository, 'findOne').mockResolvedValueOnce(null);
-
-      const response = await supertest(app.getHttpServer())
-        .post('/fouls')
-        .send(fakeCreateFoulDto());
+      const response = await request.post('/fouls').send(fakeCreateFoulDto());
 
       expect(response.status).toEqual(404);
     });
@@ -147,28 +129,19 @@ describe('FoulController', () => {
 
   describe('update', () => {
     it('should update a foul', async () => {
-      const foul = fakeFoul();
-      foul.id = 1;
-      jest.spyOn(foulRepository, 'findOne').mockResolvedValueOnce(foul);
-      jest.spyOn(foulRepository, 'update').mockResolvedValueOnce(undefined);
-      delete foul.id;
+      const foulDto = fakeCreateFoulDto();
+      const { id } = fouls[0];
 
-      const response = await supertest(app.getHttpServer())
-        .patch('/fouls/1')
-        .send(foul);
+      const response = await request.patch('/fouls/' + id).send(foulDto);
 
       expect(response.status).toEqual(200);
+      expect(response.body.minute).toEqual(foulDto.minute);
     });
   });
 
   describe('delete', () => {
     it('should delete a foul', async () => {
-      const foul = fakeFoul();
-      foul.id = 1;
-      jest.spyOn(foulRepository, 'findOne').mockResolvedValueOnce(foul);
-      jest.spyOn(foulRepository, 'remove').mockResolvedValueOnce(undefined);
-
-      const response = await supertest(app.getHttpServer()).delete('/fouls/1');
+      const response = await request.delete('/fouls/' + fouls[0].id);
 
       expect(response.status).toEqual(204);
     });

@@ -5,45 +5,36 @@ import { Player } from '../players/entities/player.entity';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
+import { League } from '../league/entities/league.entity';
 
 @Injectable()
 export class GameService {
   constructor(
     @InjectRepository(Game) private repository: Repository<Game>,
     @InjectRepository(Player) private playerRepository: Repository<Player>,
+    @InjectRepository(League) private leagueRepository: Repository<League>,
   ) {}
 
   async create(createGameDto: CreateGameDto) {
-    const homeTeam = await this.playerRepository.find({
-      where: { id: In(createGameDto.homeTeamPlayerIds) },
-    });
-    if (!homeTeam) {
-      throw new NotFoundException('Home team not found');
-    }
-    const awayTeam = await this.playerRepository.find({
-      where: { id: In(createGameDto.awayTeamPlayerIds) },
-    });
-    if (!homeTeam) {
-      throw new NotFoundException('Away team not found');
-    }
+    const newGame = new Game();
+    newGame.scheduledTime = createGameDto.scheduledTime;
+    newGame.homeTeam = await this.findTeam(createGameDto.homeTeamPlayerIds);
+    newGame.awayTeam = await this.findTeam(createGameDto.awayTeamPlayerIds);
     if (createGameDto.leagueId) {
-      const league = await this.playerRepository.findOne({
-        where: { id: createGameDto.leagueId },
-      });
-      if (!league) {
-        throw new NotFoundException('League not found');
-      }
-      return this.repository.save({ homeTeam, awayTeam, league });
+      newGame.league = await this.findLeague(createGameDto.leagueId);
     }
-    return this.repository.save({ homeTeam, awayTeam });
+    return this.repository.save(newGame);
   }
 
   findAll() {
-    return this.repository.find();
+    return this.repository.find({ relations: ['homeTeam', 'awayTeam'] });
   }
 
   async findOne(id: number) {
-    const game = await this.repository.findOne({ where: { id } });
+    const game = await this.repository.findOne({
+      where: { id },
+      relations: ['homeTeam', 'awayTeam', 'goals', 'fouls'],
+    });
     if (!game) {
       throw new NotFoundException('Game not found');
     }
@@ -51,12 +42,44 @@ export class GameService {
   }
 
   async update(id: number, updateGameDto: UpdateGameDto) {
-    await this.findOne(id);
-    return this.repository.update({ id }, updateGameDto);
+    const game = await this.findOne(id);
+    if (updateGameDto.leagueId) {
+      game.league = await this.findLeague(updateGameDto.leagueId);
+    }
+    if (updateGameDto.homeTeamPlayerIds) {
+      game.homeTeam = await this.findTeam(updateGameDto.homeTeamPlayerIds);
+    }
+    if (updateGameDto.awayTeamPlayerIds) {
+      game.awayTeam = await this.findTeam(updateGameDto.awayTeamPlayerIds);
+    }
+    if (updateGameDto.scheduledTime) {
+      game.scheduledTime = updateGameDto.scheduledTime;
+    }
+    return this.repository.save(game);
   }
 
   async remove(id: number) {
     const player = await this.findOne(id);
     return this.repository.remove(player);
+  }
+
+  private async findTeam(ids: number[]) {
+    const team = await this.playerRepository.find({
+      where: { id: In(ids) },
+    });
+    if (!team) {
+      throw new NotFoundException('Team not found');
+    }
+    return team;
+  }
+
+  private async findLeague(id: number) {
+    const league = await this.leagueRepository.findOne({
+      where: { id },
+    });
+    if (!league) {
+      throw new NotFoundException('League not found');
+    }
+    return league;
   }
 }

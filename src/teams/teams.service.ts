@@ -39,8 +39,10 @@ export class TeamService {
       const players = await this.findPlayers(updateTeamDto.playerIds);
       team.players = players;
     }
-    team.elo = updateTeamDto.elo ?? team.elo;
-    return this.repository.save(team);
+    return this.repository.save({
+      ...team,
+      ...updateTeamDto,
+    });
   }
 
   async remove(id: number) {
@@ -49,8 +51,9 @@ export class TeamService {
   }
 
   private async findPlayers(ids: number[]) {
-    return this.playerRepository.find({
-      where: { id: In(ids) },
-    });
+    if (!ids || ids.length === 0) {
+      return [];
+    }
+    return this.playerRepository.find({ where: { id: In(ids) } });
   }
 }
