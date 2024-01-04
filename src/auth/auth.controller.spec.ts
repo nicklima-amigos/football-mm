@@ -1,9 +1,8 @@
 import { NestApplication } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { hash } from 'bcrypt';
 import * as supertest from 'supertest';
-import { fakeCreateUserDto, fakeUser } from '../../test/factories/user.factory';
+import { fakeCreateUserDto } from '../../test/factories/user.factory';
 import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 import { UserService } from '../user/user.service';
 import { AuthController } from './auth.controller';
