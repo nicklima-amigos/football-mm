@@ -50,4 +50,8 @@ export class PlayerService {
     const player = await this.findOne(id);
     return this.repository.remove(player);
   }
+
+  async saveMany(players: Player[]) {
+    return this.repository.save(players);
+  }
 }

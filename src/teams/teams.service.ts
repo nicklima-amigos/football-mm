@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { Player } from '../players/entities/player.entity';
+import { Repository } from 'typeorm';
+import { PlayerService } from '../players/players.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { Team } from './entities/team.entity';
@@ -10,7 +10,7 @@ import { Team } from './entities/team.entity';
 export class TeamService {
   constructor(
     @InjectRepository(Team) private repository: Repository<Team>,
-    @InjectRepository(Player) private playerRepository: Repository<Player>,
+    private playerService: PlayerService,
   ) {}
 
   async create(createTeamDto: CreateTeamDto) {
@@ -54,6 +54,6 @@ export class TeamService {
     if (!ids || ids.length === 0) {
       return [];
     }
-    return this.playerRepository.find({ where: { id: In(ids) } });
+    return this.playerService.findManyByIds(ids);
   }
 }

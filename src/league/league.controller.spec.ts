@@ -10,17 +10,17 @@ import {
   fakeLeagues,
 } from '../../test/factories/leagues.factory';
 import { TypeOrmTestModule } from '../../test/typeorm-test-module';
+import { Game } from '../games/entities/game.entity';
+import { PlayerService } from '../players/players.service';
 import { League } from './entities/league.entity';
 import { LeagueController } from './league.controller';
 import { LeagueModule } from './league.module';
-import { Game } from '../games/entities/game.entity';
-import { Player } from '../players/entities/player.entity';
 
 describe('LeagueController', () => {
   let controller: LeagueController;
   let repository: Repository<League>;
   let gameRepository: Repository<Game>;
-  let playerRepository: Repository<Player>;
+  let playerService: PlayerService;
   let app: NestApplication;
 
   let leagues: League[];
@@ -40,9 +40,7 @@ describe('LeagueController', () => {
 
     repository = module.get<Repository<League>>(getRepositoryToken(League));
     gameRepository = module.get<Repository<Game>>(getRepositoryToken(Game));
-    playerRepository = module.get<Repository<Player>>(
-      getRepositoryToken(Player),
-    );
+    playerService = module.get<PlayerService>(PlayerService);
 
     leagues = await repository.save(fakeLeagues(10));
 
@@ -88,7 +86,7 @@ describe('LeagueController', () => {
     it('should create a league', async () => {
       const league = fakeLeague();
       const matchesPromises = league.matches.map(async (match) => {
-        await playerRepository.save([...match.homeTeam, ...match.awayTeam]);
+        await playerService.saveMany([...match.homeTeam, ...match.awayTeam]);
         return gameRepository.save(match);
       });
       const matches = await Promise.all(matchesPromises);
