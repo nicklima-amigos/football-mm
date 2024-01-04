@@ -3,12 +3,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { hash } from 'bcrypt';
 import * as supertest from 'supertest';
-import { fakeUser } from '../../test/factories/user.factory';
+import { fakeCreateUserDto, fakeUser } from '../../test/factories/user.factory';
+import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 import { UserService } from '../user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthModule } from './auth.module';
 import { jwtConstants } from './constants';
-import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -45,13 +45,8 @@ describe('AuthController', () => {
 
   describe('signIn', () => {
     it('should return a token when given valid credentials', async () => {
-      const user = fakeUser();
-      jest
-        .spyOn(userService, 'findOneByUsernameOrEmail')
-        .mockResolvedValueOnce({
-          ...user,
-          password: await hash(user.password, 10),
-        });
+      const user = fakeCreateUserDto();
+      await userService.create({ ...user });
 
       const response = await request.post('/auth/signin').send({
         usernameOrEmail: user.username,
@@ -63,13 +58,8 @@ describe('AuthController', () => {
     });
 
     it('should return a 401 when given invalid credentials', async () => {
-      const user = fakeUser();
-      jest
-        .spyOn(userService, 'findOneByUsernameOrEmail')
-        .mockResolvedValueOnce({
-          ...user,
-          password: await hash(user.password, 10),
-        });
+      const user = fakeCreateUserDto();
+      await userService.create({ ...user });
 
       const response = await request.post('/auth/signin').send({
         usernameOrEmail: user.username,
@@ -90,6 +80,32 @@ describe('AuthController', () => {
       });
 
       expect(response.status).toEqual(401);
+    });
+  });
+
+  describe('authorize', () => {
+    it('should return a user when given a valid token', async () => {
+      const user = fakeCreateUserDto();
+      await userService.create({ ...user });
+
+      const { token } = await controller.signIn({
+        usernameOrEmail: user.username,
+        password: user.password,
+      });
+      const response = await request
+        .get('/auth/authorize')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toHaveProperty('email');
+    });
+
+    it('should return a 403 when given an invalid token', async () => {
+      const { status } = await request
+        .get('/auth/authorize')
+        .set('Authorization', `Bearer invalid`);
+
+      expect(status).toEqual(403);
     });
   });
 });

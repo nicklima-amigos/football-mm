@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { hash } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -21,7 +21,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     this.logger.log('Creating user');
     await this.validateCreateUser(createUserDto);
-    createUserDto.password = await hash(createUserDto.password, 10);
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     delete createUserDto.confirmPassword;
     return await this.repository.save(createUserDto);
   }
