@@ -17,9 +17,6 @@ export class GoalService {
 
   async create(createGoalDto: CreateGoalDto) {
     const game = await this.gameService.findOne(createGoalDto.gameId);
-    if (!game) {
-      throw new NotFoundException('Game not found');
-    }
     const player = await this.playerService.findOne(
       createGoalDto.authorPlayerId,
     );

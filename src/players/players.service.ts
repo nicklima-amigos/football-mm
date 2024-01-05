@@ -35,12 +35,7 @@ export class PlayerService {
 
   async update(id: number, updatePlayerDto: UpdatePlayerDto) {
     const player = await this.findOne(id);
-    const team = await this.teamRepository.findOne({
-      where: { id: updatePlayerDto.teamId },
-    });
-    if (!team) {
-      throw new NotFoundException('Team not found');
-    }
+    const team = await this.findTeam(updatePlayerDto.teamId);
     player.team = team;
     player.elo = updatePlayerDto.elo;
     return this.repository.save(player);
@@ -53,5 +48,15 @@ export class PlayerService {
 
   async saveMany(players: Player[]) {
     return this.repository.save(players);
+  }
+
+  private async findTeam(id: number) {
+    const team = await this.teamRepository.findOne({
+      where: { id },
+    });
+    if (!team) {
+      throw new NotFoundException('Team not found');
+    }
+    return team;
   }
 }
