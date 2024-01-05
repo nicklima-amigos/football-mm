@@ -1,8 +1,8 @@
-import { Card, Foul } from '../../src/foul/entities/foul.entity';
+import { Card, Foul } from '../../src/fouls/entities/foul.entity';
 import { faker } from '@faker-js/faker';
 import { fakePlayer } from './players.factory';
 import { fakeGame } from './games.factory';
-import { CreateFoulDto } from '../../src/foul/dto/create-foul.dto';
+import { CreateFoulDto } from '../../src/fouls/dto/create-foul.dto';
 
 export const fakeFoul = (): Foul => ({
   id: faker.number.int(),

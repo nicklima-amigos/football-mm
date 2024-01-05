@@ -1,18 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LeagueService } from '../league/league.service';
-import { PlayerService } from '../players/players.service';
+import { LeaguesService } from '../leagues/leagues.service';
+import { PlayersService } from '../players/players.service';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
 
 @Injectable()
-export class GameService {
+export class GamesService {
   constructor(
     @InjectRepository(Game) private repository: Repository<Game>,
-    private leagueService: LeagueService,
-    private playerService: PlayerService,
+    private leagueService: LeaguesService,
+    private playerService: PlayersService,
   ) {}
 
   async create(createGameDto: CreateGameDto) {

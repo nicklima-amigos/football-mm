@@ -9,7 +9,7 @@ import {
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
-import { LeagueService } from './league.service';
+import { LeaguesService } from './leagues.service';
 import { CreateLeagueDto } from './dto/create-league.dto';
 import { UpdateLeagueDto } from './dto/update-league.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -17,8 +17,8 @@ import { LeagueDto } from './dto/league.dto';
 
 @ApiTags('leagues')
 @Controller('leagues')
-export class LeagueController {
-  constructor(private readonly leagueService: LeagueService) {}
+export class LeaguesController {
+  constructor(private readonly leagueService: LeaguesService) {}
 
   @Post()
   @ApiResponse({

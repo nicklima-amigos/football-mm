@@ -13,12 +13,12 @@ import { UpdateResult } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { GameDto } from './dto/game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
-import { GameService } from './games.service';
+import { GamesService } from './games.service';
 
 @Controller('games')
 @ApiTags('games')
-export class GameController {
-  constructor(private readonly gameService: GameService) {}
+export class GamesController {
+  constructor(private readonly gameService: GamesService) {}
 
   @Post()
   @ApiResponse({ status: 201, description: 'Created', type: GameDto })

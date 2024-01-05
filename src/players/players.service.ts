@@ -7,7 +7,7 @@ import { UpdatePlayerDto } from './dto/update-player.dto';
 import { Player } from './entities/player.entity';
 
 @Injectable()
-export class PlayerService {
+export class PlayersService {
   constructor(
     @InjectRepository(Player) private repository: Repository<Player>,
     @InjectRepository(Team) private teamRepository: Repository<Team>,
