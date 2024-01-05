@@ -23,16 +23,10 @@ export class GoalService {
     const player = await this.playerService.findOne(
       createGoalDto.authorPlayerId,
     );
-    if (!player) {
-      throw new NotFoundException('Player not found');
-    }
     if (createGoalDto.assistPlayerId) {
       const assist = await this.playerService.findOne(
         createGoalDto.assistPlayerId,
       );
-      if (!assist) {
-        throw new NotFoundException('Assist player not found');
-      }
       return this.repository.save({ ...createGoalDto, game, player, assist });
     }
     return this.repository.save({ ...createGoalDto, game, player });
