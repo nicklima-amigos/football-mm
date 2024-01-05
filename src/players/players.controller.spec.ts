@@ -9,12 +9,12 @@ import { fakeTeam } from '../../test/factories/teams.factory';
 import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 import { Team } from '../teams/entities/team.entity';
 import { Player } from './entities/player.entity';
-import { PlayerController } from './players.controller';
-import { PlayerModule } from './players.module';
+import { PlayersController } from './players.controller';
+import { PlayersModule } from './players.module';
 
 describe('PlayerController', () => {
   let app: NestApplication;
-  let controller: PlayerController;
+  let controller: PlayersController;
   let repository: Repository<Player>;
   let teamRepository: Repository<Team>;
 
@@ -24,10 +24,10 @@ describe('PlayerController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmTestModule, PlayerModule],
+      imports: [TypeOrmTestModule, PlayersModule],
     }).compile();
 
-    controller = module.get<PlayerController>(PlayerController);
+    controller = module.get<PlayersController>(PlayersController);
     repository = module.get<Repository<Player>>(getRepositoryToken(Player));
     teamRepository = module.get<Repository<Team>>(getRepositoryToken(Team));
     app = module.createNestApplication();

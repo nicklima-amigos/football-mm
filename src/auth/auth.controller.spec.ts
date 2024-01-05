@@ -2,16 +2,16 @@ import { NestApplication } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as supertest from 'supertest';
-import { fakeCreateUserDto } from '../../test/factories/user.factory';
+import { fakeCreateUserDto } from '../../test/factories/users.factory';
 import { TypeOrmTestModule } from '../../test/typeorm-test-module';
-import { UserService } from '../user/user.service';
+import { UsersService } from '../users/users.service';
 import { AuthController } from './auth.controller';
 import { AuthModule } from './auth.module';
 import { jwtConstants } from './constants';
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let userService: UserService;
+  let userService: UsersService;
   let app: NestApplication;
 
   let request: supertest.SuperTest<supertest.Test>;
@@ -30,7 +30,7 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
-    userService = module.get<UserService>(UserService);
+    userService = module.get<UsersService>(UsersService);
     app = module.createNestApplication();
 
     request = supertest(app.getHttpServer());

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { CreateUserDto } from '../../src/user/dto/create-user.dto';
-import { User } from '../../src/user/entities/user.entity';
+import { CreateUserDto } from '../../src/users/dto/create-user.dto';
+import { User } from '../../src/users/entities/user.entity';
 import { fakeCreatePlayerDto, fakePlayer } from './players.factory';
 
 export const fakeUser = (): User => {

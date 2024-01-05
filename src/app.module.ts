@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { FoulModule } from './foul/foul.module';
-import { GameModule } from './games/games.module';
-import { GoalModule } from './goal/goal.module';
-import { LeagueModule } from './league/league.module';
-import { TeamModule } from './teams/teams.module';
-import { UserModule } from './user/user.module';
-import { PlayerModule } from './players/players.module';
+import { FoulsModule } from './fouls/fouls.module';
+import { GamesModule } from './games/games.module';
+import { GoalsModule } from './goals/goals.module';
+import { LeaguesModule } from './leagues/leagues.module';
+import { TeamsModule } from './teams/teams.module';
+import { UsersModule } from './users/users.module';
+import { PlayersModule } from './players/players.module';
 
 @Module({
   imports: [
@@ -29,14 +29,14 @@ import { PlayerModule } from './players/players.module';
         };
       },
     }),
-    TeamModule,
-    PlayerModule,
-    GameModule,
-    LeagueModule,
+    TeamsModule,
+    PlayersModule,
+    GamesModule,
+    LeaguesModule,
     AuthModule,
-    UserModule,
-    FoulModule,
-    GoalModule,
+    UsersModule,
+    FoulsModule,
+    GoalsModule,
   ],
 })
 export class AppModule {}

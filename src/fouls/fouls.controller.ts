@@ -8,7 +8,7 @@ import {
   Delete,
   HttpCode,
 } from '@nestjs/common';
-import { FoulService } from './foul.service';
+import { FoulsService } from './fouls.service';
 import { CreateFoulDto } from './dto/create-foul.dto';
 import { UpdateFoulDto } from './dto/update-foul.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -17,8 +17,8 @@ import { UpdateResult } from 'typeorm';
 
 @Controller('fouls')
 @ApiTags('fouls')
-export class FoulController {
-  constructor(private readonly foulService: FoulService) {}
+export class FoulsController {
+  constructor(private readonly foulService: FoulsService) {}
 
   @Post()
   @ApiResponse({ status: 201, description: 'Created', type: FoulDto })

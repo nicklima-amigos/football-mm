@@ -13,8 +13,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
-export class UserService {
-  private logger = new Logger(UserService.name);
+export class UsersService {
+  private logger = new Logger(UsersService.name);
 
   constructor(@InjectRepository(User) private repository: Repository<User>) {}
 

@@ -9,10 +9,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Foul } from '../../foul/entities/foul.entity';
-import { Goal } from '../../goal/entities/goal.entity';
+import { Foul } from '../../fouls/entities/foul.entity';
+import { Goal } from '../../goals/entities/goal.entity';
 import { Player } from '../../players/entities/player.entity';
-import { League } from '../../league/entities/league.entity';
+import { League } from '../../leagues/entities/league.entity';
 
 @Entity()
 export class Game {

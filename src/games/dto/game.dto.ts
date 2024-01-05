@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LeagueDto } from '../../league/dto/league.dto';
+import { LeagueDto } from '../../leagues/dto/league.dto';
 import { PlayerDto } from '../../players/dto/player.dto';
 
 export class GameDto {

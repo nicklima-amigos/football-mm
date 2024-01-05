@@ -10,15 +10,15 @@ import {
 } from '@nestjs/common';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
-import { PlayerService } from './players.service';
+import { PlayersService } from './players.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PlayerDto } from './dto/player.dto';
 import { UpdateResponseDto } from '../dto/update.dto';
 
 @Controller('players')
 @ApiTags('players')
-export class PlayerController {
-  constructor(private readonly playerService: PlayerService) {}
+export class PlayersController {
+  constructor(private readonly playerService: PlayersService) {}
 
   @Post()
   @ApiResponse({ status: 201, description: 'Created', type: PlayerDto })

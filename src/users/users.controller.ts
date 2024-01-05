@@ -8,7 +8,7 @@ import {
   Delete,
   HttpCode,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -17,8 +17,8 @@ import { UpdateResponseDto } from '../dto/update.dto';
 
 @ApiTags('users')
 @Controller('users')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class UsersController {
+  constructor(private readonly userService: UsersService) {}
 
   @Post()
   @ApiResponse({ status: 201, description: 'Created', type: UserDto })

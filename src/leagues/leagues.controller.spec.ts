@@ -11,16 +11,16 @@ import {
 } from '../../test/factories/leagues.factory';
 import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 import { Game } from '../games/entities/game.entity';
-import { PlayerService } from '../players/players.service';
+import { PlayersService } from '../players/players.service';
 import { League } from './entities/league.entity';
-import { LeagueController } from './league.controller';
-import { LeagueModule } from './league.module';
+import { LeaguesController } from './leagues.controller';
+import { LeaguesModule } from './leagues.module';
 
 describe('LeagueController', () => {
-  let controller: LeagueController;
+  let controller: LeaguesController;
   let repository: Repository<League>;
   let gameRepository: Repository<Game>;
-  let playerService: PlayerService;
+  let playerService: PlayersService;
   let app: NestApplication;
 
   let leagues: League[];
@@ -29,10 +29,10 @@ describe('LeagueController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmTestModule, LeagueModule],
+      imports: [TypeOrmTestModule, LeaguesModule],
     }).compile();
 
-    controller = module.get<LeagueController>(LeagueController);
+    controller = module.get<LeaguesController>(LeaguesController);
     repository = module.get<Repository<League>>(getRepositoryToken(League));
 
     app = module.createNestApplication();
@@ -40,7 +40,7 @@ describe('LeagueController', () => {
 
     repository = module.get<Repository<League>>(getRepositoryToken(League));
     gameRepository = module.get<Repository<Game>>(getRepositoryToken(Game));
-    playerService = module.get<PlayerService>(PlayerService);
+    playerService = module.get<PlayersService>(PlayersService);
 
     leagues = await repository.save(fakeLeagues(10));
 

@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { fakeGame } from './games.factory';
 import { fakePlayer } from './players.factory';
-import { Goal, TeamEnum } from '../../src/goal/entities/goal.entity';
-import { CreateGoalDto } from '../../src/goal/dto/create-goal.dto';
+import { Goal, TeamEnum } from '../../src/goals/entities/goal.entity';
+import { CreateGoalDto } from '../../src/goals/dto/create-goal.dto';
 
 export const fakeGoal = (): Goal => ({
   id: faker.number.int(),

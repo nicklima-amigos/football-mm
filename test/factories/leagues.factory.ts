@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { CreateLeagueDto } from '../../src/league/dto/create-league.dto';
-import { League } from '../../src/league/entities/league.entity';
+import { CreateLeagueDto } from '../../src/leagues/dto/create-league.dto';
+import { League } from '../../src/leagues/entities/league.entity';
 import { fakeGames } from './games.factory';
 import { fakeTeams } from './teams.factory';
 import { fakePlayers } from './players.factory';

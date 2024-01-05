@@ -8,14 +8,14 @@ import {
   fakeCreateUserDto,
   fakeUser,
   fakeUsers,
-} from '../../test/factories/user.factory';
+} from '../../test/factories/users.factory';
 import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 import { User } from './entities/user.entity';
-import { UserController } from './user.controller';
-import { UserModule } from './user.module';
+import { UsersController } from './users.controller';
+import { UsersModule } from './users.module';
 
 describe('UserController', () => {
-  let controller: UserController;
+  let controller: UsersController;
   let app: NestApplication;
   let repository: Repository<User>;
 
@@ -25,10 +25,10 @@ describe('UserController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmTestModule, UserModule],
+      imports: [TypeOrmTestModule, UsersModule],
     }).compile();
 
-    controller = module.get<UserController>(UserController);
+    controller = module.get<UsersController>(UsersController);
     repository = module.get<Repository<User>>(getRepositoryToken(User));
     users = fakeUsers(10);
     const createUsersPromise = users.map((user) => repository.save(user));
