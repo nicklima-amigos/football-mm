@@ -6,7 +6,7 @@ import { fakeCreatePlayerDto, fakePlayer } from './players.factory';
 export const fakeUser = (): User => {
   return {
     id: faker.number.int(),
-    username: faker.person.firstName(),
+    username: faker.string.alphanumeric({ length: 30 }),
     email: faker.internet.email(),
     password: faker.internet.password(),
     createdAt: faker.date.recent(),
