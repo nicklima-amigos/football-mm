@@ -14,11 +14,11 @@ import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 import { Game } from '../games/entities/game.entity';
 import { Player } from '../players/entities/player.entity';
 import { Goal } from './entities/goal.entity';
-import { GoalController } from './goal.controller';
-import { GoalModule } from './goal.module';
+import { GoalsController } from './goals.controller';
+import { GoalsModule } from './goals.module';
 
 describe('GoalController', () => {
-  let controller: GoalController;
+  let controller: GoalsController;
   let goalRepository: Repository<Goal>;
   let gameRepository: Repository<Game>;
   let playerRepository: Repository<Player>;
@@ -32,10 +32,10 @@ describe('GoalController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmTestModule, GoalModule],
+      imports: [TypeOrmTestModule, GoalsModule],
     }).compile();
 
-    controller = module.get<GoalController>(GoalController);
+    controller = module.get<GoalsController>(GoalsController);
     goalRepository = module.get<Repository<Goal>>(getRepositoryToken(Goal));
     gameRepository = module.get<Repository<Game>>(getRepositoryToken(Game));
     playerRepository = module.get<Repository<Player>>(

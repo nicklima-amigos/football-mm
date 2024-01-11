@@ -10,9 +10,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Team } from '../../teams/entities/team.entity';
-import { User } from '../../user/entities/user.entity';
-import { Goal } from '../../goal/entities/goal.entity';
-import { Foul } from '../../foul/entities/foul.entity';
+import { User } from '../../users/entities/user.entity';
+import { Goal } from '../../goals/entities/goal.entity';
+import { Foul } from '../../fouls/entities/foul.entity';
 import { Game } from '../../games/entities/game.entity';
 
 @Entity()

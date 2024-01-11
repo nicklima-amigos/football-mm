@@ -7,16 +7,16 @@ import { Repository } from 'typeorm';
 import { fakeGameDto, fakeGames } from '../../test/factories/games.factory';
 import { fakePlayers } from '../../test/factories/players.factory';
 import { TypeOrmTestModule } from '../../test/typeorm-test-module';
-import { League } from '../league/entities/league.entity';
+import { League } from '../leagues/entities/league.entity';
 import { Player } from '../players/entities/player.entity';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
-import { GameController } from './games.controller';
-import { GameModule } from './games.module';
+import { GamesController } from './games.controller';
+import { GamesModule } from './games.module';
 import { fakeLeague } from '../../test/factories/leagues.factory';
 
 describe('GameController', () => {
-  let controller: GameController;
+  let controller: GamesController;
   let gameRepository: Repository<Game>;
   let playerRepository: Repository<Player>;
   let leagueRepository: Repository<League>;
@@ -28,10 +28,10 @@ describe('GameController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmTestModule, GameModule],
+      imports: [TypeOrmTestModule, GamesModule],
     }).compile();
 
-    controller = module.get<GameController>(GameController);
+    controller = module.get<GamesController>(GamesController);
     gameRepository = module.get<Repository<Game>>(getRepositoryToken(Game));
     playerRepository = module.get<Repository<Player>>(
       getRepositoryToken(Player),

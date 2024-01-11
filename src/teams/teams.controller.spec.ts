@@ -6,13 +6,13 @@ import * as supertest from 'supertest';
 import { Repository } from 'typeorm';
 import { fakeTeam, fakeTeams } from '../../test/factories/teams.factory';
 import { Team } from './entities/team.entity';
-import { TeamController } from './teams.controller';
-import { TeamModule } from './teams.module';
+import { TeamsController } from './teams.controller';
+import { TeamsModule } from './teams.module';
 import { TypeOrmTestModule } from '../../test/typeorm-test-module';
 
 describe('TeamController', () => {
   let app: NestApplication;
-  let controller: TeamController;
+  let controller: TeamsController;
   let repository: Repository<Team>;
 
   let teams: Team[];
@@ -21,10 +21,10 @@ describe('TeamController', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [TypeOrmTestModule, TeamModule],
+      imports: [TypeOrmTestModule, TeamsModule],
     }).compile();
 
-    controller = module.get<TeamController>(TeamController);
+    controller = module.get<TeamsController>(TeamsController);
     repository = module.get<Repository<Team>>(getRepositoryToken(Team));
 
     teams = await repository.save(fakeTeams(10));
