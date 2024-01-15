@@ -8,7 +8,7 @@ import {
   Delete,
   HttpCode,
 } from '@nestjs/common';
-import { GoalService } from './goal.service';
+import { GoalsService } from './goals.service';
 import { CreateGoalDto } from './dto/create-goal.dto';
 import { UpdateGoalDto } from './dto/update-goal.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -16,8 +16,8 @@ import { GoalDto } from './dto/goal.dto';
 
 @Controller('goals')
 @ApiTags('goals')
-export class GoalController {
-  constructor(private readonly goalService: GoalService) {}
+export class GoalsController {
+  constructor(private readonly goalService: GoalsService) {}
 
   @Post()
   @ApiResponse({ status: 201, description: 'Created', type: GoalDto })

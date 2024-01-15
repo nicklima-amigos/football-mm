@@ -8,7 +8,7 @@ import {
   Delete,
   HttpCode,
 } from '@nestjs/common';
-import { TeamService } from './teams.service';
+import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -17,8 +17,8 @@ import { UpdateResponseDto } from '../dto/update.dto';
 
 @Controller('teams')
 @ApiTags('teams')
-export class TeamController {
-  constructor(private readonly teamService: TeamService) {}
+export class TeamsController {
+  constructor(private readonly teamService: TeamsService) {}
 
   @Post()
   @ApiResponse({ status: 201, description: 'Created', type: TeamDto })

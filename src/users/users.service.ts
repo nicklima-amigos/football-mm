@@ -6,22 +6,22 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { hash } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
-export class UserService {
-  private logger = new Logger(UserService.name);
+export class UsersService {
+  private logger = new Logger(UsersService.name);
 
   constructor(@InjectRepository(User) private repository: Repository<User>) {}
 
   async create(createUserDto: CreateUserDto) {
     this.logger.log('Creating user');
     await this.validateCreateUser(createUserDto);
-    createUserDto.password = await hash(createUserDto.password, 10);
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     delete createUserDto.confirmPassword;
     return await this.repository.save(createUserDto);
   }

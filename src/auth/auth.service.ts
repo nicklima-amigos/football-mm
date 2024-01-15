@@ -1,14 +1,14 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcrypt';
-import { UserService } from '../user/user.service';
+import * as bcrypt from 'bcrypt';
+import { UsersService } from '../users/users.service';
 import { SignInDto } from './dto/sign-in.dto';
 
 @Injectable()
 export class AuthService {
   private logger = new Logger(AuthService.name);
   constructor(
-    private userService: UserService,
+    private userService: UsersService,
     private jwtService: JwtService,
   ) {}
 
@@ -20,7 +20,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const isPasswordValid = await compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }

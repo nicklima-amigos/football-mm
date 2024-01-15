@@ -7,7 +7,7 @@ import { UpdatePlayerDto } from './dto/update-player.dto';
 import { Player } from './entities/player.entity';
 
 @Injectable()
-export class PlayerService {
+export class PlayersService {
   constructor(
     @InjectRepository(Player) private repository: Repository<Player>,
     @InjectRepository(Team) private teamRepository: Repository<Team>,
@@ -35,12 +35,7 @@ export class PlayerService {
 
   async update(id: number, updatePlayerDto: UpdatePlayerDto) {
     const player = await this.findOne(id);
-    const team = await this.teamRepository.findOne({
-      where: { id: updatePlayerDto.teamId },
-    });
-    if (!team) {
-      throw new NotFoundException('Team not found');
-    }
+    const team = await this.findTeam(updatePlayerDto.teamId);
     player.team = team;
     player.elo = updatePlayerDto.elo;
     return this.repository.save(player);
@@ -49,5 +44,19 @@ export class PlayerService {
   async remove(id: number) {
     const player = await this.findOne(id);
     return this.repository.remove(player);
+  }
+
+  async saveMany(players: Player[]) {
+    return this.repository.save(players);
+  }
+
+  private async findTeam(id: number) {
+    const team = await this.teamRepository.findOne({
+      where: { id },
+    });
+    if (!team) {
+      throw new NotFoundException('Team not found');
+    }
+    return team;
   }
 }

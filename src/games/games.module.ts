@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GameController } from './games.controller';
-import { GameService } from './games.service';
-import { Player } from '../players/entities/player.entity';
 import { Game } from './entities/game.entity';
-import { Goal } from '../goal/entities/goal.entity';
-import { League } from '../league/entities/league.entity';
+import { GamesController } from './games.controller';
+import { GamesService } from './games.service';
+import { PlayersModule } from '../players/players.module';
+import { LeaguesModule } from '../leagues/leagues.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Game, Player, Goal, League])],
-  controllers: [GameController],
-  providers: [GameService],
+  imports: [TypeOrmModule.forFeature([Game]), PlayersModule, LeaguesModule],
+  controllers: [GamesController],
+  providers: [GamesService],
+  exports: [GamesService],
 })
-export class GameModule {}
+export class GamesModule {}

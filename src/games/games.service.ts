@@ -1,18 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { Player } from '../players/entities/player.entity';
+import { Repository } from 'typeorm';
+import { LeaguesService } from '../leagues/leagues.service';
+import { PlayersService } from '../players/players.service';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Game } from './entities/game.entity';
-import { League } from '../league/entities/league.entity';
 
 @Injectable()
-export class GameService {
+export class GamesService {
   constructor(
     @InjectRepository(Game) private repository: Repository<Game>,
-    @InjectRepository(Player) private playerRepository: Repository<Player>,
-    @InjectRepository(League) private leagueRepository: Repository<League>,
+    private leagueService: LeaguesService,
+    private playerService: PlayersService,
   ) {}
 
   async create(createGameDto: CreateGameDto) {
@@ -64,9 +64,7 @@ export class GameService {
   }
 
   private async findTeam(ids: number[]) {
-    const team = await this.playerRepository.find({
-      where: { id: In(ids) },
-    });
+    const team = await this.playerService.findManyByIds(ids);
     if (!team) {
       throw new NotFoundException('Team not found');
     }
@@ -74,12 +72,6 @@ export class GameService {
   }
 
   private async findLeague(id: number) {
-    const league = await this.leagueRepository.findOne({
-      where: { id },
-    });
-    if (!league) {
-      throw new NotFoundException('League not found');
-    }
-    return league;
+    return this.leagueService.findOne(id);
   }
 }
