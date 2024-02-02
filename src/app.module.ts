@@ -1,33 +1,23 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { databaseConfig } from './config/database.config';
 import { FoulsModule } from './fouls/fouls.module';
 import { GamesModule } from './games/games.module';
 import { GoalsModule } from './goals/goals.module';
 import { LeaguesModule } from './leagues/leagues.module';
+import { PlayersModule } from './players/players.module';
 import { TeamsModule } from './teams/teams.module';
 import { UsersModule } from './users/users.module';
-import { PlayersModule } from './players/players.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ load: [databaseConfig] }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
-        return {
-          type: 'postgres',
-          host: configService.get('DATABASE_HOST'),
-          port: +configService.get('DATABASE_PORT'),
-          username: configService.get('DATABASE_USER'),
-          password: configService.get('DATABASE_PASSWORD'),
-          database: configService.get('DATABASE_NAME'),
-          autoLoadEntities: true,
-          synchronize: true,
-        };
-      },
+      imports: [ConfigModule.forFeature(databaseConfig)],
+      inject: [databaseConfig.KEY],
+      useFactory: async (cfg: ConfigType<typeof databaseConfig>) => cfg,
     }),
     TeamsModule,
     PlayersModule,
