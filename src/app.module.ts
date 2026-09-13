@@ -17,7 +17,10 @@ import { UsersModule } from './users/users.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule.forFeature(databaseConfig)],
       inject: [databaseConfig.KEY],
-      useFactory: async (cfg: ConfigType<typeof databaseConfig>) => cfg,
+      useFactory: async (cfg: ConfigType<typeof databaseConfig>) => ({
+        ...cfg,
+        autoLoadEntities: true,
+      }),
     }),
     TeamsModule,
     PlayersModule,

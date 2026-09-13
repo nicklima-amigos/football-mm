@@ -7,6 +7,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Football Matchmaking')
     .setDescription('Football Matchmaking API')
@@ -17,13 +19,12 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, swaggerDocument);
 
   app.use(cookieParser());
-  app.useGlobalPipes(
+  app.use(
     new ValidationPipe({
       transform: true,
     }),
   );
   app.use(helmet());
-  app.setGlobalPrefix('api');
   await app.listen(3000);
 }
 bootstrap();

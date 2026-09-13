@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
-import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-export const databaseConfig = registerAs<PostgresConnectionOptions>(
+export const databaseConfig = registerAs<TypeOrmModuleOptions>(
   'database',
   () => ({
     type: 'postgres',
@@ -10,6 +10,7 @@ export const databaseConfig = registerAs<PostgresConnectionOptions>(
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
+    autoLoadEntities: true,
     synchronize: process.env.NODE_ENV !== 'production',
   }),
 );
